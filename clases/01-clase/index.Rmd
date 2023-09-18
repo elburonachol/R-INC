@@ -18,8 +18,7 @@ knitr::opts_chunk$set(comment=NA, dpi = 300)
 ```
 
 
-
-## Qué es R?
+## Qué es el lenguaje R?
 
 El sitio oficial [r-project.org](https://www.r-project.org/) dice que *"R es un entorno de software libre para gráficos y computación estadística. Se compila y se ejecuta en una amplia variedad de plataformas UNIX, Windows y MacOS.”.* 
 
@@ -29,29 +28,22 @@ A continuación detallamos cada parte de la definición:
 
 **R es un lenguaje de programación estadístico**
 
-Si bien posee un entorno y se puede utilizar como calculadora avanzada o
-para simulación, no deja de ser elementalmente un lenguaje de
-programación, con sus estructuras y reglas de sintaxis, que posee una
-gran variedad de funciones desarrolladas con fines estadísticos.
+R es un lenguaje de programación, con sus estructuras y reglas de sintaxis, que posee una gran variedad de funciones desarrolladas con fines estadísticos.
 
 **R es un lenguaje Orientado a Objetos**
 
-Implementa los conceptos de la programación orientada a objetos y esto
-le permite ofrecer simpleza y flexibilidad en el manejo de datos. En R
-todo con lo que trabajamos son objetos: las variables, funciones, datos,
-resultados, etc. que pueden ser modificados por otros objetos
+Implementa conceptos de la programación orientada a objetos y esto
+le permite ser simple y flexible en el manejo de datos. En R
+todo con lo que trabajamos es considerado un "objeto": las variables, funciones, datos, resultados, etc. que pueden ser modificados por otros objetos.
 
 **R es un lenguaje interpretado**
 
 No es necesario compilar los scripts de programación para construir
-ejecutables sino que directamente se ejecutan por medio del intérprete
-que R instala y devuelve resultados de forma inmediata.
+ejecutables sino que directamente se ejecutan por medio del intérprete que  devuelve resultados de forma inmediata.
 
 **R es multiplataforma (corre en Linux, Windows y Mac)**
 
-Se puede instalar en diferentes sistemas operativos como Linux, Windows
-y Mac. En todos ellos funciona de la misma manera, es decir que nuestros
-scripts pueden correr en cualquier plataforma sin cambiar nada de ellos.
+Funciona en diferentes sistemas operativos como Linux, Windows y Mac. 
 
 **R es Open Source y se distribuye bajo licencia GNU - GPL**
 
@@ -59,13 +51,9 @@ Esto quiere decir que se distribuye gratuitamente bajo licencia GNU
 (General Public License) -- GPL y que los usuarios tienen la libertad de
 usar, estudiar, compartir (copiar) y modificar el software.
 
-## Breve historia del lenguaje
+## Breve historia 
 
-R es un sistema que fue desarrollado a partir del lenguaje S que a su
-vez tiene sus orígenes en Bell Labs de la AT&T (actualmente Lucent
-Technologies) de mediados de la década del '70. Posteriormente, S fue
-vendido y dio origen a una versión propietaria denominada S-Plus que es
-comercializada por Insighful Corporation.
+R fue desarrollado a partir del lenguaje S que tiene sus orígenes en Bell Labs de la AT&T (actualmente Lucent Technologies) de mediados de la década del '70. Posteriormente, S fue vendido y dio origen a una versión propietaria denominada S-Plus que es comercializada por Insighful Corporation.
 
 En 1995 dos profesores de estadística de la Universidad de Auckland, en
 Nueva Zelanda [Ross Ihaka](https://en.wikipedia.org/wiki/Ross_Ihaka) y [Robert Gentleman](https://en.wikipedia.org/wiki/Robert_Gentleman_(statistician)), iniciaron el ["Proyecto
@@ -78,7 +66,7 @@ El software está desarrollado en lenguaje C++ con algunas rutinas
 agregadas en Fortran) y su nombre se debe a la letra con la que inician
 los nombres de pila de sus autores (Ross y Robert).
 
-Actualmente R es mantenido por un grupo internacional de desarrolladores
+Actualmente es mantenido por un grupo internacional de desarrolladores
 voluntarios denominado [Core Development Team](https://www.r-project.org/contributors.html).
 
 ## Scripts
@@ -90,8 +78,7 @@ de R.
 Script se puede traducir como guión, archivo de órdenes, archivo de
 procesamiento por lotes o archivo de sintaxis.
 
-Generalmente se crea en editores especiales y/o en cualquier software
-para generar texto. Se almacena en un archivo que puede ser leído,
+Generalmente se crea en editores especiales y/o en cualquier procesador básico de texto plano. Se almacena en un archivo que puede ser leído,
 modificado, guardado y se puede ejecutar completo o línea a línea.
 
 Poseen una cualidad muy provechosa: son re-utilizables, adaptándolos a
@@ -103,8 +90,7 @@ R posee una sintaxis textual y como cualquier lenguaje de programación
 es precisa.
 
 La exactitud en la escritura de comandos y funciones incluye la
-distinción entre mayúsculas y minúsculas. (se dice entonces que es "case
-sensitive")
+distinción entre mayúsculas y minúsculas. Es decir, que no es lo mismo una 'a' que una 'A'.
 
 Todas las líneas de R en la consola comienzan con el prompt (\*) `>`
 
@@ -112,8 +98,6 @@ Todas las líneas de R en la consola comienzan con el prompt (\*) `>`
 el sistema está esperando información del usuario o que el sistema
 está listo para recibir instrucciones del usuario*.
 
-Para separar expresiones en la misma línea se puede utilizar el símbolo
-`;` (punto y coma), aunque se sugiere no hacerlo para evitar dificultades de lectura visual del código.
 
 **Documentación de los scripts de R:**
 
@@ -126,7 +110,7 @@ nosotros mismos.
 La forma de documentar los scripts de código en R es utilizando
 comentarios. Toda línea que comienza con el símbolo `#` es entendido por
 el interprete como un comentario y los caracteres que sigan a ese
-símbolo no sean tenidos en cuenta cuando se ejecute ese código.
+símbolo no seran tenidos en cuenta cuando se ejecute ese código.
 
 ```{r}
 # esto es una línea de comentario y no es tenida en cuenta por el intérprete
@@ -137,21 +121,12 @@ comentarios que no utilizarlos.
 
 ## Funciones
 
-Los comandos u órdenes elementales de R son funciones construidas en
-lenguaje C, otras provienen del Fortran y también existen muchas
-escritas en el mismo lenguaje R.
+Los comandos u órdenes elementales de R se denominan funciones. A algunas se las llama "integradas" porque están incluidas en el núcleo (R base) y sus nombres están reservados.
 
-Algunas de estas funciones se las llama "integradas" porque están
-incluidas en el núcleo (core) del software R y sus nombres están
-reservados.
-
-La mayoría de las ofrecidas en los paquetes (librerías) están elaboradas
-con R, dado que todos los usuarios podemos crear nuevas funciones con el
-mismo lenguaje.
+Tambien podemos utilizar otras incluidas en librerías (paquetes) que se pueden instalar.
 
 Toda función tiene un nombre y normalmente recibe argumentos o
-parámetros que deben ser escritos **entre paréntesis y separados por comas**. Incluso algunas de ellas que no tienen asociado argumentos
-necesitan, en su sintaxis, a los paréntesis `()`.
+parámetros que deben ser escritos **entre paréntesis y separados por comas**. Incluso algunas de ellas que no tienen asociado ningún argumento necesitan finalizar con paréntesis `()` para ser entendidas como funciones.
 
 Siempre una función devuelve un resultado, un valor o realiza una
 acción.

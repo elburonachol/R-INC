@@ -33,6 +33,6 @@ h6{
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
     z-index: 2;
     color: #fff;
-    background-color: #006666;
+    background-color: #00746B;
     border-color: #337ab7;
 }
