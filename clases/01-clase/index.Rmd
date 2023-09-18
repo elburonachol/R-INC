@@ -84,26 +84,11 @@ modificado, guardado y se puede ejecutar completo o línea a línea.
 Poseen una cualidad muy provechosa: son re-utilizables, adaptándolos a
 otras necesidades.
 
-**Características de los scripts de R:**
-
-R posee una sintaxis textual y como cualquier lenguaje de programación
-es precisa.
-
-La exactitud en la escritura de comandos y funciones incluye la
-distinción entre mayúsculas y minúsculas. Es decir, que no es lo mismo una 'a' que una 'A'.
-
-Todas las líneas de R en la consola comienzan con el prompt (\*) `>`
-
-\* *Símbolo que aparece en la pantalla de la computadora indicando que
-el sistema está esperando información del usuario o que el sistema
-está listo para recibir instrucciones del usuario*.
-
-
 **Documentación de los scripts de R:**
 
 La documentación es una tarea de mucha importancia en cualquier lenguaje
 de programación, ya que nos permite entender que estamos haciendo en el
-script, también nos sirve para el futuro mantenimiento o para la
+script. Además nos sirve para el futuro mantenimiento o para la
 reutilización del código elaborado, tanto para otros usuarios como para
 nosotros mismos.
 
@@ -119,11 +104,19 @@ símbolo no seran tenidos en cuenta cuando se ejecute ese código.
 Así que a la hora de documentar es preferible abusar de estos
 comentarios que no utilizarlos.
 
+**Generalidades del código:**
+
+El código que se escribe del lenguaje R posee una sintaxis textual y como cualquier lenguaje de programación es precisa.
+
+La exactitud en la escritura de comandos y funciones incluye la
+distinción entre mayúsculas y minúsculas. Es decir, que no es lo mismo una 'a' que una 'A'.
+
+
 ## Funciones
 
 Los comandos u órdenes elementales de R se denominan funciones. A algunas se las llama "integradas" porque están incluidas en el núcleo (R base) y sus nombres están reservados.
 
-Tambien podemos utilizar otras incluidas en librerías (paquetes) que se pueden instalar.
+Tambien podemos utilizar otras pertenecientes a librerías (paquetes) que se pueden instalar.
 
 Toda función tiene un nombre y normalmente recibe argumentos o
 parámetros que deben ser escritos **entre paréntesis y separados por comas**. Incluso algunas de ellas que no tienen asociado ningún argumento necesitan finalizar con paréntesis `()` para ser entendidas como funciones.
@@ -154,11 +147,12 @@ que funcione.
 Cualquier usuario puede crear paquetes de funciones y compartirlos,
 aunque requerirá para esto de un manejo avanzado del software.
 
-## Errores y advertencias
+## Sintaxis, errores y advertencias
 
-Cuando hacemos uso del lenguaje R es muy común encontrarse con errores y advertencias (warnings).
+El lenguaje es muy preciso en su sintaxis y equivocarse en la forma de escribir una función o cualquier otro objeto produce respuestas de error del interprete de R que es habitual cuando iniciamos el aprendizaje.
 
-El lenguaje es muy preciso en su sintaxis y equivocarse en la forma de escribir una función o cualquier otro objeto produce respuestas de error del interprete de R
+La exactitud en la escritura de comandos y funciones incluye la
+distinción entre mayúsculas y minúsculas. Es decir, que no es lo mismo una 'a' que una 'A'.
 
 Existen tres grupos de mensajes de error:
 
@@ -203,9 +197,9 @@ Error in rep(y = 3, times = 4) :
 Si escribimos mal la función...
 
 ```{r, eval=FALSE}
-rop(x =3, times = 4)
+REP(x =3, times = 4)
 
-Error in rop(x = 3, times = 4) : no se pudo encontrar la función "rop"
+Error in REP(x = 3, times = 4) : no se pudo encontrar la función "rop"
 ```
 Esta última posibilidad es similar a un "objeto no encontrado" por **error de sintaxis**.
 
@@ -244,57 +238,30 @@ knitr::include_graphics("errores_advertencias.PNG")
 ```
 
 
-\newpage
+## Conceptos básicos de codificación
 
-## Objetos
+Todas las declaraciones donde se crean objetos, tienen este símbolo de asignación `<-`. 
 
-El que sea un lenguaje orientado a objetos nos lleva a entender la
-lógica de funcionamiento pensada dentro de ese modelo de abstracción.
-
-Podemos decir que todo con lo que trabaja R son objetos, y en esto
-incluimos a las variables, los datos, las funciones, los resultados,
-etc.
-
-No vamos a profundizar en el tema pero necesitamos incorporar la idea y
-el lenguaje cuando nos referimos a un objeto.
-
-**Asignación**
-
-Un grupos de objetos que veremos a continuación son las estructuras de
-datos. Vamos a pensar a estas estructuras como "recipientes" con
-determinada forma que van a contener valores (datos).
-
-La forma de asignar los valores a estas estructuras es mediante el
-símbolo `<-` (si la asignación va de derecha a izquierda), `->` (si la
-asignación va de izquierda a derecha) o bien con un `=` (aunque nosotros
-preferimos no utilizarlo para asignaciones).
+```{r, eval=F}
+nombre_objeto <- valor
+```
 
 Veámoslo en un ejemplo:
 
 ```{r}
 a <- 1
-
-2 -> b
-
-c = 3
 ```
 
-En este caso asignamos el valor 1 al objeto `a`, el valor 2 al objeto
-`b` y el valor 3 al objeto `c`
+En este caso asignamos el valor 1 al objeto `a`. El objeto `a` es un vector de una posición (un solo valor).
 
-Si llamasemos a cada objeto, el interprete nos devuelve el valor
-guardado por cada uno de ellos.
+Si llamasemos al objeto `a`, el interprete nos devuelve el valor
+asignado previamente.
 
 ```{r}
 a
-b
-c
 ```
 
-Observemos que además de devolvernos los valores para cada uno de los
-objetos aparece delante un 1 entre corchetes `[1]`.Este número es la
-ubicación o índice del comienzo del objeto, que para este caso tiene una
-sola posición. (veremos este tema más adelante en tema [indexación](https://cballejo.github.io/R_Epi_Avanzada/Intro_R/index.html#índices))
+Observemos que además de devolvernos el valor aparece delante un 1 entre corchetes `[1]`.Este número es la ubicación o índice del comienzo del objeto, que para este caso tiene una sola posición. 
 
 ## Estructuras de datos
 
