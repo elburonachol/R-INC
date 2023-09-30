@@ -3,7 +3,7 @@ title: "Introducción a R"
 subtitle: ""  
 author: 
   - "Instituto Nacional de Epidemiología"
-date: 
+date: "09-10-2023"
 output:
   xaringan::moon_reader:
     includes:
