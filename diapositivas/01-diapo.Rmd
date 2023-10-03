@@ -214,40 +214,45 @@ Vamos a describir a las más relevantes dentro del ecosistema tidyverse y que se
 
 ]
 ---
+background-image: url(assets/dataframe.PNG)
+background-size: 500px
+background-position: 10% 50%
 ## Dataframes
-
-.font140[
+.pull-right[  
+.font110[
 
 - Un dataframe, que se traduce como marco de datos, es similar a una tabla de datos construida por una colección de vectores ubicados verticalmente que mantienen la integridad de sus filas.
 
 - Tienen dos dimensiones, las columnas verticales llamadas **variables** y las filas horizontales llamadas **observaciones**.
 
-- Las columnas pueden ser de diferentes tipos.
-
-- Los elementos dentro de cada columna deben ser del mismo tipo y cada columna tiene el mismo número de filas.
+- Las columnas pueden ser de diferentes tipos, pero todas las filas de cada columna pueden tener un mismo tipo de dato.
 
 - La combinación de datos de las diferentes columnas que conforman una fila es fija, por lo que se asegura la integridad de estas observaciones (principio de las bases de datos).
 ]
+]
 ---
+background-image: url(assets/tibble.PNG)
+background-size: 370px
+background-position: 78% 50%
 ## Tibbles
-
-.font140[
-- Los tibbles son una versión moderna del dataframe que introduce tidyverse.
+.pull-left[  
+.font110[
+- Los tibbles son una versión moderna del dataframe que introduce **tidyverse**.
 
 - Tienen las mismas características que un dataframe normal con algunos atributos más agradables.
 
 - Cuando importemos tablas de datos, estos se almacenarán como dataframes/tibbles.
 
-- Dado que estamos centrados en tidyverse, utilizaremos los términos dataframe y tibble como sinónimos entre sí en el uso general.
+- Dado que estamos centrados en tidyverse, utilizaremos los términos dataframe y tibble como sinónimos entre sí para su uso general.
 
 - Los dataframes/tibbles son el tipo de datos fundamental en la mayoría de los análisis que llevaremos adelante.
-
+]
 ]
 
 ---
 ## Funciones y argumentos
 
-.font140[
+.font130[
 Una función es un bloque de código que sólo se ejecuta cuando se llama.
 
 - Existen funciones que forman parte de la base del lenguaje y otras que son aportadas por paquetes activados.
@@ -256,10 +261,14 @@ Una función es un bloque de código que sólo se ejecuta cuando se llama.
 
 - La mayoría necesitan de ciertos datos que se declaran dentro de la función denominados **argumentos**. Algunos son obligatorios y otros opcionales.
 
-- Toda función se escribe con una sintaxis precisa y finaliza siempre con paréntesis `()`. Los argumentos se separan por comas. 
+```{r, eval=FALSE}
+# Estructura sintáctica de una función
 
+funcion(argumento1, argumento2, ...)
+```
+
+- Toda función se escribe con una sintaxis precisa y finaliza siempre con paréntesis. Los argumentos se separan por comas. 
 ]
-
 
 ---
 background-image: url(assets/errores_advertencias.PNG)
