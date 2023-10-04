@@ -52,22 +52,22 @@ background-position: 15% 60%
 .font110[ 
 - Los vectores, como otras estructuras de datos, o bien las variables de un dataframe siempre se identificarán con un tipo de dato particular.
 
-- Es importante conocer con que tipo de dato estamos trabajando y reconocer si se corresponde con la clasificación de la variable que representa.
+- Es importante conocer con que **tipo de dato** estamos trabajando y reconocer si se corresponde con la **clasificación de la variable** que representa.
 
-- Por ejemplo: hay variables categóricas que se almacenen codificadas con números. El tipo de datos en R será numérico pero sería un error realizar calculos matemáticos o estadísticos con ellos, ya que solo representan a categorías de una variable cualitativa.
+- Por ejemplo: hay variables categóricas que se almacenen codificadas con números. El tipo de datos en R será numérico pero sería un error realizar cálculos matemáticos o estadísticos con ellos, ya que solo representan a categorías de una variable cualitativa.
 
-- Es indispensable tener acceso al diccionario de datos (codebook) de una tabla/base de datos.
+- Es indispensable tener acceso al diccionario de datos (*codebook*) de una tabla/base de datos.
 ]
 ]
 ---
 ## Coerción
 
 .font140[
-Los tipos de datos definidos en el lenguaje R pueden ser coercionados, es decir convertidos a otro tipo.
+Los tipos de datos definidos en el lenguaje R pueden ser coercionados, es decir convertidos a otro tipo. Esta coerción puede ser implicita o explicita:
 
-Esta coerción puede ser implicita o explicita:
+- **Implícita** es la coerción que el sistema aplica al encontrar una o más observaciones con un tipo de dato no coincidente. 
 
-- **Implícita** es la coerción que el sistema aplica al encontrar una o más observaciones con un tipo de dato no coincidente. El tipo de dato que se impone es aquel que fuerza una conversión posible.
+El tipo de dato que se impone es aquel que fuerza una conversión posible. Esto sucede también al momento de hacer la importación de los datos.
 ]
 
 .font110[
@@ -113,17 +113,17 @@ as.logical(c(1, 0, 5, 6, 9)) # 0 = FALSE y distinto de 0 = TRUE
 .font140[
 Vimos que la ausencia de valores en el lenguaje se representa con el valor especial **NA** lo que permite su reconocimiento y consideración en el uso de funciones sobre datos. 
 
-Las tareas habituales de su tratamiento consisten en:
+Las tareas habituales de tratamiento consisten en:
 
 - Evaluar la existencia de valores perdidos (exploración y conteo).
 - Excluir los valores ausentes (si es posible y conveniente).
 - Recodificar los valores ausentes (imputación de datos).
 
-Nota: estos *valores especiales* tienen un efecto "contagioso" y cualquier cálculo o resumen que los contengan será iguala **NA**. Existen argumentos que deberemos utilizar para no tenerlos en cuenta (`na.rm =`)
+**Nota**: estos *valores especiales* tienen un efecto "contagioso" y cualquier cálculo o resumen que los contengan será igual a **NA**. Existen argumentos que deberemos utilizar para no tenerlos en cuenta (`na.rm =`)
 
 ]
 ---
-## Exploración
+## Exploración de datos
 
 .font140[
 La exploración de datos se puede incluir dentro del **análisis exploratorio de datos** y persigue un primer grupo de objetivos:
@@ -132,265 +132,150 @@ La exploración de datos se puede incluir dentro del **análisis exploratorio de
 - Detectar observaciones incompletas (valores faltantes)
 - Detectar datos con errores e inconsistencias 
 
-Una segunda etapa nos puede servir para conocer la distribución de las variables de interés a partir de: 
+Habitualmente hablamos de **_calidad de los datos_** en relación a los items anteriores.
+
+Una segunda etapa nos va servir para conocer la distribución de las variables de interés a partir de: 
 
 - Resumir datos mediante estadísticos y gráficos
 - Detectar valores atípicos (outlier)
 ]
 ---
-## Diagnóstico
-
----
-## Paquetes especiales
-
----
-##
-
----
-
-
-.font140[
-- Plantea abordar el lenguaje R como un lenguaje para **_"comunicarse"_** (similar a un segundo lenguaje como el inglés, francés, etc.)
-
-- Al dotar a R de una estructura particular **_semántica_**, **_gramatical_** y **_sintáctica_**.
-
-- Se busca comenzar a **_"decir cosas con datos"_** y luego profundizar en las estructuras del lenguaje.
-
-- Diferencias entre ser **_"usuario"_** y **_"programador"_** 
-
-- Propuesto por *Riva Quiroga* de LatinR en el encuentro global de RStudio de 2021. Para profundizar ver ponencia *“How to do things with words: Learning to program with a ‘communicative approach’"* en [rstudio::global(2021)](https://rstudio.com/resources/rstudioglobal-2021/how-to-do-things-with-words-learning-to-program-in-r-with-a-communicative-approach/)
-
-]
----
-class: center, middle, inverse, hide-logo
-
-
-# Paquetes de R
-
----
-background-image: url(assets/baseR.PNG)
-background-size: 280px
-background-position: 10% 10%
-
-.pull-right[  
-.font110[ 
-- **Paquete** es sinónimo de *librería* y contiene una serie de funciones y/o datos con su documentación.
-
-- El conjunto base de R tiene varias funciones fundamentales contenidas en algunos paquetes (base, stats, utils, graphics, methods, etc)
-
-- Los paquetes se instalan, activan y desactivan.
-
-- El sitio oficial donde se publican se encuentra en [CRAN - packages](https://cran.r-project.org/web/packages/available_packages_by_name.html)
-
-- Visto como un lenguaje (idioma) los paquetes vendrían a ser conjuntos de palabras que *"agregamos"* a nuestro vocabulario para poder *"comunicarnos"* mejor o más facilmente con el interprete de R.
-]
-]
----
-background-image: url(assets/baseR2.PNG)
-background-size: 1100px
-background-position: 10% 10%
-
----
-background-image: url(assets/paquetes.PNG)
-background-size: 1000px
-background-position: 10% 10%
-
----
-class: center, middle, inverse, hide-logo
-
-
-# Tidyverse
-
----
-background-image: url(assets/tidyverse.PNG), url(assets/tidyverse2.PNG)
-background-size: 200px, 350px
-background-position: 50% 10%, 50% 90%
-
-class: center, middle
-
-.font140[ 
-Una colección de paquetes de R modernos, que comparten una **gramática** y filosofía común, diseñados para resolver los desafíos de la ciencia de datos.
-]
-
----
-background-image: url(assets/tidy.PNG)
-background-size: 450px
-background-position: 95% 35%
-
-## Fundamentos
-
-.font120[ 
-- **Estructura ordenada de datos (tidy)**
-
-  - Cada _variable_ es una _columna_ de la tabla de datos
-  
-  - Cada _observación_ es una _fila_ de la tabla de datos
-  
-  - Cada _tabla_ responde a una _unidad observacional_
-
-- **Principios básicos** 
-
-  - Reutilizar las estructuras de datos mediante el uso de tuberías
-  
-  - Resolver problemas complejos combinando varias piezas sencillas
-  
-  - Diseño para humanos incorporando una gramática específica al lenguaje (*que ya posee una sintaxis estricta y una semantica que le otorga significado*)
-]
-
----
-background-image: url(assets/cd.PNG)
-background-size: 1000px
-background-position: 50% 50%
-
----
-background-image: url(assets/paquetes_tidy.PNG)
-background-size: 1000px
-background-position: 50% 50%
-
----
-## Tuberías
-
-
-
-.font140[ 
-Las tuberías son operadores que permiten *"canalizar"* un objeto hacia una función o llamar a una expresión, lo que le permite expresar una secuencia de operaciones que transforman un objeto.
-
-Existen dos tuberías conocidas: 
-
-`%>%` perteneciente al paquete **magrittr** del tidyverse 
-
-`|>` que es la propuesta **nativa** de R base a partir de la versión 4.1.0
-
-La mayoría de los scripts del curso muestran la tubería nativa, pero se puede utilizar cualquiera de las dos.
-
-]
----
-background-image: url(assets/pipe.PNG)
-background-size: 500px
-background-position: 50% 85%
-
-## Tuberías
-
-.font140[ 
-Para el uso general, la utilización de las dos tuberías es la misma, es decir que la forma simple de las tuberías inserta el lado izquierdo como primer argumento en la llamada del lado derecho. 
-
-Esto posibilita la reutilización de las estructuras de datos y la escritura de porciones de código similares a *"oraciones"* de un párrafo.
-
-Pulse [aquí](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/) para ver algunas caracteristicas comparativas de estas tuberías.
-
-]
----
-background-image: url(assets/vector_dataframe.png)
-background-size: 500px
-background-position: 50% 90%
-## Estructura de datos
-
-<br>
-
-.font140[ 
-
-Las estructuras de datos son los **objetos** **_contenedores de datos_** que el lenguaje ofrece.
-
-Existe una variedad de estructuras de datos: vectores, matrices, arrays, dataframes, listas, etc.
-
-Vamos a describir a las más relevantes dentro del ecosistema tidyverse y que serviran en estos inicios del curso: Los **vectores** y los **dataframes**.
-
-
-]
----
-## Vectores
-
-.font140[
-- Son secuencias de elementos del mismo tipo de datos.
-
-- Tienen dos atributos principales: longitud y tipo de datos.
-
-- Los 6 tipos de datos que usaremos en R son:
-
-  1. logical (`TRUE` - `FALSE`)
-  2. integer (`15`)
-  3. double (`24.64`)    
-  4. character (`"Hola"`)
-  5. factors (`"Si"` - `"No"` - `"Ns/Nc"`)
-  6. date/datetime (`"2023-10-09"` - `"2023-10-09 01:00:00"`)
-  
-- Los vectores integer y double se conocen como vectores numéricos (numeric).
-
-]
----
-## Dataframes
+## Diagnóstico de datos
 
 .font140[
 
-- Un dataframe, que se traduce como marco de datos, es similar a una tabla de datos construida por una colección de vectores ubicados verticalmente que mantienen la integridad de sus filas.
+La etapa diagnóstica comprende:
 
-- Tienen dos dimensiones, las columnas verticales llamadas **variables** y las filas horizontales llamadas **observaciones**.
+- el conocimiento de la estructura de la tabla de datos
+- la verificación del tipo de dato de cada variable de interés
+- la detección de los valores faltantes en las observaciones
+- las categorías de las variables cualitativas
+- los mínimos y máximos de valores de cada variable cuantitativa
 
-- Las columnas pueden ser de diferentes tipos.
+Hay múltiples funciones que se pueden utilizar para cubrir esta etapa. En el curso vamos a mostrar algunas pertenecientes a paquetes especialmente diseñados para la tarea.
 
-- Los elementos dentro de cada columna deben ser del mismo tipo y cada columna tiene el mismo número de filas.
+Este diagnóstico es el punto de partida de la depuración de datos, previa a cualquier análisis.
 
-- La combinación de datos de las diferentes columnas que conforman una fila es fija, por lo que se asegura la integridad de estas observaciones (principio de las bases de datos).
 ]
 ---
-## Tibbles
+## Paquetes especificos
 
 .font140[
-- Los tibbles son una versión moderna del dataframe que introduce tidyverse.
+Vamos a trabajar con dos paquetes especiales que nos permiten hacer este trabajo, aunque dentro del universo de librerías de R vamos a encontrar muchos mas. 
 
-- Tienen las mismas características que un dataframe normal con algunos atributos más agradables.
+**skimr**
 
-- Cuando importemos tablas de datos, estos se almacenarán como dataframes/tibbles.
+Está diseñado para obtener un resumen rápido de la estructura de tablas de datos y es compatible con el ecosistema tidyverse. 
 
-- Dado que estamos centrados en tidyverse, utilizaremos los términos dataframe y tibble como sinónimos entre sí en el uso general.
 
-- Los dataframes/tibbles son el tipo de datos fundamental en la mayoría de los análisis que llevaremos adelante.
+**dlookr**
+
+Se define como una colección de herramientas que permiten el diagnóstico, la exploración y la transformación de datos. El diagnóstico de datos proporciona información y visualización de valores faltantes, valores atípicos y valores únicos y negativos para ayudarle a comprender la distribución y la calidad de sus datos.
 
 ]
-
 ---
-## Funciones y argumentos
+## skimr
 
 .font140[
-Una función es un bloque de código que sólo se ejecuta cuando se llama.
-
-- Existen funciones que forman parte de la base del lenguaje y otras que son aportadas por paquetes activados.
-
-- Todas las funciones devuelven algo. Datos, un resultado o una acción determinada.
-
-- La mayoría necesitan de ciertos datos que se declaran dentro de la función denominados **argumentos**. Algunos son obligatorios y otros opcionales.
-
-- Toda función se escribe con una sintaxis precisa y finaliza siempre con paréntesis `()`. Los argumentos se separan por comas. 
-
+La función principal del paquete es `skim` y puede ser aplicada a todo el dataframe o bien a una variable o a un grupo de ellas.
 ]
 
+```{r, echo=FALSE, warning=F, message=F}
+library(skimr)
+library(readr)
+
+rita <- read_csv2("assets/rita_prueba.csv", locale = locale(encoding = "UTF-8"))
+
+skim(rita)
+
+```
 
 ---
-background-image: url(assets/errores_advertencias.PNG)
-background-size: 730px
-background-position: 50% 70%
-
-## Errores y advertencias
-
-
----
-
-## Ayuda
+## dlookr
 
 .font140[
-- Todas las funciones del R base o de los paquetes vienen acompañadas con su respectiva **documentación**.
+El paquete dlookr contiene funciones que nos facilitan el diagnóstico de nuestros datos, además de otras que tienen por objetivo la exploración y transformación de ellos. 
 
-- Esta documentación se puede visualizar en el panel **Help** de RStudio navegando como si fuese un navegador web.
+Entre estas funciones encontramos:
 
-- La documentación tiene una estructura que se repite: descripción, uso, argumentos, detalles, valores, ejemplos.
+`diagnose()` que proporciona información básica de las variables
 
-- También se pueden hacer busquedas en buscadores web como Google, foros especializados, como por ejemplo **Stack Overflow** o **Rpubs**, canales de **slack** y más recientemente en IAs como **chatGPT** o **Google Bard**.
+`diagnose_category()` nos devuelve información detallada de las variables categóricas
+
+`diagnose_numeric()` nos devuelve información detallada de las variables numéricas.
+
+`diagnose_outlier()` y `plot_outlier()` proporciona información y visualización de valores atípicos.
+
+]
+
+---
+## diagnose()
+
+```{r, warning=F, message=F, echo=F}
+library(dlookr)
+library(dplyr)
+
+diagnose(rita) |> 
+  mutate(across(where(is.double),~round(.x, digits = 2))) |> 
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 9))
+```
+
+---
+## diagnose_category()
+
+```{r, warning=F, message=F, echo=F}
+
+rita |> 
+  dplyr::select(IDESTN, DOC, TPGFN, ECOG) |> 
+diagnose_category() |> 
+  mutate(across(where(is.double),~round(.x, digits = 2))) |> 
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 9))
+```
+---
+## diagnose_numeric()
+
+```{r, warning=F, message=F, echo=F}
+
+rita |> 
+  dplyr::select(-NPAMI, -NDOC) |> 
+diagnose_numeric() |> 
+  mutate(across(where(is.double),~round(.x, digits = 2))) |> 
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 9))
+```
+---
+
+## diagnose_outlier()
+
+```{r, warning=F, message=F, echo=F}
+
+rita |> 
+  dplyr::select(-NPAMI, -NDOC) |> 
+diagnose_outlier() |> 
+  mutate(across(where(is.double),~round(.x, digits = 2))) |> 
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 9))
+```
+---
+## plot_outlier()
+.center[
+```{r, warning=F, message=F, echo=F}
+
+rita |> 
+  dplyr::select(DGED) |> 
+plot_outlier() 
+```
 ]
 ---
-background-image: url(assets/Bard.PNG)
-background-size: 1100px
-background-position: 50% 60%
 
-## Ejemplo de consulta en Google Bard
+## Depuración de datos
+
+
+
+
+---
+
 
 

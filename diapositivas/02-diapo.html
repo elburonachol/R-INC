@@ -5,6 +5,15 @@
     <meta charset="utf-8" />
     <meta name="author" content="Instituto Nacional de Epidemiología" />
     <script src="libs/header-attrs/header-attrs.js"></script>
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding/datatables.js"></script>
+    <script src="libs/jquery/jquery-3.6.0.min.js"></script>
+    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="animate.min.css" type="text/css" />
     <link rel="stylesheet" href="fonts_mtheme.css" type="text/css" />
@@ -45,22 +54,22 @@ background-position: 15% 60%
 .font110[ 
 - Los vectores, como otras estructuras de datos, o bien las variables de un dataframe siempre se identificarán con un tipo de dato particular.
 
-- Es importante conocer con que tipo de dato estamos trabajando y reconocer si se corresponde con la clasificación de la variable que representa.
+- Es importante conocer con que **tipo de dato** estamos trabajando y reconocer si se corresponde con la **clasificación de la variable** que representa.
 
-- Por ejemplo: hay variables categóricas que se almacenen codificadas con números. El tipo de datos en R será numérico pero sería un error realizar calculos matemáticos o estadísticos con ellos, ya que solo representan a categorías de una variable cualitativa.
+- Por ejemplo: hay variables categóricas que se almacenen codificadas con números. El tipo de datos en R será numérico pero sería un error realizar cálculos matemáticos o estadísticos con ellos, ya que solo representan a categorías de una variable cualitativa.
 
-- Es indispensable tener acceso al diccionario de datos (codebook) de una tabla/base de datos.
+- Es indispensable tener acceso al diccionario de datos (*codebook*) de una tabla/base de datos.
 ]
 ]
 ---
 ## Coerción
 
 .font140[
-Los tipos de datos definidos en el lenguaje R pueden ser coercionados, es decir convertidos a otro tipo.
+Los tipos de datos definidos en el lenguaje R pueden ser coercionados, es decir convertidos a otro tipo. Esta coerción puede ser implicita o explicita:
 
-Esta coerción puede ser implicita o explicita:
+- **Implícita** es la coerción que el sistema aplica al encontrar una o más observaciones con un tipo de dato no coincidente. 
 
-- **Implícita** es la coerción que el sistema aplica al encontrar una o más observaciones con un tipo de dato no coincidente. El tipo de dato que se impone es aquel que fuerza una conversión posible.
+El tipo de dato que se impone es aquel que fuerza una conversión posible. Esto sucede también al momento de hacer la importación de los datos.
 ]
 
 .font110[
@@ -132,17 +141,17 @@ as.logical(c(1, 0, 5, 6, 9)) # 0 = FALSE y distinto de 0 = TRUE
 .font140[
 Vimos que la ausencia de valores en el lenguaje se representa con el valor especial **NA** lo que permite su reconocimiento y consideración en el uso de funciones sobre datos. 
 
-Las tareas habituales de su tratamiento consisten en:
+Las tareas habituales de tratamiento consisten en:
 
 - Evaluar la existencia de valores perdidos (exploración y conteo).
 - Excluir los valores ausentes (si es posible y conveniente).
 - Recodificar los valores ausentes (imputación de datos).
 
-Nota: estos *valores especiales* tienen un efecto "contagioso" y cualquier cálculo o resumen que los contengan será iguala **NA**. Existen argumentos que deberemos utilizar para no tenerlos en cuenta (`na.rm =`)
+**Nota**: estos *valores especiales* tienen un efecto "contagioso" y cualquier cálculo o resumen que los contengan será igual a **NA**. Existen argumentos que deberemos utilizar para no tenerlos en cuenta (`na.rm =`)
 
 ]
 ---
-## Exploración
+## Exploración de datos
 
 .font140[
 La exploración de datos se puede incluir dentro del **análisis exploratorio de datos** y persigue un primer grupo de objetivos:
@@ -151,266 +160,216 @@ La exploración de datos se puede incluir dentro del **análisis exploratorio de
 - Detectar observaciones incompletas (valores faltantes)
 - Detectar datos con errores e inconsistencias 
 
-Una segunda etapa nos puede servir para conocer la distribución de las variables de interés a partir de: 
+Habitualmente hablamos de **_calidad de los datos_** en relación a los items anteriores.
+
+Una segunda etapa nos va servir para conocer la distribución de las variables de interés a partir de: 
 
 - Resumir datos mediante estadísticos y gráficos
 - Detectar valores atípicos (outlier)
 ]
 ---
-## Diagnóstico
-
----
-## Paquetes especiales
-
----
-##
-
----
-
-
-.font140[
-- Plantea abordar el lenguaje R como un lenguaje para **_"comunicarse"_** (similar a un segundo lenguaje como el inglés, francés, etc.)
-
-- Al dotar a R de una estructura particular **_semántica_**, **_gramatical_** y **_sintáctica_**.
-
-- Se busca comenzar a **_"decir cosas con datos"_** y luego profundizar en las estructuras del lenguaje.
-
-- Diferencias entre ser **_"usuario"_** y **_"programador"_** 
-
-- Propuesto por *Riva Quiroga* de LatinR en el encuentro global de RStudio de 2021. Para profundizar ver ponencia *“How to do things with words: Learning to program with a ‘communicative approach’"* en [rstudio::global(2021)](https://rstudio.com/resources/rstudioglobal-2021/how-to-do-things-with-words-learning-to-program-in-r-with-a-communicative-approach/)
-
-]
----
-class: center, middle, inverse, hide-logo
-
-
-# Paquetes de R
-
----
-background-image: url(assets/baseR.PNG)
-background-size: 280px
-background-position: 10% 10%
-
-.pull-right[  
-.font110[ 
-- **Paquete** es sinónimo de *librería* y contiene una serie de funciones y/o datos con su documentación.
-
-- El conjunto base de R tiene varias funciones fundamentales contenidas en algunos paquetes (base, stats, utils, graphics, methods, etc)
-
-- Los paquetes se instalan, activan y desactivan.
-
-- El sitio oficial donde se publican se encuentra en [CRAN - packages](https://cran.r-project.org/web/packages/available_packages_by_name.html)
-
-- Visto como un lenguaje (idioma) los paquetes vendrían a ser conjuntos de palabras que *"agregamos"* a nuestro vocabulario para poder *"comunicarnos"* mejor o más facilmente con el interprete de R.
-]
-]
----
-background-image: url(assets/baseR2.PNG)
-background-size: 1100px
-background-position: 10% 10%
-
----
-background-image: url(assets/paquetes.PNG)
-background-size: 1000px
-background-position: 10% 10%
-
----
-class: center, middle, inverse, hide-logo
-
-
-# Tidyverse
-
----
-background-image: url(assets/tidyverse.PNG), url(assets/tidyverse2.PNG)
-background-size: 200px, 350px
-background-position: 50% 10%, 50% 90%
-
-class: center, middle
-
-.font140[ 
-Una colección de paquetes de R modernos, que comparten una **gramática** y filosofía común, diseñados para resolver los desafíos de la ciencia de datos.
-]
-
----
-background-image: url(assets/tidy.PNG)
-background-size: 450px
-background-position: 95% 35%
-
-## Fundamentos
-
-.font120[ 
-- **Estructura ordenada de datos (tidy)**
-
-  - Cada _variable_ es una _columna_ de la tabla de datos
-  
-  - Cada _observación_ es una _fila_ de la tabla de datos
-  
-  - Cada _tabla_ responde a una _unidad observacional_
-
-- **Principios básicos** 
-
-  - Reutilizar las estructuras de datos mediante el uso de tuberías
-  
-  - Resolver problemas complejos combinando varias piezas sencillas
-  
-  - Diseño para humanos incorporando una gramática específica al lenguaje (*que ya posee una sintaxis estricta y una semantica que le otorga significado*)
-]
-
----
-background-image: url(assets/cd.PNG)
-background-size: 1000px
-background-position: 50% 50%
-
----
-background-image: url(assets/paquetes_tidy.PNG)
-background-size: 1000px
-background-position: 50% 50%
-
----
-## Tuberías
-
-
-
-.font140[ 
-Las tuberías son operadores que permiten *"canalizar"* un objeto hacia una función o llamar a una expresión, lo que le permite expresar una secuencia de operaciones que transforman un objeto.
-
-Existen dos tuberías conocidas: 
-
-`%&gt;%` perteneciente al paquete **magrittr** del tidyverse 
-
-`|&gt;` que es la propuesta **nativa** de R base a partir de la versión 4.1.0
-
-La mayoría de los scripts del curso muestran la tubería nativa, pero se puede utilizar cualquiera de las dos.
-
-]
----
-background-image: url(assets/pipe.PNG)
-background-size: 500px
-background-position: 50% 85%
-
-## Tuberías
-
-.font140[ 
-Para el uso general, la utilización de las dos tuberías es la misma, es decir que la forma simple de las tuberías inserta el lado izquierdo como primer argumento en la llamada del lado derecho. 
-
-Esto posibilita la reutilización de las estructuras de datos y la escritura de porciones de código similares a *"oraciones"* de un párrafo.
-
-Pulse [aquí](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/) para ver algunas caracteristicas comparativas de estas tuberías.
-
-]
----
-background-image: url(assets/vector_dataframe.png)
-background-size: 500px
-background-position: 50% 90%
-## Estructura de datos
-
-&lt;br&gt;
-
-.font140[ 
-
-Las estructuras de datos son los **objetos** **_contenedores de datos_** que el lenguaje ofrece.
-
-Existe una variedad de estructuras de datos: vectores, matrices, arrays, dataframes, listas, etc.
-
-Vamos a describir a las más relevantes dentro del ecosistema tidyverse y que serviran en estos inicios del curso: Los **vectores** y los **dataframes**.
-
-
-]
----
-## Vectores
-
-.font140[
-- Son secuencias de elementos del mismo tipo de datos.
-
-- Tienen dos atributos principales: longitud y tipo de datos.
-
-- Los 6 tipos de datos que usaremos en R son:
-
-  1. logical (`TRUE` - `FALSE`)
-  2. integer (`15`)
-  3. double (`24.64`)    
-  4. character (`"Hola"`)
-  5. factors (`"Si"` - `"No"` - `"Ns/Nc"`)
-  6. date/datetime (`"2023-10-09"` - `"2023-10-09 01:00:00"`)
-  
-- Los vectores integer y double se conocen como vectores numéricos (numeric).
-
-]
----
-## Dataframes
+## Diagnóstico de datos
 
 .font140[
 
-- Un dataframe, que se traduce como marco de datos, es similar a una tabla de datos construida por una colección de vectores ubicados verticalmente que mantienen la integridad de sus filas.
+La etapa diagnóstica comprende:
 
-- Tienen dos dimensiones, las columnas verticales llamadas **variables** y las filas horizontales llamadas **observaciones**.
+- el conocimiento de la estructura de la tabla de datos
+- la verificación del tipo de dato de cada variable de interés
+- la detección de los valores faltantes en las observaciones
+- las categorías de las variables cualitativas
+- los mínimos y máximos de valores de cada variable cuantitativa
 
-- Las columnas pueden ser de diferentes tipos.
+Hay múltiples funciones que se pueden utilizar para cubrir esta etapa. En el curso vamos a mostrar algunas pertenecientes a paquetes especialmente diseñados para la tarea.
 
-- Los elementos dentro de cada columna deben ser del mismo tipo y cada columna tiene el mismo número de filas.
+Este diagnóstico es el punto de partida de la depuración de datos, previa a cualquier análisis.
 
-- La combinación de datos de las diferentes columnas que conforman una fila es fija, por lo que se asegura la integridad de estas observaciones (principio de las bases de datos).
 ]
 ---
-## Tibbles
+## Paquetes especificos
 
 .font140[
-- Los tibbles son una versión moderna del dataframe que introduce tidyverse.
+Vamos a trabajar con dos paquetes especiales que nos permiten hacer este trabajo, aunque dentro del universo de librerías de R vamos a encontrar muchos mas. 
 
-- Tienen las mismas características que un dataframe normal con algunos atributos más agradables.
+**skimr**
 
-- Cuando importemos tablas de datos, estos se almacenarán como dataframes/tibbles.
+Está diseñado para obtener un resumen rápido de la estructura de tablas de datos y es compatible con el ecosistema tidyverse. 
 
-- Dado que estamos centrados en tidyverse, utilizaremos los términos dataframe y tibble como sinónimos entre sí en el uso general.
 
-- Los dataframes/tibbles son el tipo de datos fundamental en la mayoría de los análisis que llevaremos adelante.
+**dlookr**
+
+Se define como una colección de herramientas que permiten el diagnóstico, la exploración y la transformación de datos. El diagnóstico de datos proporciona información y visualización de valores faltantes, valores atípicos y valores únicos y negativos para ayudarle a comprender la distribución y la calidad de sus datos.
 
 ]
-
 ---
-## Funciones y argumentos
+## skimr
 
 .font140[
-Una función es un bloque de código que sólo se ejecuta cuando se llama.
-
-- Existen funciones que forman parte de la base del lenguaje y otras que son aportadas por paquetes activados.
-
-- Todas las funciones devuelven algo. Datos, un resultado o una acción determinada.
-
-- La mayoría necesitan de ciertos datos que se declaran dentro de la función denominados **argumentos**. Algunos son obligatorios y otros opcionales.
-
-- Toda función se escribe con una sintaxis precisa y finaliza siempre con paréntesis `()`. Los argumentos se separan por comas. 
-
+La función principal del paquete es `skim` y puede ser aplicada a todo el dataframe o bien a una variable o a un grupo de ellas.
 ]
 
 
+Table: Data summary
+
+|                         |     |
+|:------------------------|:----|
+|Name                     |rita |
+|Number of rows           |1067 |
+|Number of columns        |74   |
+|_______________________  |     |
+|Column type frequency:   |     |
+|character                |53   |
+|logical                  |2    |
+|numeric                  |19   |
+|________________________ |     |
+|Group variables          |None |
+
+
+**Variable type: character**
+
+|skim_variable | n_missing| complete_rate| min| max| empty| n_unique| whitespace|
+|:-------------|---------:|-------------:|---:|---:|-----:|--------:|----------:|
+|PTENM         |         0|          1.00|   4|  30|     0|      919|          0|
+|FMODPA        |       994|          0.07|  18|  19|     0|       68|          0|
+|PTEAP         |         0|          1.00|   3|  21|     0|      795|          0|
+|IDESTN        |         0|          1.00|  18|  81|     0|       55|          0|
+|PTESXN        |         0|          1.00|   5|   6|     0|        2|          0|
+|FENAC         |         0|          1.00|  10|  10|     0|      963|          0|
+|DOC           |         0|          1.00|   3|  22|     0|        4|          0|
+|CONALF        |         0|          1.00|   2|   9|     0|        4|          0|
+|PTEDU         |        11|          0.99|   3|  31|     0|       13|          0|
+|OSDESC        |         0|          1.00|   2|   9|     0|        4|          0|
+|OSSIGLA       |         0|          1.00|   3|  12|     0|       57|          0|
+|OSPTE         |         0|          1.00|   3| 164|     0|       69|          0|
+|PAMIDESC      |         0|          1.00|   2|   9|     0|        4|          0|
+|PRDESC        |         0|          1.00|   2|   9|     0|        4|          0|
+|COPRI         |      1044|          0.02|   4|  35|     0|       19|          0|
+|STPAC         |         0|          1.00|   8|  10|     0|        2|          0|
+|PORIG         |         0|          1.00|  11|  29|     0|        2|          0|
+|FEREG         |         0|          1.00|  10|  10|     0|      846|          0|
+|FMODTU        |       964|          0.10|  18|  19|     0|      103|          0|
+|FEINI         |         0|          1.00|   3|  10|     0|      315|          0|
+|FECON         |         0|          1.00|   3|  10|     0|      649|          0|
+|FEDG          |         0|          1.00|   3|  10|     0|      875|          0|
+|TPGF          |        14|          0.99|   5|   5|     0|      128|          0|
+|TPGFN         |         0|          1.00|   3| 135|     0|      180|          0|
+|MFGN          |         0|          1.00|   3| 123|     0|      201|          0|
+|COMPN         |         0|          1.00|   7|  23|     0|        5|          0|
+|DIFHIN        |         0|          1.00|   8|  26|     0|       10|          0|
+|METDGN        |         0|          1.00|   3|  59|     0|       12|          0|
+|PRIMA         |         0|          1.00|   2|   9|     0|        4|          0|
+|OTRTU         |        13|          0.99|   2|   9|     0|        4|          0|
+|ESTCT         |         0|          1.00|   1|   3|     0|       11|          0|
+|ESTCN         |         0|          1.00|   1|   3|     0|        9|          0|
+|ESTCM         |         0|          1.00|   1|   3|     0|        5|          0|
+|TNMCL         |         0|          1.00|   1|   7|     0|       33|          0|
+|TULAT         |         0|          1.00|   2|  15|     0|        7|          0|
+|ESTPT         |         0|          1.00|   1|   3|     0|       11|          0|
+|ESTPN         |         0|          1.00|   1|   3|     0|        9|          0|
+|ESTPM         |         0|          1.00|   1|   3|     0|        5|          0|
+|PTNM          |         0|          1.00|   1|   6|     0|       25|          0|
+|ECOG          |         0|          1.00|   3|  70|     0|        7|          0|
+|CATPO         |         0|          1.00|   3| 205|     0|        8|          0|
+|FEREGTTO      |       468|          0.56|  10|  10|     0|      522|          0|
+|FMODTR        |      1021|          0.04|  18|  19|     0|       46|          0|
+|FITTO         |       468|          0.56|  10|  10|     0|      531|          0|
+|INTTON        |       468|          0.56|   3|  22|     0|        8|          0|
+|ESTTON        |       468|          0.56|   3|  40|     0|       11|          0|
+|FINTO         |       468|          0.56|   3|  10|     0|      387|          0|
+|CUTTON        |       468|          0.56|   2|   9|     0|        4|          0|
+|RTATON        |       468|          0.56|   3|  41|     0|        9|          0|
+|FEULT         |       379|          0.64|   3|  10|     0|      570|          0|
+|ESULTN        |       379|          0.64|   5|  50|     0|        9|          0|
+|FEDEF         |       779|          0.27|  10|  10|     0|      254|          0|
+|FMODSP        |       947|          0.11|  18|  19|     0|      111|          0|
+
+
+**Variable type: logical**
+
+|skim_variable | n_missing| complete_rate| mean|count |
+|:-------------|---------:|-------------:|----:|:-----|
+|IDPAMI        |      1067|             0|  NaN|:     |
+|IDPREPAGA     |      1067|             0|  NaN|:     |
+
+
+**Variable type: numeric**
+
+|skim_variable | n_missing| complete_rate|          mean|           sd|     p0|       p25|      p50|        p75|         p100|hist  |
+|:-------------|---------:|-------------:|-------------:|------------:|------:|---------:|--------:|----------:|------------:|:-----|
+|IDPTE         |         0|          1.00|  6.068113e+04| 3.400682e+04|   1308|   31738.0|    60709|    92263.5| 1.185950e+05|▇▇▇▆▇ |
+|IDEST         |         0|          1.00|  6.025000e+01| 9.609000e+01|      2|      14.0|       24|       47.0| 3.540000e+02|▇▁▁▁▁ |
+|PTESX         |         0|          1.00|  1.610000e+00| 4.900000e-01|      1|       1.0|        2|        2.0| 2.000000e+00|▅▁▁▁▇ |
+|NDOC          |         0|          1.00|  2.208839e+07| 2.452887e+07| 111733| 8533389.5| 14278024| 25566413.5| 3.632266e+08|▇▁▁▁▁ |
+|NPAMI         |         0|          1.00|  1.811600e+12| 9.241792e+12|      0|       0.0|        0|        0.0| 1.504915e+14|▇▁▁▁▁ |
+|ORIGN         |         0|          1.00|  9.980700e+02| 3.031000e+01|      9|     999.0|      999|      999.0| 9.990000e+02|▁▁▁▁▇ |
+|IDTUM         |         0|          1.00|  5.879254e+04| 3.363219e+04|    459|   29894.5|    58647|    89735.0| 1.161800e+05|▇▇▇▇▇ |
+|DGED          |         0|          1.00|  5.515000e+01| 1.801000e+01|      0|      44.0|       58|       67.0| 1.180000e+02|▁▃▇▂▁ |
+|MFG           |        28|          0.97|  8.352190e+03| 4.606600e+02|   8000|    8070.0|     8140|     8500.0| 9.989000e+03|▇▂▁▁▁ |
+|COMP          |         0|          1.00| -1.591000e+01| 1.829200e+02|   -999|       3.0|        3|        3.0| 9.990000e+02|▁▁▇▁▁ |
+|DIFHI         |         0|          1.00|  1.031700e+02| 5.696700e+02|   -999|       2.0|        2|        9.0| 9.990000e+02|▂▁▇▁▂ |
+|METDG         |         0|          1.00| -2.240000e+01| 1.874400e+02|   -999|       8.0|        8|        8.0| 9.990000e+02|▁▁▇▁▁ |
+|PRINU         |         0|          1.00|  5.000000e-02| 3.300000e-01|      0|       0.0|        0|        0.0| 3.000000e+00|▇▁▁▁▁ |
+|IDTTO         |       468|          0.56|  9.411933e+04| 4.928666e+04|    796|   53605.5|    97251|   141316.0| 1.695510e+05|▃▅▆▅▇ |
+|INTTO         |       468|          0.56| -5.827000e+01| 3.465600e+02|   -999|       1.0|        1|        3.0| 9.990000e+02|▁▁▇▁▁ |
+|ESTTO         |       468|          0.56| -4.390000e+00| 1.155000e+02|   -999|       1.0|        2|        3.0| 9.990000e+02|▁▁▇▁▁ |
+|CUTTO         |       468|          0.56| -1.860400e+02| 5.023800e+02|   -999|       1.0|        1|        1.0| 9.990000e+02|▂▁▇▁▁ |
+|RTATO         |       468|          0.56| -1.832300e+02| 6.598000e+02|   -999|    -999.0|        2|        6.0| 9.990000e+02|▅▁▇▁▂ |
+|ESULT         |       379|          0.64|  3.570000e+00| 1.670000e+00|      1|       2.0|        4|        4.0| 1.000000e+01|▆▇▃▁▁ |
+
 ---
-background-image: url(assets/errores_advertencias.PNG)
-background-size: 730px
-background-position: 50% 70%
-
-## Errores y advertencias
-
-
----
-
-## Ayuda
+## dlookr
 
 .font140[
-- Todas las funciones del R base o de los paquetes vienen acompañadas con su respectiva **documentación**.
+El paquete dlookr contiene funciones que nos facilitan el diagnóstico de nuestros datos, además de otras que tienen por objetivo la exploración y transformación de ellos. 
 
-- Esta documentación se puede visualizar en el panel **Help** de RStudio navegando como si fuese un navegador web.
+Entre estas funciones encontramos:
 
-- La documentación tiene una estructura que se repite: descripción, uso, argumentos, detalles, valores, ejemplos.
+`diagnose()` que proporciona información básica de las variables
 
-- También se pueden hacer busquedas en buscadores web como Google, foros especializados, como por ejemplo **Stack Overflow** o **Rpubs**, canales de **slack** y más recientemente en IAs como **chatGPT** o **Google Bard**.
+`diagnose_category()` nos devuelve información detallada de las variables categóricas
+
+`diagnose_numeric()` nos devuelve información detallada de las variables numéricas.
+
+`diagnose_outlier()` y `plot_outlier()` proporciona información y visualización de valores atípicos.
+
+]
+
+---
+## diagnose()
+
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-dfa9b1b14f0fd2f9c2cc" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-dfa9b1b14f0fd2f9c2cc">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74"],["IDPTE","PTENM","FMODPA","PTEAP","IDEST","IDESTN","PTESX","PTESXN","FENAC","DOC","NDOC","CONALF","PTEDU","OSDESC","OSSIGLA","OSPTE","PAMIDESC","IDPAMI","NPAMI","PRDESC","IDPREPAGA","COPRI","STPAC","PORIG","ORIGN","IDTUM","FEREG","FMODTU","FEINI","FECON","FEDG","DGED","TPGF","TPGFN","MFG","MFGN","COMP","COMPN","DIFHI","DIFHIN","METDG","METDGN","PRIMA","PRINU","OTRTU","ESTCT","ESTCN","ESTCM","TNMCL","TULAT","ESTPT","ESTPN","ESTPM","PTNM","ECOG","CATPO","IDTTO","FEREGTTO","FMODTR","FITTO","INTTO","INTTON","ESTTO","ESTTON","FINTO","CUTTO","CUTTON","RTATO","RTATON","FEULT","ESULT","ESULTN","FEDEF","FMODSP"],["numeric","character","character","character","numeric","character","numeric","character","character","character","numeric","character","character","character","character","character","character","logical","numeric","character","logical","character","character","character","numeric","numeric","character","character","character","character","character","numeric","character","character","numeric","character","numeric","character","numeric","character","numeric","character","character","numeric","character","character","character","character","character","character","character","character","character","character","character","character","numeric","character","character","character","numeric","character","numeric","character","character","numeric","character","numeric","character","character","numeric","character","character","character"],[0,0,994,0,0,0,0,0,0,0,0,0,11,0,0,0,0,1067,0,0,1067,1044,0,0,0,0,0,964,0,0,0,0,14,0,28,0,0,0,0,0,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,468,468,1021,468,468,468,468,468,468,468,468,468,468,379,379,379,779,947],[0,0,93.16,0,0,0,0,0,0,0,0,0,1.03,0,0,0,0,100,0,0,100,97.84,0,0,0,0,0,90.34999999999999,0,0,0,0,1.31,0,2.62,0,0,0,0,0,0,0,0,0,1.22,0,0,0,0,0,0,0,0,0,0,0,43.86,43.86,95.69,43.86,43.86,43.86,43.86,43.86,43.86,43.86,43.86,43.86,43.86,35.52,35.52,35.52,73.01000000000001,88.75],[998,919,69,795,55,55,2,2,963,4,998,4,14,4,57,69,4,1,183,4,1,20,2,2,2,1066,846,104,315,649,875,85,129,180,140,201,5,5,10,10,12,12,4,4,5,11,9,5,33,7,11,9,5,25,7,8,599,523,47,532,9,9,12,12,388,5,5,10,10,571,10,10,255,112],[0.9399999999999999,0.86,0.06,0.75,0.05,0.05,0,0,0.9,0,0.9399999999999999,0,0.01,0,0.05,0.06,0,0,0.17,0,0,0.02,0,0,0,1,0.79,0.1,0.3,0.61,0.82,0.08,0.12,0.17,0.13,0.19,0,0,0.01,0.01,0.01,0.01,0,0,0,0.01,0.01,0,0.03,0.01,0.01,0.01,0,0.02,0.01,0.01,0.5600000000000001,0.49,0.04,0.5,0.01,0.01,0.01,0.01,0.36,0,0,0.01,0.01,0.54,0.01,0.01,0.24,0.1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>variables<\/th>\n      <th>types<\/th>\n      <th>missing_count<\/th>\n      <th>missing_percent<\/th>\n      <th>unique_count<\/th>\n      <th>unique_rate<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"columnDefs":[{"className":"dt-right","targets":[3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+
+---
+## diagnose_category()
+
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2ae586298fbd1aadb559" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2ae586298fbd1aadb559">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"],["IDESTN","IDESTN","IDESTN","IDESTN","IDESTN","IDESTN","IDESTN","IDESTN","IDESTN","IDESTN","DOC","DOC","DOC","DOC","TPGFN","TPGFN","TPGFN","TPGFN","TPGFN","TPGFN","TPGFN","TPGFN","TPGFN","TPGFN","ECOG","ECOG","ECOG","ECOG","ECOG","ECOG","ECOG"],["HOSPITAL PROVINCIAL NEUQUEN DR. EDUARDO CASTRO RENDON","Hospital Escuela de Agudos Dr. Ramón Madariaga - Misiones","Hospital Dr. J. B. Iturraspe - Santa Fe","Instituto de Oncología Angel H. Roffo - Buenos Aires","Hospital Nacional Profesor Alejandro Posadas - Buenos Aires","Centro Oncológico de Integración Regional - COIR - Mendoza","Hospital Oncológico de la provincia de Córdoba","Hospital San Martín de Paraná","Hospital San Martin de La Plata","Hospital El Cruce- Florencio Varela - Buenos Aires","DNI","LC/LE","Documento Extranjero","Cédula Policía Federal","(C50.9)-Mama, SAI","(C53.9)-Cuello uterino","(C18.9)-Colon, SAI","(C53.9)-Cérvix, SAI","(C50.4)-Cuadrante superior externo de la mama","(C61.9)-Próstata. SAI","(C34.9)-Pulmón, SAI","(C64.9)-Riñón, SAI","(C42.1)-Médula ósea","(C56.9)-Ovario","1-Sintomático pero ambulatorio","N/D","0-Actividad Normal","Desconocido","2-Ambulatorio más del 50%","3-Ambulatorio 50% o menos - asistencia obligatoria","4-Permanece obligadamente en cama. Requiere atención de otras personas"],[1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067,1067],[97,79,75,64,63,62,49,49,46,43,1034,25,7,1,137,100,42,38,34,34,32,30,28,25,305,272,248,131,71,20,20],[9.09,7.4,7.03,6,5.9,5.81,4.59,4.59,4.31,4.03,96.91,2.34,0.66,0.09,12.84,9.369999999999999,3.94,3.56,3.19,3.19,3,2.81,2.62,2.34,28.58,25.49,23.24,12.28,6.65,1.87,1.87],[1,2,3,4,5,6,7,7,9,10,1,2,3,4,1,2,3,4,5,5,7,8,9,10,1,2,3,4,5,6,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>variables<\/th>\n      <th>levels<\/th>\n      <th>N<\/th>\n      <th>freq<\/th>\n      <th>ratio<\/th>\n      <th>rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"columnDefs":[{"className":"dt-right","targets":[3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+---
+## diagnose_numeric()
+
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-bc243c90c4474d662e8b" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-bc243c90c4474d662e8b">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["IDPTE","IDEST","PTESX","ORIGN","IDTUM","DGED","MFG","COMP","DIFHI","METDG","PRINU","IDTTO","INTTO","ESTTO","CUTTO","RTATO","ESULT"],[1308,2,1,9,459,0,8000,-999,-999,-999,0,796,-999,-999,-999,-999,1],[31738,14,1,999,29894.5,44,8070,3,2,8,0,53605.5,1,1,1,-999,2],[60681.13,60.25,1.61,998.0700000000001,58792.54,55.15,8352.190000000001,-15.91,103.17,-22.4,0.05,94119.33,-58.27,-4.39,-186.04,-183.23,3.57],[60709,24,2,999,58647,58,8140,3,2,8,0,97251,1,2,1,2,4],[92263.5,47,2,999,89735,67,8500,3,9,8,0,141316,3,3,1,6,4],[118595,354,2,999,116180,118,9989,999,999,999,3,169551,999,999,999,999,10],[0,0,0,0,0,22,0,5,0,0,1036,0,0,0,0,0,0],[0,0,0,0,0,0,0,28,125,35,0,0,55,6,142,196,0],[0,131,0,1,0,30,81,111,358,149,31,0,74,21,194,0,24]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>variables<\/th>\n      <th>min<\/th>\n      <th>Q1<\/th>\n      <th>mean<\/th>\n      <th>median<\/th>\n      <th>Q3<\/th>\n      <th>max<\/th>\n      <th>zero<\/th>\n      <th>minus<\/th>\n      <th>outlier<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+---
+
+## diagnose_outlier()
+
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2129a99c0058f0da3a8d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2129a99c0058f0da3a8d">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["IDPTE","IDEST","PTESX","ORIGN","IDTUM","DGED","MFG","COMP","DIFHI","METDG","PRINU","IDTTO","INTTO","ESTTO","CUTTO","RTATO","ESULT"],[0,131,0,1,0,30,81,111,358,149,31,0,74,21,194,0,24],[0,12.28,0,0.09,0,2.81,7.59,10.4,33.55,13.96,2.91,0,6.94,1.97,18.18,0,2.25],[null,314.11,null,9,null,23.3,9690.35,-178.74,301.37,-209.66,1.87,null,-486,-185.81,-576.52,null,8.789999999999999],[60681.13,60.25,1.61,998.0700000000001,58792.54,55.15,8352.190000000001,-15.91,103.17,-22.4,0.05,94119.33,-58.27,-4.39,-186.04,-183.23,3.57],[60681.13,24.72,1.61,999,58792.54,56.07,8239.040000000001,3,3.09,8,0,94119.33,2.02,2.2,1,-183.23,3.38]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>variables<\/th>\n      <th>outliers_cnt<\/th>\n      <th>outliers_ratio<\/th>\n      <th>outliers_mean<\/th>\n      <th>with_mean<\/th>\n      <th>without_mean<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+---
+## plot_outlier()
+.center[
+![](02-diapo_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
 ]
 ---
-background-image: url(assets/Bard.PNG)
-background-size: 1100px
-background-position: 50% 60%
 
-## Ejemplo de consulta en Google Bard
+## Depuración de datos
+
+
+
+
+---
+
 
 
     </textarea>
