@@ -16,6 +16,7 @@ theme: lumen
 knitr::opts_chunk$set(echo = TRUE, dpi = 300)
 ```
 
+
 ## Tipos de datos
 
 

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Exploración y diagnóstico de datos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Instituto Nacional de Epidemiología" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="animate.min.css" type="text/css" />
+    <link rel="stylesheet" href="fonts_mtheme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Exploración y diagnóstico de datos
+]
+.author[
+### Instituto Nacional de Epidemiología
+]
+.date[
+### 16-10-2023
+]
+
+---
+
+
+layout: true
+class: animated, fadeIn
+
+
+
+
+
+
+---
+background-image: url(assets/tipos.PNG)
+background-size: 400px
+background-position: 15% 60%
+
+## Tipo de datos
+
+.pull-right[  
+.font110[ 
+- Los vectores, como otras estructuras de datos, o bien las variables de un dataframe siempre se identificarán con un tipo de dato particular.
+
+- Es importante conocer con que tipo de dato estamos trabajando y reconocer si se corresponde con la clasificación de la variable que representa.
+
+- Por ejemplo: hay variables categóricas que se almacenen codificadas con números. El tipo de datos en R será numérico pero sería un error realizar calculos matemáticos o estadísticos con ellos, ya que solo representan a categorías de una variable cualitativa.
+
+- Es indispensable tener acceso al diccionario de datos (codebook) de una tabla/base de datos.
+]
+]
+---
+## Coerción
+
+.font140[
+Los tipos de datos definidos en el lenguaje R pueden ser coercionados, es decir convertidos a otro tipo.
+
+Esta coerción puede ser implicita o explicita:
+
+- **Implícita** es la coerción que el sistema aplica al encontrar una o más observaciones con un tipo de dato no coincidente. El tipo de dato que se impone es aquel que fuerza una conversión posible.
+]
+
+.font110[
+
+
+```r
+# Ejemplo
+
+c(3, 2, 7, 6, 4) # vector numérico
+```
+
+```
+## [1] 3 2 7 6 4
+```
+
+```r
+c(3, 2, "siete", 6, 4) # coerción implicita de numérico a caracter 
+```
+
+```
+## [1] "3"     "2"     "siete" "6"     "4"
+```
+
+]
+---
+## Coerción
+
+.font140[
+- **Explícita** es la coerción que se logra por la aplicación de la familia de funciones que comienzan con el prefijo **as.**
+
+Esta familia es muy amplia, por lo que solo mostraremos las más básicos:
+]
+
+
+
+```r
+# de numérico a caracter
+
+as.character(c(3, 2, 7, 6, 4))
+```
+
+```
+## [1] "3" "2" "7" "6" "4"
+```
+
+```r
+# de lógico a numérico
+
+as.numeric(c(T, F, F, T, T)) # T = 1 y F = 0
+```
+
+```
+## [1] 1 0 0 1 1
+```
+
+```r
+# de numérico a lógico
+
+as.logical(c(1, 0, 5, 6, 9)) # 0 = FALSE y distinto de 0 = TRUE
+```
+
+```
+## [1]  TRUE FALSE  TRUE  TRUE  TRUE
+```
+
+---
+## Valores faltantes
+
+.font140[
+Vimos que la ausencia de valores en el lenguaje se representa con el valor especial **NA** lo que permite su reconocimiento y consideración en el uso de funciones sobre datos. 
+
+Las tareas habituales de su tratamiento consisten en:
+
+- Evaluar la existencia de valores perdidos (exploración y conteo).
+- Excluir los valores ausentes (si es posible y conveniente).
+- Recodificar los valores ausentes (imputación de datos).
+
+Nota: estos *valores especiales* tienen un efecto "contagioso" y cualquier cálculo o resumen que los contengan será iguala **NA**. Existen argumentos que deberemos utilizar para no tenerlos en cuenta (`na.rm =`)
+
+]
+---
+## Exploración
+
+.font140[
+La exploración de datos se puede incluir dentro del **análisis exploratorio de datos** y persigue un primer grupo de objetivos:
+
+- Conocer la estructura de la tabla de datos y sus tipos de variables
+- Detectar observaciones incompletas (valores faltantes)
+- Detectar datos con errores e inconsistencias 
+
+Una segunda etapa nos puede servir para conocer la distribución de las variables de interés a partir de: 
+
+- Resumir datos mediante estadísticos y gráficos
+- Detectar valores atípicos (outlier)
+]
+---
+## Diagnóstico
+
+---
+## Paquetes especiales
+
+---
+##
+
+---
+
+
+.font140[
+- Plantea abordar el lenguaje R como un lenguaje para **_"comunicarse"_** (similar a un segundo lenguaje como el inglés, francés, etc.)
+
+- Al dotar a R de una estructura particular **_semántica_**, **_gramatical_** y **_sintáctica_**.
+
+- Se busca comenzar a **_"decir cosas con datos"_** y luego profundizar en las estructuras del lenguaje.
+
+- Diferencias entre ser **_"usuario"_** y **_"programador"_** 
+
+- Propuesto por *Riva Quiroga* de LatinR en el encuentro global de RStudio de 2021. Para profundizar ver ponencia *“How to do things with words: Learning to program with a ‘communicative approach’"* en [rstudio::global(2021)](https://rstudio.com/resources/rstudioglobal-2021/how-to-do-things-with-words-learning-to-program-in-r-with-a-communicative-approach/)
+
+]
+---
+class: center, middle, inverse, hide-logo
+
+
+# Paquetes de R
+
+---
+background-image: url(assets/baseR.PNG)
+background-size: 280px
+background-position: 10% 10%
+
+.pull-right[  
+.font110[ 
+- **Paquete** es sinónimo de *librería* y contiene una serie de funciones y/o datos con su documentación.
+
+- El conjunto base de R tiene varias funciones fundamentales contenidas en algunos paquetes (base, stats, utils, graphics, methods, etc)
+
+- Los paquetes se instalan, activan y desactivan.
+
+- El sitio oficial donde se publican se encuentra en [CRAN - packages](https://cran.r-project.org/web/packages/available_packages_by_name.html)
+
+- Visto como un lenguaje (idioma) los paquetes vendrían a ser conjuntos de palabras que *"agregamos"* a nuestro vocabulario para poder *"comunicarnos"* mejor o más facilmente con el interprete de R.
+]
+]
+---
+background-image: url(assets/baseR2.PNG)
+background-size: 1100px
+background-position: 10% 10%
+
+---
+background-image: url(assets/paquetes.PNG)
+background-size: 1000px
+background-position: 10% 10%
+
+---
+class: center, middle, inverse, hide-logo
+
+
+# Tidyverse
+
+---
+background-image: url(assets/tidyverse.PNG), url(assets/tidyverse2.PNG)
+background-size: 200px, 350px
+background-position: 50% 10%, 50% 90%
+
+class: center, middle
+
+.font140[ 
+Una colección de paquetes de R modernos, que comparten una **gramática** y filosofía común, diseñados para resolver los desafíos de la ciencia de datos.
+]
+
+---
+background-image: url(assets/tidy.PNG)
+background-size: 450px
+background-position: 95% 35%
+
+## Fundamentos
+
+.font120[ 
+- **Estructura ordenada de datos (tidy)**
+
+  - Cada _variable_ es una _columna_ de la tabla de datos
+  
+  - Cada _observación_ es una _fila_ de la tabla de datos
+  
+  - Cada _tabla_ responde a una _unidad observacional_
+
+- **Principios básicos** 
+
+  - Reutilizar las estructuras de datos mediante el uso de tuberías
+  
+  - Resolver problemas complejos combinando varias piezas sencillas
+  
+  - Diseño para humanos incorporando una gramática específica al lenguaje (*que ya posee una sintaxis estricta y una semantica que le otorga significado*)
+]
+
+---
+background-image: url(assets/cd.PNG)
+background-size: 1000px
+background-position: 50% 50%
+
+---
+background-image: url(assets/paquetes_tidy.PNG)
+background-size: 1000px
+background-position: 50% 50%
+
+---
+## Tuberías
+
+
+
+.font140[ 
+Las tuberías son operadores que permiten *"canalizar"* un objeto hacia una función o llamar a una expresión, lo que le permite expresar una secuencia de operaciones que transforman un objeto.
+
+Existen dos tuberías conocidas: 
+
+`%&gt;%` perteneciente al paquete **magrittr** del tidyverse 
+
+`|&gt;` que es la propuesta **nativa** de R base a partir de la versión 4.1.0
+
+La mayoría de los scripts del curso muestran la tubería nativa, pero se puede utilizar cualquiera de las dos.
+
+]
+---
+background-image: url(assets/pipe.PNG)
+background-size: 500px
+background-position: 50% 85%
+
+## Tuberías
+
+.font140[ 
+Para el uso general, la utilización de las dos tuberías es la misma, es decir que la forma simple de las tuberías inserta el lado izquierdo como primer argumento en la llamada del lado derecho. 
+
+Esto posibilita la reutilización de las estructuras de datos y la escritura de porciones de código similares a *"oraciones"* de un párrafo.
+
+Pulse [aquí](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/) para ver algunas caracteristicas comparativas de estas tuberías.
+
+]
+---
+background-image: url(assets/vector_dataframe.png)
+background-size: 500px
+background-position: 50% 90%
+## Estructura de datos
+
+&lt;br&gt;
+
+.font140[ 
+
+Las estructuras de datos son los **objetos** **_contenedores de datos_** que el lenguaje ofrece.
+
+Existe una variedad de estructuras de datos: vectores, matrices, arrays, dataframes, listas, etc.
+
+Vamos a describir a las más relevantes dentro del ecosistema tidyverse y que serviran en estos inicios del curso: Los **vectores** y los **dataframes**.
+
+
+]
+---
+## Vectores
+
+.font140[
+- Son secuencias de elementos del mismo tipo de datos.
+
+- Tienen dos atributos principales: longitud y tipo de datos.
+
+- Los 6 tipos de datos que usaremos en R son:
+
+  1. logical (`TRUE` - `FALSE`)
+  2. integer (`15`)
+  3. double (`24.64`)    
+  4. character (`"Hola"`)
+  5. factors (`"Si"` - `"No"` - `"Ns/Nc"`)
+  6. date/datetime (`"2023-10-09"` - `"2023-10-09 01:00:00"`)
+  
+- Los vectores integer y double se conocen como vectores numéricos (numeric).
+
+]
+---
+## Dataframes
+
+.font140[
+
+- Un dataframe, que se traduce como marco de datos, es similar a una tabla de datos construida por una colección de vectores ubicados verticalmente que mantienen la integridad de sus filas.
+
+- Tienen dos dimensiones, las columnas verticales llamadas **variables** y las filas horizontales llamadas **observaciones**.
+
+- Las columnas pueden ser de diferentes tipos.
+
+- Los elementos dentro de cada columna deben ser del mismo tipo y cada columna tiene el mismo número de filas.
+
+- La combinación de datos de las diferentes columnas que conforman una fila es fija, por lo que se asegura la integridad de estas observaciones (principio de las bases de datos).
+]
+---
+## Tibbles
+
+.font140[
+- Los tibbles son una versión moderna del dataframe que introduce tidyverse.
+
+- Tienen las mismas características que un dataframe normal con algunos atributos más agradables.
+
+- Cuando importemos tablas de datos, estos se almacenarán como dataframes/tibbles.
+
+- Dado que estamos centrados en tidyverse, utilizaremos los términos dataframe y tibble como sinónimos entre sí en el uso general.
+
+- Los dataframes/tibbles son el tipo de datos fundamental en la mayoría de los análisis que llevaremos adelante.
+
+]
+
+---
+## Funciones y argumentos
+
+.font140[
+Una función es un bloque de código que sólo se ejecuta cuando se llama.
+
+- Existen funciones que forman parte de la base del lenguaje y otras que son aportadas por paquetes activados.
+
+- Todas las funciones devuelven algo. Datos, un resultado o una acción determinada.
+
+- La mayoría necesitan de ciertos datos que se declaran dentro de la función denominados **argumentos**. Algunos son obligatorios y otros opcionales.
+
+- Toda función se escribe con una sintaxis precisa y finaliza siempre con paréntesis `()`. Los argumentos se separan por comas. 
+
+]
+
+
+---
+background-image: url(assets/errores_advertencias.PNG)
+background-size: 730px
+background-position: 50% 70%
+
+## Errores y advertencias
+
+
+---
+
+## Ayuda
+
+.font140[
+- Todas las funciones del R base o de los paquetes vienen acompañadas con su respectiva **documentación**.
+
+- Esta documentación se puede visualizar en el panel **Help** de RStudio navegando como si fuese un navegador web.
+
+- La documentación tiene una estructura que se repite: descripción, uso, argumentos, detalles, valores, ejemplos.
+
+- También se pueden hacer busquedas en buscadores web como Google, foros especializados, como por ejemplo **Stack Overflow** o **Rpubs**, canales de **slack** y más recientemente en IAs como **chatGPT** o **Google Bard**.
+]
+---
+background-image: url(assets/Bard.PNG)
+background-size: 1100px
+background-position: 50% 60%
+
+## Ejemplo de consulta en Google Bard
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url(logo_INE.PNG);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 55px;
+  height: 64px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
