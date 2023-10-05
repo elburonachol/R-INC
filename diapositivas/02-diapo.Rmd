@@ -206,6 +206,8 @@ Entre estas funciones encontramos:
 
 `diagnose_outlier()` y `plot_outlier()` proporciona información y visualización de valores atípicos.
 
+`plot_na_pareto()` construye un diagrama de Pareto mostrando las variables con datos faltantes.
+
 ]
 
 ---
@@ -261,13 +263,24 @@ DT::datatable(
 ---
 ## plot_outlier()
 .center[
-```{r, warning=F, message=F, echo=F}
+```{r, warning=F, message=F, echo=F, fig.width= 8}
 
 rita |> 
   dplyr::select(DGED) |> 
 plot_outlier() 
 ```
 ]
+---
+## plot_na_pareto()
+.center[
+```{r, warning=F, message=F, echo=F, fig.width= 11}
+
+rita |> 
+  select(1:25) |> 
+plot_na_pareto() 
+```
+] 
+
 ---
 
 ## Depuración de datos
