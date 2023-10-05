@@ -1,0 +1,40 @@
+---
+title: "**Tipos de datos**"
+author: ""
+output:
+  html_document:
+    css: style.css
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+number_sections: true
+anchor_sections: true
+theme: lumen
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dpi = 300)
+```
+
+
+## Tipos de datos
+
+
+
+
+## Comprobación y coerción de tipos de datos
+
+
+
+## Valores especiales
+
+
+
+
+
+
+```{r,echo=F,  fig.align='center', out.width = "40%", dpi=300}
+knitr::include_graphics("Proy1.PNG")
+```
+
+

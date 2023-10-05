@@ -1,5 +1,5 @@
 ---
-title: "**Tipos de datos**"
+title: "**Algunos operadores y funciones básicas**"
 author: ""
 output:
   html_document:
@@ -16,25 +16,170 @@ theme: lumen
 knitr::opts_chunk$set(echo = TRUE, dpi = 300)
 ```
 
+## R como calculadora
 
-## Tipos de datos
-
-
-
-
-## Comprobación y coerción de tipos de datos
+El lenguaje R cuenta con operadores aritméticos de uso relativamente intuitivo, que permiten realizar operaciones matemáticas como si usasemos una calculadora.
 
 
+```{r}
+# suma
+2 + 5
 
-## Valores especiales
+# resta
+3 - 2
 
+# multiplicación
+9 * 3
 
+# división
+10 / 2
 
-
-
-
-```{r,echo=F,  fig.align='center', out.width = "40%", dpi=300}
-knitr::include_graphics("Proy1.PNG")
+# potenciación
+5 ^ 2
 ```
+
+**Nota**: observarán que el interprete del lenguaje al devolvernos un valor en consola lo muestra con una notación inicial de un 1 encerrado entre corchetes `[1]`.
+Este número es el índice del vector que nos está mostrando R y que siempre comienza con 1. Si la cantidad de elementos de un vector mostrados por la consola superase el ancho de la pantalla, entonces el listado seguiría debajo y al comienzo de la nueva línea veríamos otro número entre corchetes que sería el indice de ese primer valor. Veamos un ejemplo:
+
+```{r, echo=F}
+seq(from=0.1, to=0.9,by = 0.01)
+
+
+```
+El 0.25 que es primer valor de la segunda fila esta en la posición 16 de ese vector de números. Y, por ejemplo, el 0.70 en la posición 61.
+
+Para otras operaciones matemáticas como la raíz cuadrada o el valor absoluto de un múmero, existen funciones específicas incluídas en R base.
+
+```{r}
+# radicación (raíz cuadrada)
+sqrt(9)
+
+# valor absoluto
+abs(-3)
+```
+
+También se pueden hacer operaciones con los objetos que almacenan a estos valores numéricos asignados:
+
+```{r}
+# a contiene el valor 3
+a <- 3
+
+# b contiene el valor 6
+b <- 6
+
+# aplicamos una fórmula determinada
+(a + b) * b
+```
+
+Y funciona con objetos como los vectores que contienen más de un elemento, aplicando **artimética vectorial**, donde las operaciones se realizan elemento a elemento.
+
+```{r}
+# creamos el vector a con 3 elementos
+a <- c(1, 2, 3)
+
+# ejecutamos una operación matemática a todos los elementos de a
+a * 3
+```
+
+O bien, con operaciones entre objetos, donde se las operaciones se realizan entre los elementos de la misma posición:
+
+```{r}
+# creamos el vector a con 3 elementos
+a <- c(1, 2, 3)
+
+# ejecutamos una operación matemática a todos los elementos de a * a
+a * a
+```
+
+Otras funciones útiles para operaciones con vectores es la sumatoria de elementos.
+
+```{r}
+# creamos el vector a con 3 elementos
+a <- c(1, 2, 3)
+
+# realizamos una sumatoria de todos los elementos de a
+sum(a)
+```
+
+Otra función interesante es la que permite que redondeemos valores con decimales.
+
+```{r}
+## redondeamos definiendo 2 digitos decimales
+
+round(23.76859, digits = 2)
+```
+
+
+## Concatenación y secuencias regulares
+
+Ya usamos la función `c()` para concatenar elementos. Habitualmente cuando  deseemos crear vectores con más de un elemento vamos a recurrir a esta función.
+
+```{r}
+# vector numérico de 4 elementos
+c(6, 3, 6, 8)
+
+# vector caracter de 2 elementos
+c("Hola", "Chau")
+
+```
+
+Existe otra forma de concatenar elementos a partir de un operador de rango.
+Produce un intervalo secuencial de enteros que puede ser ascendente o descendente.
+El operador es `:` y se usa de la siguiente forma:
+
+```{r}
+# ascendente
+1:10
+
+# descendente
+10:1
+```
+
+Otra manera es por medio de la función `seq()` que tiene como argumentos
+principales *from*, *to* y *by*
+
+```{r}
+# secuencia de 1 a 20 cada 2
+seq(from = 1, to = 20, by = 2)
+```
+
+Algunos otros ejemplos de la misma función pueden ser:
+
+```{r}
+# secuencia de 0.1 a 0.9 cada 0.1
+seq(from = 0.1, to = 0.9, by = 0.1)
+
+# secuencia de -5 a 5 cada 1
+seq(from = -5, to = 5, by = 1)
+
+# secuencis de 300 a 0 cada 50 (se escribe -50 porque es descendente)
+seq(from = 300, to = 0, by = -50)
+```
+
+Finalmente la última posibilidad que vamos a mostrar es la función `rep()` que repite valores. Su forma más sencilla es `rep(x, times = Nº)`
+que coloca un Nº de repeticiones de x, una tras otra.
+
+Algunos ejemplos de la función:
+
+```{r}
+# repetimos 5 veces el número 2
+rep(x = 2, times = 5)
+
+# combinada con el operador de rango
+rep(1:4, 5)  
+
+# combinada con la función de concatenación
+rep(c(4.5,6.8,7.2), 2) 
+```
+
+
+
+
+
+
+
+
+
+
 
 
