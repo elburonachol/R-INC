@@ -282,13 +282,19 @@ plot_na_pareto()
 ] 
 
 ---
+background-image: url(assets/datacleaning.jpg)
+background-size: 500px
+background-position: 90% 60%
 
 ## Depuración de datos
 
+.pull-left[  
+.font130[ 
+La etapa de depuración o limpieza de datos comienza una vez que hemos realizado la exploración inicial y el diagnóstico adecuado de cada variable de interés en nuestra tabla.
 
+La manipulación de variables, su transformación, la creación de nuevas variables, los cambios de escala, el formateo de categorías y todas las tareas necesarias para esta limpieza se abordará mediante el uso de funciones de paquetes del propio tidyverse que comenzaremos a ver la semana próxima.
 
-
----
-
+]
+]
 
 
