@@ -51,6 +51,28 @@ class: animated, fadeIn
 
 ]
 ---
+## R es un lenguaje de funciones (y argumentos)
+
+.font130[
+Una función es un bloque de código que sólo se ejecuta cuando se llama.
+
+- Existen funciones que forman parte de la base del lenguaje y otras que estan empaquetadas en librerías.
+
+- Todas las funciones devuelven algo. Datos, un resultado o una acción determinada.
+
+- La mayoría necesitan de ciertos datos que se declaran dentro de la función denominados **argumentos**. Algunos son obligatorios y otros opcionales.
+
+
+```r
+# Estructura sintáctica de una función
+
+funcion(argumento1, argumento2, ...)
+```
+
+- Toda función se escribe con una sintaxis precisa y finaliza siempre con paréntesis. Los argumentos se separan por comas. 
+]
+
+---
 class: center, middle, inverse, hide-logo
 
 
@@ -243,25 +265,33 @@ background-position: 78% 50%
 ]
 
 ---
-## Funciones y argumentos
+## Lectura de datos
 
-.font130[
-Una función es un bloque de código que sólo se ejecuta cuando se llama.
+.font140[
+- El formato de archivos de datos nativo de R es el **texto plano separado por comas** (archivos csv)
 
-- Existen funciones que forman parte de la base del lenguaje y otras que son aportadas por paquetes activados.
+- Estas tablas de datos tienen las **variables** ubicadas en las *columnas* y las **observaciones** en las *filas*.
 
-- Todas las funciones devuelven algo. Datos, un resultado o una acción determinada.
+- **readr** se llama el paquete que tiene funciones de lectura y escritura de este tipo de archivos dentro del tidyverse.
 
-- La mayoría necesitan de ciertos datos que se declaran dentro de la función denominados **argumentos**. Algunos son obligatorios y otros opcionales.
+- El objeto al que asignemos estas lecturas siempre será un **dataframe/tibble**.
 
+- Es importante reconocer el **Enconding** de los caracteres utilizados en la creación del archivo de datos para hacer una lectura adecuada.
+]
 
-```r
-# Estructura sintáctica de una función
+---
+## Encoding
 
-funcion(argumento1, argumento2, ...)
-```
+.font140[
+- La codificación de caracteres en los archivos especifican cómo se representan los caracteres durante el procesamiento de texto.
 
-- Toda función se escribe con una sintaxis precisa y finaliza siempre con paréntesis. Los argumentos se separan por comas. 
+- Existen diferentes estándares de "encoding" que se adaptan a conjuntos de caracteres específicos (generalmente según el idioma)
+
+- Es el motivo por el cuál, a veces importamos datos y hay caracteres especiales de nuestro idioma español, como los acentos o la eñe, que se muestran erróneos, es decir, con otros caracteres equivocados.
+
+- **readr** tiene la función `guess_enconding()` que sirve para detectar el estandar de un archivo de texto plano.
+
+- Las funciones del paquete permiten modificar estos estándares dentro de sus argumentos.
 ]
 
 ---

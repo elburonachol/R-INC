@@ -297,4 +297,3 @@ La manipulación de variables, su transformación, la creación de nuevas variab
 ]
 ]
 
-

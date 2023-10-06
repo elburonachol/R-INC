@@ -1,5 +1,5 @@
 ---
-title: "Procesamiento de datos con dplyr"
+title: "Procesamiento de datos"
 subtitle: ""  
 author: 
   - "Instituto Nacional de Epidemiología"
@@ -42,10 +42,14 @@ style_mono_accent(base_color = "#00746B",
 ```
 
 ---
+## Gestión de datos
+
+
+---
 class: left, middle
 
 background-image: url(assets/dplyr.PNG)
-background-size: 180px
+background-size: 160px
 background-position: 50% 10%
 
 
@@ -158,8 +162,62 @@ DT::datatable(
 ---
 ## rename()
 
+.font130[
+Esta función posibilita **renombrar** a las variables de una tabla de datos.
+
+La estructura básica de la función es:
+]
+
+.font150[.center[
+**rename**(datos, new_name = old_name)  ó  
+datos |> **rename**(new_name = old_name)
+]
+]
+
+.font130[
+La variación **rename_with()** permite **renombrar** variables de una tabla a través de aplicar determinadas funciones.
+
+La estructura básica de esta función es:
+]
+
+.font150[.center[
+**rename_with**(datos, función, variables)  ó  
+datos |> **rename_with**(función, variables)
+]
+]
+
+---
+## Ejemplo de rename() y rename_with()
+
+```{r, eval=F}
+# renombramos PTESXN por SEXO
+
+rita |> 
+  rename(SEXO = PTESXN) 
+```
 
 
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  rename(SEXO = PTESXN) |> 
+  select(SEXO) |> glimpse()
+
+```
+
+```{r, eval=F}
+# renombramos el grupo de variables que comienza con ID por sus nombres en minúsculas
+
+rita |> 
+  rename_with(.fn = tolower, .cols = starts_with("ID")) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  rename_with(.fn = tolower, .cols = starts_with("ID")) |>  
+  select(starts_with("ID")) |> glimpse()
+
+```
 ---
 class: left, top
 
@@ -266,13 +324,33 @@ datos |> **arrange**(**desc**(var1)) *# descendente*
 ---
 ## Ejemplo de arrange()
 
+```{r, eval=F}
+# Mostramos la tabla de ID de pacientes ordenada en forma alfabetica ascente por la variable IDESTN
 
+rita |> 
+  select(IDPTE, IDESTN) |> 
+  arrange(IDESTN) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  select(IDPTE, IDESTN) |>
+  arrange(IDESTN) |>  
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 6))
+
+```
 
 
 ---
+background-image: url(assets/mutate.PNG)
+background-size: 450px
+background-position: 50% 90%
+
 ## mutate()
 
-.font140[ 
+.font130[ 
 La función **mutate()** del inglés .bold[mutar o transformar], sirve para crear nuevas variables, a partir de los valores de otras variables, dentro de la tabla de datos.
 
 La o las nuevas variables creadas se incorporan al final de las columnas del conjunto de datos.
@@ -280,15 +358,13 @@ La o las nuevas variables creadas se incorporan al final de las columnas del con
 Dentro de los argumentos de **mutate()** se aplican funciones vectorizadas, lo que significa que la función toma un vector de valores como entrada y devuelve el mismo número de valores como salida.
 ]
 
-<br>
 
-.font160[.center[  
+.font150[.center[  
 datos |> **mutate**(nueva_var = operación/función)
 ]]
 
 ---
 class: left, top
-
 
 ## mutate()
 
@@ -314,19 +390,24 @@ Algunas de las operaciones y funciones vectorizadas provistas por el lenguaje R 
 
 ]
 
+---
+## Ejemplo de mutate()
 
 ---
+background-image: url(assets/summarise.PNG)
+background-size: 500px
+background-position: 50% 90%
+
 ## summarise()
 
-.font140[ 
+.font130[ 
 La función **summarise()** del inglés .bold[resumir], se utiliza justamente para resumir las observaciones de una tabla de datos mediante alguna .bold[medida resumen].
 
 Otra forma de escribir la función es **summarize()**. Ambas realizan la misma operación.
 ]
 
-<br>
 
-.font160[.center[  
+.font150[.center[  
 datos |> **summarise**(var_resumen = función_resumen)
 
 datos |> **summarize**(var_resumen = función_resumen)
