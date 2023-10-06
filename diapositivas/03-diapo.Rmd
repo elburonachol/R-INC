@@ -1,0 +1,424 @@
+---
+title: "Procesamiento de datos con dplyr"
+subtitle: ""  
+author: 
+  - "Instituto Nacional de Epidemiología"
+date: "23-10-2023"
+output:
+  xaringan::moon_reader:
+    includes:
+      after_body: insert-logo.html
+    transition: slide
+    lib_dir: libs
+    css: 
+     - "xaringan-themer.css"
+     - "animate.min.css"
+     - "fonts_mtheme.css"
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+layout: true
+class: animated, fadeIn
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+library(xaringan)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#00746B", 
+                  colors = c(red = "#f34213",
+                             blue = '#0000ff',
+                             purple = "#3e2f5b",
+                             orange = "#ff8811",
+                             green = "#1d771d",
+                             white = "#FFFFFF"))
+```
+
+---
+class: left, middle
+
+background-image: url(assets/dplyr.PNG)
+background-size: 180px
+background-position: 50% 10%
+
+
+
+.font140[ 
+<br> 
+<br> 
+<br> 
+- **dplyr** es el paquete para **transformar datos** que pertenece al ecosistema **tidyverse**
+
+- Implementa una **_gramática "humana"_**
+
+- Está constituido por funciones definidas como **_"verbos"_**
+
+- Las funciones primarias son: `select()`, `filter()`, `arrange()`, `mutate()` y `summarise()` 
+
+- Otras funciones útiles son: `rename()`, `group_by()`, `count()`, `if_else()`, `case_when()`, `beteewn()`, `across()`, `rowwise()`, etc.
+]
+
+---
+class: left, top
+
+background-image: url(assets/select.PNG)
+background-size: 500px
+background-position: 50% 80%
+
+## select()
+
+.font140[ 
+La función **select()** del inglés .bold[seleccionar], sirve para seleccionar variables (columnas) de una tabla de datos.
+]
+
+
+
+.font160[.center[  
+**select**(datos, a, c)  ó  
+datos |> **select**(a,c)
+]]
+
+---
+## Ayudantes de selección
+
+.font120[
+Además existe un abanico de funciones que **ayudan** a una mejor selección de nombres de variables.
+]
+
+.font120[
+.pull-left[  
+- `everything()`: coincide con todas las variables.
+
+- `group_cols()`: seleccione todas las columnas de agrupación.
+
+- `starts_with()`: comienza con un prefijo.
+
+- `ends_with()`: termina con un sufijo.
+
+- `contains()`: contiene una cadena literal.
+
+- `matches()`: coincide con una expresión regular.
+]
+]
+
+.font120[
+.pull-rigth[  
+- `num_range()`: coincide con un rango numérico como x01, x02, x03.
+
+- `all_of()`: coincide con nombres de variables en un vector de caracteres. Todos los nombres deben estar presentes; de lo contrario, se generará un error de fuera de límites.
+
+- `any_of()`: igual que `all_of()`, excepto que no se genera ningún error para los nombres que no existen.
+
+- `where()`: aplica una función a todas las variables y selecciona aquellas para las cuales la función regresa TRUE.
+]
+]
+---
+## Ejemplo de select()
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+library(tidyverse)
+
+rita <- read_csv2("assets/rita_prueba.csv", locale = locale(encoding = "UTF-8"))
+
+```
+
+```{r, eval=F}
+# variables (columnas) de la tabla rita
+ncol(rita)
+
+```
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+ncol(rita)
+```
+
+```{r, eval=F}
+# seleccionamos solo variables que comienzan con "FE" (fechas)
+
+rita |> 
+  dplyr::select(starts_with("FE")) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  dplyr::select(starts_with("FE")) |> 
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 4))
+
+```
+
+---
+## rename()
+
+
+
+---
+class: left, top
+
+background-image: url(assets/filter.PNG)
+background-size: 400px
+background-position: 50% 85%
+
+## filter()
+
+.font140[ 
+La función **filter()** del inglés .bold[filtrar], sirve para filtrar un subconjunto de observaciones (filas) de una tabla de datos a partir de una condición.
+
+Para construir la condición se utilizan una serie de .bold[operadores de comparación] y .bold[operadores lógicos] similares a la de otros lenguajes de programación.
+
+La estructura de la función puede ser cualquiera de las siguientes: 
+]
+
+.font160[.center[**filter**(datos, condición) ó datos |> **filter**(condición)]]
+
+---
+background-image: url(assets/operadores.PNG)
+background-size: 600px
+background-position: 50% 60%
+
+## Operadores de comparación
+
+
+---
+background-image: url(assets/booleanos2.PNG)
+background-size: 700px
+background-position: 50% 60%
+
+## Operadores lógicos (booleanos)
+
+---
+background-image: url(assets/booleanos.PNG)
+background-size: 750px
+background-position: 50% 60%
+
+## Operadores lógicos (booleanos)
+
+---
+## Ejemplo de filter()
+
+```{r, eval=F}
+# filtramos observaciones que cumplan con la siguiente condición
+
+rita |> 
+  filter(PTESXN == "Mujer", 
+         between(DGED, 20, 45), 
+         TPGF == "C42.1" | TPGF == "C42.3") |> 
+  select(IDPTE, PTESXN, DGED, TPGF)
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  filter(PTESXN == "Mujer", 
+         between(DGED, 20, 45), 
+         TPGF == "C42.1" | TPGF == "C42.3") |> 
+  select(IDPTE, PTESXN, DGED, TPGF) |>  
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 5))
+
+```
+
+---
+## arrange()
+
+.font140[ 
+La función **arrange()** del inglés .bold[ordenar], sirve para ordenar observaciones de una tabla de datos a partir de una o más variables (columnas).
+]
+
+<br>
+
+.font160[.center[  
+**arrange**(datos, var1, var2, ...)  
+
+ó  
+
+datos |> **arrange**(var1, var2, ...)
+]]
+
+---
+## arrange()
+
+.font140[ 
+El ordenamiento _predeterminado_ es **_ascendente_**. 
+
+Si la variable contiene números, las filas se van a ordenar ubicando esos números de menor a mayor (1,2,3...). 
+
+Si la variable contiene texto, las filas se van a ordenar ubicando las palabras alfabéticamente en forma ascendente (a,b,c...).
+
+Si deseamos invertir el orden debemos incorporar la función **desc()** dentro de **arrange()**.
+]
+
+
+.font160[.center[  
+datos |> **arrange**(var1)  *# ascendente*
+
+datos |> **arrange**(**desc**(var1)) *# descendente*
+]]
+
+---
+## Ejemplo de arrange()
+
+
+
+
+---
+## mutate()
+
+.font140[ 
+La función **mutate()** del inglés .bold[mutar o transformar], sirve para crear nuevas variables, a partir de los valores de otras variables, dentro de la tabla de datos.
+
+La o las nuevas variables creadas se incorporan al final de las columnas del conjunto de datos.
+
+Dentro de los argumentos de **mutate()** se aplican funciones vectorizadas, lo que significa que la función toma un vector de valores como entrada y devuelve el mismo número de valores como salida.
+]
+
+<br>
+
+.font160[.center[  
+datos |> **mutate**(nueva_var = operación/función)
+]]
+
+---
+class: left, top
+
+
+## mutate()
+
+.font140[ 
+Algunas de las operaciones y funciones vectorizadas provistas por el lenguaje R son:
+
+
+- .bold[Operadores aritméticos] - **+**, **-**, __\*__, **/**, **^**   
+
+- .bold[Aritmética modular] - **%/%** - **%%** 
+
+- .bold[Transformación - escala] - **log()** - **log2()** - **log10()** - **exp()** - **sqrt()**
+
+- .bold[Comparaciones] - **>**, **>=**, **<**, **<=**, **==**, **!=**
+
+- .bold[Atrasos/adelantos] - **lag()** - **lead()**
+
+- .bold[Ordenamiento] - **min_rank()** - **percent_rank()**, etc...
+
+- .bold[Acumulativos] - **cumsum()** - **cummean()** - etc...
+
+- .bold[Condicional] - **if_else()** - **case_when()**.
+
+]
+
+
+---
+## summarise()
+
+.font140[ 
+La función **summarise()** del inglés .bold[resumir], se utiliza justamente para resumir las observaciones de una tabla de datos mediante alguna .bold[medida resumen].
+
+Otra forma de escribir la función es **summarize()**. Ambas realizan la misma operación.
+]
+
+<br>
+
+.font160[.center[  
+datos |> **summarise**(var_resumen = función_resumen)
+
+datos |> **summarize**(var_resumen = función_resumen)
+]]
+
+---
+class: left, top
+
+
+## summarise()
+
+.font140[ 
+Algunas de las funciones resumen provistas por el lenguaje R son:
+
+
+- .bold[tendencia central] - **mean()** - **median()**
+
+- .bold[posición] - **min()** - **max()** - **quantile()**
+
+- .bold[dispersión] - **var()** - **sd()** - **IQR()** 
+
+- .bold[conteo] - **n()** - **n_distinct()**
+
+- .bold[orden] - **first()** - **last()**
+
+La mayoría de estas funciones aplican en tipos de datos int (enteros), dbl (reales), date (fecha) y ddtm (fecha - hora).
+]
+
+---
+## group_by()
+
+.font140[ 
+La función **group_by()** del inglés .bold[agrupar por], sirve para agrupar a partir de valores o categorías distintas.
+
+Aplicado sólo no produce ningún resultado interesante, por eso está pensando para usarlo principalmente asociado a **summarise()**.
+]
+
+.font180[.center[datos |> **group_by**(variable)]]
+
+<br>
+
+.font140[ 
+Junto a esta función aparece **ungroup()** que .bold[deshace] el agrupamiento.]
+
+.font180[.center[datos |> **ungroup**()]]
+
+
+---
+## count()
+
+.font140[ 
+La función **count()** del inglés .bold[contar], sirve para contabilizar categorías o valores diferentes de variables resumiendo los datos en una **_tabla de frecuencia_**. 
+
+Reconoce y también contabiliza los valores .bold[NA] de las variables.
+]
+
+.font180[.center[datos |> **count**(variable)]]
+
+.font140[ 
+Tiene algunos argumentos opcionales como:
+
+- **name** (nombre de la variable que contabiliza - por defecto se llama n)
+- **sort** (si es TRUE se ordena de mayor a menor)
+- **wt** (variable peso / ponderación / expansión opcional)
+
+También se pueden agregar más variables separadas por una coma.
+]
+
+
+---
+## if_else()
+
+.font140[ 
+La función **if_else()** devuelve valores dependiendo del resultado de una condición lógica (TRUE/FALSE).
+
+Los valores devueltos para cada observación se almacenan dentro de una variable definida en **mutate()**.
+]
+
+.font180[.center[datos |> mutate(x = **if_else**(condicion, valor_T, valor_F)]]
+
+
+
+---
+## case_when()
+
+.font140[ 
+La función **case_when()** ejecuta una vectorización múltiple de funciones if_else().
+
+Los valores devueltos para cada observación se almacenan dentro de una variable definida en **mutate()**.
+
+La asignación de valores NA difiere según tipo de variable creada (NA\_character\_, NA\_integer\_, NA\_real\_)
+]
+
+.font180[.center[datos |> mutate(x = **case_when**(condicion ~ valor_T)]]
+
