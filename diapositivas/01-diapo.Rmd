@@ -182,7 +182,7 @@ La mayoría de los scripts del curso muestran la tubería nativa, pero se puede 
 
 ]
 ---
-background-image: url(assets/pipe.PNG)
+background-image: url(assets/pipe.png)
 background-size: 500px
 background-position: 50% 85%
 
