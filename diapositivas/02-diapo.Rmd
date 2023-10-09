@@ -229,7 +229,7 @@ DT::datatable(
 ```{r, warning=F, message=F, echo=F}
 
 rita |> 
-  dplyr::select(IDESTN, DOC, TPGFN, ECOG) |> 
+  dplyr::select(IDESTN, TPGFN, MFGN) |> 
 diagnose_category() |> 
   mutate(across(where(is.double),~round(.x, digits = 2))) |> 
 DT::datatable(
@@ -241,7 +241,7 @@ DT::datatable(
 ```{r, warning=F, message=F, echo=F}
 
 rita |> 
-  dplyr::select(-NPAMI, -NDOC) |> 
+  dplyr::select(-NPAMI) |> 
 diagnose_numeric() |> 
   mutate(across(where(is.double),~round(.x, digits = 2))) |> 
 DT::datatable(
@@ -254,7 +254,7 @@ DT::datatable(
 ```{r, warning=F, message=F, echo=F}
 
 rita |> 
-  dplyr::select(-NPAMI, -NDOC) |> 
+  dplyr::select(-NPAMI) |> 
 diagnose_outlier() |> 
   mutate(across(where(is.double),~round(.x, digits = 2))) |> 
 DT::datatable(
@@ -271,7 +271,9 @@ plot_outlier()
 ```
 ]
 ---
+
 ## plot_na_pareto()
+
 .center[
 ```{r, warning=F, message=F, echo=F, fig.width= 11}
 
@@ -292,8 +294,248 @@ background-position: 90% 60%
 .font130[ 
 La etapa de depuración o limpieza de datos comienza una vez que hemos realizado la exploración inicial y el diagnóstico adecuado de cada variable de interés en nuestra tabla.
 
-La manipulación de variables, su transformación, la creación de nuevas variables, los cambios de escala, el formateo de categorías y todas las tareas necesarias para esta limpieza se abordará mediante el uso de funciones de paquetes del propio tidyverse que comenzaremos a ver la semana próxima.
+La manipulación de variables, su transformación, la creación de nuevas variables, los cambios de escala, el formateo de categorías y todas las tareas necesarias para esta limpieza la abordaremos mediante el uso de funciones de paquetes del propio tidyverse.
 
 ]
 ]
 
+---
+## Gestión de datos
+
+
+---
+class: left, middle
+
+background-image: url(assets/dplyr.PNG)
+background-size: 160px
+background-position: 50% 10%
+
+
+
+.font140[ 
+<br> 
+<br> 
+<br> 
+- **dplyr** es el paquete para **transformar datos** que pertenece al ecosistema **tidyverse**
+
+- Implementa una **_gramática "humana"_**
+
+- Está constituido por funciones definidas como **_"verbos"_**
+
+- Las funciones primarias son: `select()`, `filter()`, `arrange()`, `mutate()` y `summarise()` 
+
+- Otras funciones útiles son: `rename()`, `group_by()`, `count()`, `if_else()`, `case_when()`, `beteewn()`, `across()`, `rowwise()`, etc.
+]
+
+---
+class: left, top
+
+background-image: url(assets/select.PNG)
+background-size: 500px
+background-position: 50% 80%
+
+## select()
+
+.font140[ 
+La función **select()** del inglés .bold[seleccionar], sirve para seleccionar variables (columnas) de una tabla de datos.
+]
+
+
+
+.font160[.center[  
+**select**(datos, a, c)  ó  
+datos |> **select**(a,c)
+]]
+
+---
+## Ayudantes de selección
+
+.font120[
+Además existe un abanico de funciones que **ayudan** a una mejor selección de nombres de variables.
+]
+
+.font120[
+.pull-left[  
+- `everything()`: coincide con todas las variables.
+
+- `group_cols()`: seleccione todas las columnas de agrupación.
+
+- `starts_with()`: comienza con un prefijo.
+
+- `ends_with()`: termina con un sufijo.
+
+- `contains()`: contiene una cadena literal.
+
+- `matches()`: coincide con una expresión regular.
+]
+]
+
+.font120[
+.pull-rigth[  
+- `num_range()`: coincide con un rango numérico como x01, x02, x03.
+
+- `all_of()`: coincide con nombres de variables en un vector de caracteres. Todos los nombres deben estar presentes; de lo contrario, se generará un error de fuera de límites.
+
+- `any_of()`: igual que `all_of()`, excepto que no se genera ningún error para los nombres que no existen.
+
+- `where()`: aplica una función a todas las variables y selecciona aquellas para las cuales la función regresa TRUE.
+]
+]
+---
+## Ejemplo de select()
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+library(tidyverse)
+
+```
+
+```{r, eval=F}
+# variables (columnas) de la tabla rita
+ncol(rita)
+
+```
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+ncol(rita)
+```
+
+```{r, eval=F}
+# seleccionamos solo variables que comienzan con "FE" (fechas)
+
+rita |> 
+  select(starts_with("FE")) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  dplyr::select(starts_with("FE")) |> 
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 4))
+
+```
+
+---
+## rename()
+
+.font130[
+Esta función posibilita **renombrar** a las variables de una tabla de datos.
+
+La estructura básica de la función es:
+]
+
+.font150[.center[
+**rename**(datos, new_name = old_name)  ó  
+datos |> **rename**(new_name = old_name)
+]
+]
+
+.font130[
+La variación **rename_with()** permite **renombrar** variables de una tabla a través de aplicar determinadas funciones.
+
+La estructura básica de esta función es:
+]
+
+.font150[.center[
+**rename_with**(datos, función, variables)  ó  
+datos |> **rename_with**(función, variables)
+]
+]
+
+---
+## Ejemplo de rename() y rename_with()
+
+```{r, eval=F}
+# renombramos PTESXN por SEXO
+
+rita |> 
+  rename(SEXO = PTESXN) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  rename(SEXO = PTESXN) |> 
+  select(SEXO) |> glimpse()
+
+```
+
+```{r, eval=F}
+# renombramos el grupo de variables que comienza con ID por sus nombres en minúsculas
+
+rita |> 
+  rename_with(.fn = tolower, .cols = starts_with("ID")) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  rename_with(.fn = tolower, .cols = starts_with("ID")) |>  
+  select(starts_with("ID")) |> glimpse()
+
+```
+---
+class: left, top
+
+background-image: url(assets/filter.PNG)
+background-size: 400px
+background-position: 50% 85%
+
+## filter()
+
+.font140[ 
+La función **filter()** del inglés .bold[filtrar], sirve para filtrar un subconjunto de observaciones (filas) de una tabla de datos a partir de una condición.
+
+Para construir la condición se utilizan una serie de .bold[operadores de comparación] y .bold[operadores lógicos] similares a la de otros lenguajes de programación.
+
+La estructura de la función puede ser cualquiera de las siguientes: 
+]
+
+.font160[.center[**filter**(datos, condición) ó datos |> **filter**(condición)]]
+
+---
+background-image: url(assets/operadores.PNG)
+background-size: 600px
+background-position: 50% 60%
+
+## Operadores de comparación
+
+
+---
+background-image: url(assets/booleanos2.PNG)
+background-size: 700px
+background-position: 50% 60%
+
+## Operadores lógicos (booleanos)
+
+---
+background-image: url(assets/booleanos.PNG)
+background-size: 750px
+background-position: 50% 60%
+
+## Operadores lógicos (booleanos)
+
+---
+## Ejemplo de filter()
+
+```{r, eval=F}
+# filtramos observaciones que cumplan con la siguiente condición
+
+rita |> 
+  filter(PTESXN == "Mujer", 
+         between(DGED, 20, 45), 
+         TPGF == "C42.1" | TPGF == "C42.3") |> 
+  select(IDPTE, PTESXN, DGED, TPGF)
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  filter(PTESXN == "Mujer", 
+         between(DGED, 20, 45), 
+         TPGF == "C42.1" | TPGF == "C42.3") |> 
+  select(IDPTE, PTESXN, DGED, TPGF) |>  
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 5))
+
+```
