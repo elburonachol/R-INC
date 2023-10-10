@@ -309,8 +309,8 @@ knitr::include_graphics("assets/flujo.png")
 
 ---
 background-image: url(assets/transformar.PNG)
-background-size: 600px
-background-position: 50% 70%
+background-size: 650px
+background-position: 50% 85%
 
 ## Gestión de datos
 
