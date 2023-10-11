@@ -308,15 +308,17 @@ knitr::include_graphics("assets/flujo.png")
 
 
 ---
-background-image: url(assets/transformar.PNG)
-background-size: 600px
-background-position: 50% 70%
+background-image: url(assets/transformar.png)
+background-size: 650px
+background-position: 50% 85%
 
 ## Gestión de datos
 
 .font140[
 La manipulación de variables, su transformación, la creación de nuevas variables, los cambios de escala, el formateo de categorías y todas las tareas necesarias para esta limpieza la abordaremos mediante el uso de funciones de paquetes del propio tidyverse.
+
 ]
+<br>
 ---
 class: left, middle
 
