@@ -1,5 +1,5 @@
 ---
-title: "Procesamiento de datos"
+title: "Procesamiento de datos con dplyr"
 subtitle: ""  
 author: 
   - "Instituto Nacional de Epidemiología"
@@ -178,6 +178,24 @@ Algunas de las operaciones y funciones vectorizadas provistas por el lenguaje R 
 ---
 ## Ejemplo de mutate()
 
+```{r, eval=F}
+# Coercionamos la variable FENAC aplicando la función dmy() de lubridate
+
+rita |> 
+  mutate(FENAC = dmy(FENAC)) |> 
+  skim(FENAC) |> 
+  select(skim_type, Date.min, Date.max)
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+library(skimr)
+
+rita |> 
+  mutate(FENAC = dmy(FENAC)) |> 
+  skim(FENAC) |> 
+  select(skim_type, Date.min, Date.max) 
+```
 ---
 background-image: url(assets/summarise.PNG)
 background-size: 500px
@@ -222,6 +240,29 @@ La mayoría de estas funciones aplican en tipos de datos int (enteros), dbl (rea
 ]
 
 ---
+## Ejemplo de summarise()
+
+```{r, eval=F}
+# Resumimos la variable DGED calculando media, desvío estandar, mínimo y máximo
+
+rita |> 
+  summarise(Media = mean(DGED),
+            Desvio = sd(DGED),
+            Min = min(DGED),
+            Max = max(DGED)) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  summarise(Media = mean(DGED),
+            Desvio = sd(DGED),
+            Min = min(DGED),
+            Max = max(DGED))
+```
+
+
+---
 ## group_by()
 
 .font140[ 
@@ -238,6 +279,31 @@ Aplicado sólo no produce ningún resultado interesante, por eso está pensando 
 Junto a esta función aparece **ungroup()** que .bold[deshace] el agrupamiento.]
 
 .font180[.center[datos |> **ungroup**()]]
+
+
+---
+## Ejemplo de group_by()
+
+```{r, eval=F}
+# Resumimos la variable DGED según PTESEXN calculando media, desvío estandar, mínimo y máximo
+
+rita |> 
+  group_by(PTESXN) |> 
+  summarise(Media = mean(DGED),
+            Desvio = sd(DGED),
+            Min = min(DGED),
+            Max = max(DGED)) 
+```
+
+
+```{r, echo=F, message=F, warning=FALSE}
+rita |> 
+    group_by(PTESXN) |> 
+  summarise(Media = mean(DGED),
+            Desvio = sd(DGED),
+            Min = min(DGED),
+            Max = max(DGED))
+```
 
 
 ---
@@ -261,7 +327,15 @@ Tiene algunos argumentos opcionales como:
 También se pueden agregar más variables separadas por una coma.
 ]
 
+---
+## Ejemplo de count()
 
+```{r, echo=T, message=F, warning=FALSE}
+# Contamos las frecuencias de la variable IDESTN ordenadas de mayor a menor
+
+rita |> 
+  count(IDESTN, sort = T)
+```
 ---
 ## if_else()
 
