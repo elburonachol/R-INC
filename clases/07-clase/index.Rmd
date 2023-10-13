@@ -1,0 +1,331 @@
+---
+title: "**Transformar datos - parte 1**"
+author: ""
+output:
+  html_document:
+    css: style.css
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+number_sections: true
+anchor_sections: true
+theme: lumen
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dpi = 300)
+```
+
+
+## Paquete dplyr
+
+El paquete __dplyr__ es parte del universo tidyverse que fue desarrollado por *Hadley Wickham* a partir de optimizar una versión del antiguo paquete plyr. 
+
+La contribución significativa del paquete es proporcionar una "gramática" (funciones-verbos) para la manipulación y operaciones de datos que lo hace más fácil de entender.
+
+Las funciones relevantes del paquete, responden a las siguientes acciones (verbos):
+
+- `select()`: devuelve un conjunto de columnas (variables)
+- `rename()`: renombra variables en una conjunto de datos
+- `filter()`: devuelve un conjunto de filas (observaciones) según una o varias condiciones lógicas
+- `arrange()`: reordena filas de un conjunto de datos
+- `mutate()`: añade nuevas variables/columnas o transforma variables existentes
+- `summarise()`/`summarize()`: genera resúmenes estadísticos de diferentes variables en el conjunto de datos.
+-  `group_by()`:  agrupa un conjunto de filas seleccionado, en un conjunto de filas de resumen de acuerdo con los valores de una o más columnas o expresiones.
+- `count()`: contabiliza valores que se repiten, es decir genera tabla de frecuencias.
+- `if_else()`: analiza una condición y puede asignar un valor según la condición sea verdadera o falsa.
+- `case_when()`: permite vectorizar (y reemplazar) múltiples declaraciones de *if_else()* de manera concisa y clara.
+
+Además como todos los paquetes del tidyverse integra a la tubería (propia %>% o nativa |>) logra una única canalización ("pipeline").
+
+### Argumentos comúnes en las funciones dplyr
+
+Todas las funciones, básicamente, tienen en común una serie de argumentos. 
+
+1- El primer argumento es el nombre del conjunto de datos (objeto donde esta nuestra tabla de datos o los datos transformados intermedios)
+
+2- Los otros argumentos describen que hacer con el conjunto de datos especificado en el primer argumento, podemos referirnos a las columnas en el objeto directamente.
+
+3- El valor de retorno es mayormente un nuevo conjunto de datos.
+
+4- Los conjunto de datos deben estar bien organizados/estructurados, es decir debe existir una observación por columna y, cada columna representar una variable, medida o característica de esa observación. Es decir, debe cumplir con *tidy data*.
+
+
+**Activación del paquete**
+
+__dplyr__ está incluído en el paquete __tidyverse__, por lo que se encuentra disponible si tenemos activado a este último.
+
+También se puede activar en forma independiente:
+
+```{r, message=F, warning=F}
+library(dplyr)
+```
+
+## Función select()
+
+`select()` trabaja con las columnas de la tabla de datos y posibilita la selección de las variables, usando un minilenguaje conciso que facilita hacer referencia a las variables según su nombre, ubicación, condición o tipo.
+
+Las selecciones de dplyr implementan un dialecto de R donde los operadores facilitan la selección de variables:
+
+- **:** para seleccionar un rango de variables consecutivas.
+
+- **!** para tomar el complemento de un conjunto de variables.
+
+- **&** y **|** para seleccionar la intersección o unión de dos conjuntos de variables.
+
+- **c()** para combinar selecciones.
+
+Además, se puede utilizar ayudas de selección. Algunos ayudantes seleccionan columnas específicas:
+
+- **everything()**: Coincide con todas las variables.
+
+- **group_cols()**: seleccione todas las columnas de agrupación declaradas como metadatos.
+
+Otros ayudantes seleccionan variables haciendo coincidir patrones en sus nombres:
+
+- **starts_with()**: comienza con un prefijo.
+
+- **ends_with()**: Termina con un sufijo.
+
+- **contains()**: Contiene una cadena literal.
+
+- **matches()**: Coincide con una expresión regular.
+
+- **num_range()**: Coincide con un rango numérico como x01, x02, x03.
+
+O de variables almacenadas en un vector de caracteres:
+
+- **all_of()**: Coincide con nombres de variables en un vector de caracteres. Todos los nombres deben estar presentes; de lo contrario, se generará un error.
+
+- **any_of()**: Igual que `all_of()`, excepto que no se genera ningún error para los nombres que no existen.
+
+O usando una función que defina un tipo de datos:
+
+- **where()**: Aplica una función a todas las variables y selecciona aquellas para las cuales la función regresa TRUE.
+
+### Ejemplos de select() 
+
+En este documento vamos a mostrar algunos ejemplos utilizando datos de tamizaje de test de sangre oculta, en un dataframe de nombre **tsomf**.
+
+```{r, message=F, echo=F, warning=F}
+library(tidyverse)
+
+tsomf <- read_csv2("tsomf_prueba.csv", locale = locale(encoding = "ISO-8859-1"))
+
+tsomf <- tsomf |> mutate(fecha_nacimiento = dmy(fecha_nacimiento),
+                fecha_test = dmy(fecha_test),
+                fecha_entrega = dmy(fecha_entrega),
+                edad = round(as.duration(fecha_test - fecha_nacimiento) / dyears(1)))
+```
+
+Seleccionamos las primeras tres variables por posición
+
+```{r, eval=F}
+tsomf |> 
+  select(1:3) 
+```
+
+```{r, echo=F}
+tsomf |> 
+  select(1:3) |> 
+  print(n = 3)
+```
+
+Una variable por su nombre
+
+```{r, eval=FALSE}
+tsomf |> 
+  select(sexo) 
+```
+
+```{r, echo=F}
+tsomf |> 
+  select(sexo) |> 
+  print(n = 3)
+```
+
+Variables que comienzan con la palabra "fecha"
+
+```{r, eval=FALSE}
+tsomf |> 
+  select(starts_with("fecha"))
+```
+
+```{r, echo=F}
+tsomf |> 
+  select(starts_with("fecha")) |> 
+  print(n = 3)
+```
+
+Variables que finalizan con la palabra "sisa"
+
+```{r, eval=F}
+tsomf |> 
+  select(ends_with("sisa"))
+```
+
+```{r, echo=F}
+tsomf |> 
+  select(ends_with("sisa")) |> 
+  print(n = 3)
+```
+
+Variables que contengan la palabra "entrega" dentro de su nombre
+
+```{r, eval=F}
+tsomf |> 
+  select(contains("entrega")) 
+```
+
+```{r, echo=F}
+tsomf |> 
+  select(contains("entrega")) |> 
+  print(n = 3)
+```
+
+Variables que cumplan con la condición de tener tipo numerico.
+
+```{r, eval=F}
+tsomf |> 
+  select(where(is.numeric))
+```
+
+```{r, echo=FALSE}
+tsomf |> 
+  select(where(is.numeric)) |> 
+  print(n = 3)
+```
+
+Variables que coincidan con los nombres almacenados en los elementos del vector x.
+
+```{r, eval=F}
+x <- c("sexo", "edad", "resultado")
+
+tsomf |> 
+  select(any_of(x)) 
+```
+
+```{r, echo=F}
+x <- c("sexo", "edad", "resultado")
+
+tsomf |> 
+  select(any_of(x)) |> 
+  print(n = 3)
+```
+
+## Función rename()
+
+La función `rename()` renombra variables de una tabla de datos. Su aplicación es muy simple:
+
+> datos |> rename(nombre_nuevo = nombre_viejo)
+
+Cambiemos una variable de este dataframe con el que venimos trabajando.
+
+```{r, eval=F}
+tsomf |> 
+  rename(informe_centro_salud = centrosalud_informe)
+```
+
+```{r, echo=F}
+tsomf |> 
+  rename(informe_centro_salud = centrosalud_informe) |> 
+  print(n = 3)
+```
+
+## Función rename_with()
+
+La variación de la función anterior denominada `rename_with()` permite renombrar variables de una tabla a través de aplicar determinadas funciones.
+
+Por ejemplo, renombramos pasando a mayúsculas todas las variables que comiencen con "centrosalud".
+
+```{r, eval=F}
+tsomf |> 
+  rename_with(.fn = toupper, .cols = starts_with("centrosalud")) |> 
+  select(starts_with("CENTROSALUD"))
+```
+
+```{r, echo=F}
+tsomf |> 
+  rename_with(.fn = toupper, .cols = starts_with("centrosalud")) |> 
+  select(starts_with("CENTROSALUD")) |> 
+  print(n = 3)
+```
+
+## Función filter()
+
+La función `filter()` trabaja con las filas de la tabla de datos, creando subconjuntos de las observaciones que cumplen con determinada condición de una o más variables. 
+
+Su estructura sintáctica básica tiene un primer argumento que es el nombre del dataframe con el que trabajamos y el segundo y siguientes argumentos son las condiciones que filtran ese conjunto de datos.
+
+
+### Operadores de comparación
+
+Los operadores comunes y funciones que se usan en el lenguaje para construir estas condiciones son:
+
+| Operador / función |  Detalle        |
+|:-----------:|-----------------|
+| <           | menor a         |
+| >           | mayor a         |
+| ==          | igual a         |
+| <=          | menor o igual a |
+| >=          | mayor o igual a |
+| !=          | no igual a      |
+| %in%        | es parte de     |
+| is.na()       | es NA           |
+| !is.na()      | no es NA        |
+| between()     | valores entre   |
+| near()         |comparación numérica con tolerancia|
+
+
+### Conectores lógicos
+
+Para conectar y relacionar dos o más condiciones de filtrado se utilizan los siguientes conectores o funciones.
+
+| Conectores / función |  Detalle              |
+|:-------:|----------------|
+|    &    | AND booleano   |
+|    \|    | OR booleano    |
+|   xor   | OR exclusivo   |
+|    !    | NOT            |
+|   any()   | cualquier TRUE |
+|   all()   | todos TRUE     |
+
+Visto como operaciones entre conjuntos:
+
+```{r,echo=F,  fig.align='center', out.width = "70%", dpi=300}
+knitr::include_graphics("booleanos.PNG")
+```
+
+### Ejemplos de filter()
+
+Debajo incorporamos algunos ejemplos de prueba que podemos mostrar. Al finalizar el filtrado de cada ejemplo agregamos una selección de las variables protagonistas de la condición para visualizar que valores son los que quedan en el subconjunto de observaciones.
+
+```{r}
+# sexo igual a F y edad mayor a 70 años
+
+tsomf |> 
+  filter(sexo == "F" & edad > 70) |> 
+  select(sexo, edad)
+```
+
+```{r}
+# edad entre 20 y 40 años (incluye extremos)
+
+tsomf |> 
+  filter(between(edad, 20, 40)) |> 
+  select(edad)
+```
+```{r}
+# categorías de centrosalud_entrega incluidas en el vector centro_salud
+
+centro_salud <- c("HOSPITAL CENTRAL", "CTRO DE SALUD LA CAÑADA", "CTRO DE SALUD Nº 16 VILLA NUEVA")
+
+tsomf |> 
+  filter(centrosalud_entrega %in% centro_salud) |> 
+  select(centrosalud_entrega)
+```
+
+La idea común que subyace en la utilización de estas funciones-verbos de dplyr es combinar mediante tuberías diferentes tareas sencillas que en conjunto puede resolver problemas complejos.
+
+En el próximo encuentro seguiremos viendo las demás funciones del paquete y aprenderemos como se integran con las vistas hasta ahora.
+
