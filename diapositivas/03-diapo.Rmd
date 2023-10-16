@@ -1,5 +1,5 @@
 ---
-title: "Procesamiento de datos con dplyr"
+title: "Procesamiento de datos - Parte 2"
 subtitle: ""  
 author: 
   - "Instituto Nacional de Epidemiología"
@@ -58,7 +58,7 @@ background-position: 50% 10%
 
 - Hoy continuaremos con las funciones principales `arrange()`, `mutate()` y `summarise()` 
 
-- Ya también con otras funciones importantes como `group_by()`, `count()`, `if_else()`, `case_when()`, `beteewn()`, entre otras.
+- Y también con otras funciones importantes como `group_by()`, `count()`, `if_else()`, `case_when()`, `beteewn()`, entre otras.
 ]
 
 
@@ -177,16 +177,16 @@ Algunas de las operaciones y funciones vectorizadas provistas por el lenguaje R 
 
 ---
 ## Ejemplo de mutate()
-
+.font160[
 ```{r, eval=F}
-# Coercionamos la variable FENAC aplicando la función dmy() de lubridate
+# Coercionamos la variable FENAC aplicando la 
+# función dmy() de lubridate
 
 rita |> 
   mutate(FENAC = dmy(FENAC)) |> 
   skim(FENAC) |> 
   select(skim_type, Date.min, Date.max)
 ```
-
 
 ```{r, echo=FALSE, message=F, warning=FALSE}
 library(skimr)
@@ -196,6 +196,7 @@ rita |>
   skim(FENAC) |> 
   select(skim_type, Date.min, Date.max) 
 ```
+]
 ---
 background-image: url(assets/summarise.PNG)
 background-size: 500px
@@ -241,9 +242,10 @@ La mayoría de estas funciones aplican en tipos de datos int (enteros), dbl (rea
 
 ---
 ## Ejemplo de summarise()
-
+.font160[
 ```{r, eval=F}
-# Resumimos la variable DGED calculando media, desvío estandar, mínimo y máximo
+# Resumimos la variable DGED calculando media, 
+# desvío estandar, mínimo y máximo
 
 rita |> 
   summarise(Media = mean(DGED),
@@ -260,7 +262,7 @@ rita |>
             Min = min(DGED),
             Max = max(DGED))
 ```
-
+]
 
 ---
 ## group_by()
@@ -283,9 +285,10 @@ Junto a esta función aparece **ungroup()** que .bold[deshace] el agrupamiento.]
 
 ---
 ## Ejemplo de group_by()
-
+.font160[
 ```{r, eval=F}
-# Resumimos la variable DGED según PTESEXN calculando media, desvío estandar, mínimo y máximo
+# Resumimos la variable DGED según PTESEXN 
+# calculando media, desvío estandar, mínimo y máximo
 
 rita |> 
   group_by(PTESXN) |> 
@@ -299,12 +302,12 @@ rita |>
 ```{r, echo=F, message=F, warning=FALSE}
 rita |> 
     group_by(PTESXN) |> 
-  summarise(Media = mean(DGED),
-            Desvio = sd(DGED),
-            Min = min(DGED),
-            Max = max(DGED))
+    summarise(Media = mean(DGED),
+              Desvio = sd(DGED),
+              Min = min(DGED),
+              Max = max(DGED))
 ```
-
+]
 
 ---
 ## count()
@@ -329,13 +332,15 @@ También se pueden agregar más variables separadas por una coma.
 
 ---
 ## Ejemplo de count()
-
+.font130[
 ```{r, echo=T, message=F, warning=FALSE}
-# Contamos las frecuencias de la variable IDESTN ordenadas de mayor a menor
+# Contamos las frecuencias de la variable IDESTN 
+# ordenadas de mayor a menor
 
 rita |> 
   count(IDESTN, sort = T)
 ```
+]
 ---
 ## if_else()
 
@@ -345,9 +350,28 @@ La función **if_else()** devuelve valores dependiendo del resultado de una cond
 Los valores devueltos para cada observación se almacenan dentro de una variable definida en **mutate()**.
 ]
 
-.font180[.center[datos |> mutate(x = **if_else**(condicion, valor_T, valor_F)]]
+<br>
 
+.font180[
+```{r, eval=F}
+datos |> 
+  mutate(x = if_else(condicion, valor_T, valor_F)
+```
+]
 
+---
+## Ejemplo de if_else()
+```{r, echo=F, message=F, warning=FALSE}
+unique(rita$CATPO) 
+```
+
+```{r,  message=F, warning=FALSE}
+# fusionamos los valores N/D e Ignorado en la variable CATPO (tipo de caso)
+
+rita |> 
+  mutate(CATPO = if_else(CATPO %in% c("N/D", "Ignorado"), "S/D", CATPO)) |>
+  count(CATPO) 
+```
 
 ---
 ## case_when()
@@ -357,8 +381,68 @@ La función **case_when()** ejecuta una vectorización múltiple de funciones if
 
 Los valores devueltos para cada observación se almacenan dentro de una variable definida en **mutate()**.
 
-La asignación de valores NA difiere según tipo de variable creada (NA\_character\_, NA\_integer\_, NA\_real\_)
 ]
 
-.font180[.center[datos |> mutate(x = **case_when**(condicion ~ valor_T)]]
+.font180[
 
+```{r, eval=F}
+datos |> 
+  mutate(x = case_when(
+    condicion ~ valor_T, 
+    ...,
+    .default = valor)
+```
+]
+  
+  
+
+---
+## Ejemplo de case_when()
+.font130[
+```{r,  message=F, warning=FALSE}
+# creamos la variable MORFO conteniendo grupos de neoplasias según rango 
+# de valores de MFG (reducimos la asignación para el ejemplo)
+
+rita |> 
+  mutate(MORFO = case_when(
+    MFG >= 8010 & MFG < 8050 ~ "Neoplasias epiteliales, SAI",
+    MFG >= 8050 & MFG < 8090 ~ "Neoplasias epidermoides",
+    MFG >= 8090 & MFG < 8120 ~ "Neoplasias basocelulares",
+    .default = "Otros" 
+  )) |> 
+  count(MORFO)
+
+```
+]
+
+---
+## between()
+
+.font140[ 
+La función **between()** es una función atajo para operaciones de condición  _>=_ x _<=_ , implementado para vectores numéricos o de fecha/hora.
+
+Se utiliza dentro de estructuras donde se escriben condiciones (`filter()`, `mutate()`, etc).
+]
+
+.font160[.center[  
+datos |> filter(**between**(x, izquierda, derecha)) 
+]]
+
+.font140[ 
+Los dos extremos (izquierda y derecha) se incluyen en el intervalo
+]
+
+---
+## Ejemplo de between()
+
+.font140[
+```{r,  message=F, warning=FALSE}
+# filtramos observaciones donde la variable DGED sea mayor 
+# o igual a 95 y menor o igual a 115 años
+
+rita |> 
+ filter(between(DGED, 95, 115)) |> 
+  select(DGED)
+
+```
+]
