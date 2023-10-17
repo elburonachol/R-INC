@@ -117,12 +117,12 @@ Algunas de las operaciones y funciones vectorizadas provistas por el lenguaje R 
 
 - Condicional (funciones propias de dplyr) - **if_else()** - **case_when()**.
 
-### Ejmeplo de mutate()
+### Ejemplo de mutate()
 
 ```{r, eval=F}
 tsomf |> 
   mutate(ranking = min_rank(centrosalud_informe)) |> 
-  select(centro, ranking)
+  select(centrosalud_informe, ranking)
 ```
 
 ```{r, echo=F}
