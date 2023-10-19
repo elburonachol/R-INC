@@ -125,6 +125,10 @@ tsomf |>
   select(centrosalud_informe, ranking)
 ```
 
+
+
+
+
 ```{r, echo=F}
 tsomf |> 
   rename(informe_centro_salud = centrosalud_informe) |> 
