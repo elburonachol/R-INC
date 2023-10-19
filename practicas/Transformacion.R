@@ -160,10 +160,123 @@ rita |>
 
 # Combinando piezas
 
-rita |> slice_max(DGED, prop = 0.01) |> select(DGED)
+# Tabla de frecuencia relativa-porcentual
 
-# incluir slice() y/o head()  
-# slice_head() y slice_max()
-# incluir relocate()
+rita |> 
+  mutate(DGED_categorica = case_when(
+    between(DGED, 0, 9) ~ "0-9",
+    between(DGED, 10, 19) ~ "10-19",
+    between(DGED, 20, 34) ~ "20-34",
+    between(DGED, 35, 49) ~ "35-49",
+    between(DGED, 50, 64) ~ "50-64",
+    between(DGED, 65, Inf) ~ "65 y más",
+  )) |> 
+  count(DGED_categorica) |> 
+  mutate(porcentaje = n/sum(n)*100)
+
+# Lo mismo pero agrupado por sexo (frecuencia relativa a sexo)
+
+rita |> 
+  mutate(DGED_categorica = case_when(
+    between(DGED, 0, 9) ~ "0-9",
+    between(DGED, 10, 19) ~ "10-19",
+    between(DGED, 20, 34) ~ "20-34",
+    between(DGED, 35, 49) ~ "35-49",
+    between(DGED, 50, 64) ~ "50-64",
+    between(DGED, 65, Inf) ~ "65 y más",
+  )) |> 
+  group_by(PTESXN) |> 
+  count(DGED_categorica) |> 
+  mutate(porcentaje = n/sum(n)*100)
+
+# Lo mismo pero agrupado por sexo (frecuencia relativa al total)
+
+rita |> 
+  mutate(DGED_categorica = case_when(
+    between(DGED, 0, 9) ~ "0-9",
+    between(DGED, 10, 19) ~ "10-19",
+    between(DGED, 20, 34) ~ "20-34",
+    between(DGED, 35, 49) ~ "35-49",
+    between(DGED, 50, 64) ~ "50-64",
+    between(DGED, 65, Inf) ~ "65 y más",
+  )) |> 
+  count(PTESXN, DGED_categorica) |> 
+  mutate(porcentaje = n/sum(n)*100)
 
 
+# otras funciones útiles
+
+# familia slice_*()
+
+# visualiza observaciones completas de un dataframe segun rango
+
+rita |> 
+  slice(1:3)
+
+rita |> 
+  slice(2:4)
+
+# visualiza observaciones completas de la cabecera de un dataframe según n
+
+rita |> 
+  slice_head(n = 5)
+
+# visualiza observaciones completas de un dataframe según valores máximos
+
+rita |> 
+  select(IDPTE, PTESXN, DGED) |> 
+  slice_max(order_by = DGED, n = 5)
+
+# case_match()
+
+# similar a case_when pero sin condición
+
+rita |> 
+  mutate(SEXO = case_match(PTESX,
+                           1 ~ "Varon",
+                           2 ~ "Mujer"
+  )) |> 
+  select(IDPTE, PTESX, SEXO)
+
+# na_if()
+
+rita |> 
+  count(PTEDU)
+
+rita |> 
+  mutate(PTEDU = na_if(PTEDU, "N/D")) |> 
+  count(PTEDU)
+  
+  
+# distinct() y pull()
+
+# categorías únicas de la variable
+
+rita |> 
+  distinct(PTEDU) 
+
+# idem pero la salida es como vector y no como dataframe
+
+rita |> 
+  distinct(PTEDU) |> 
+  pull()
+
+
+# relocate()
+
+rita |> 
+  mutate(SEXO = case_match(PTESX,
+                           1 ~ "Varon",
+                           2 ~ "Mujer"
+  )) |> View()
+
+# siempre las variables nuevas se ubican al final de las variables de la tabla
+
+rita |> 
+  mutate(SEXO = case_match(PTESX,
+                           1 ~ "Varon",
+                           2 ~ "Mujer"
+  )) |> 
+  relocate(SEXO, .before = PTESX)
+
+# se puede utilizar .before o .after para ubicar segun la variable de referencia
