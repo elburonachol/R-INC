@@ -468,4 +468,36 @@ background-position: 50% 10%
 ---
 ## Manejo de NA's con naniar
 
+.font150[
+El paquete **naniar** es otro paquete que reúne funciones para el manejo de valores faltantes (NA en R).
+
+- Proporciona funciones analíticas y visuales de detección y gestión
+
+- Es compatible con el mundo "tidy" de tidyverse
+
+- Posibilita el trabajo de imputación (no lo trataremos en el curso)
+]
 ---
+## naniar
+
+.font150[
+De las muchas funciones que tiene el paquete seleccionamos algunas para mostrar que son muy útiles para nuestra tarea habitual.
+
+`miss_var_summary()`: proporciona un resumen sobre los valores NA en cada variable del dataframe
+
+`gg_miss_upset()`: genera un gráfico Upset sobre los valores NA de dataframe
+
+`replace_with_na()`: reemplaza valores específicos con valores NA
+
+`replace_na_with()`: reemplaza valores NA con valores específicos
+
+]
+---
+## gg_miss_upset() en dataframe rita
+
+```{r, echo=F, message=F, warning=F, fig.align="center", fig.width=8}
+rita <- read_csv2("assets/rita_prueba.csv", locale = locale(encoding = "UTF-8"))
+library(naniar)
+
+gg_miss_upset(rita)
+```
