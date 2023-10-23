@@ -58,7 +58,7 @@ background-position: 50% 10%
 
 - Hoy continuaremos con las funciones principales `arrange()`, `mutate()` y `summarise()` 
 
-- Y también con otras funciones importantes como `group_by()`, `count()`, `if_else()`, `case_when()`, `beteewn()`, entre otras.
+- Y también con otras funciones importantes como `group_by()`, `count()`, `if_else()`, `case_when()`, `between()`, entre otras.
 ]
 
 
