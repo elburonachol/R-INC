@@ -70,3 +70,26 @@ tto |>
   filter(!is.na(tiempo) & tiempo >= 0 & !is.na(ESTTON) & año_inicio == 2023) |> 
   arrange(inicio) |> 
   pivot_wider(names_from = inicio, values_from = ESTTON) |> View()
+
+## tabla segun Gisel
+
+tabla <- tto |> 
+  filter(!is.na(ESTTON) & ESTTON != "Ignorado") |> 
+  select(IDPTE, IDTUM, FITTO, ESTTON, TPGFN) |> 
+  group_by(IDPTE, IDTUM, TPGFN, ESTTON) |> 
+  filter(FITTO == min(FITTO)) |> 
+  ungroup() |> 
+  distinct(IDPTE, IDTUM, FITTO, ESTTON, TPGFN) |>
+  pivot_wider(names_from = ESTTON, values_from = FITTO)
+
+
+## 
+  
+tto |> 
+  filter(!is.na(ESTTON), ESTTON != "Ignorado", !is.na(FITTO)) |> 
+  select(IDPTE, IDTUM, FITTO, ESTTON, TPGFN) |> 
+  group_by(IDPTE, IDTUM, TPGFN, ESTTON) |> 
+  mutate(trat = min_rank(FITTO)) |> 
+  ungroup() |> 
+  distinct(IDPTE, IDTUM, FITTO, ESTTON, TPGFN, trat) |>
+  pivot_wider(names_from = trat, values_from = FITTO) 
