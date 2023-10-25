@@ -85,11 +85,29 @@ tabla <- tto |>
 
 ## 
   
-tto |> 
-  filter(!is.na(ESTTON), ESTTON != "Ignorado", !is.na(FITTO)) |> 
-  select(IDPTE, IDTUM, FITTO, ESTTON, TPGFN) |> 
-  group_by(IDPTE, IDTUM, TPGFN, ESTTON) |> 
+tabla_tratamientos <- tto |> 
+  filter(!is.na(ESTTON), ESTTON != "Ignorado", !is.na(FITTO), !is.na(TPGFN)) |> 
+  distinct(IDPTE, IDTUM, INTTON, FITTO, ESTTON, TPGFN) |> 
+  group_by(IDPTE, IDTUM, INTTON, TPGFN, ESTTON) |> 
   mutate(trat = min_rank(FITTO)) |> 
   ungroup() |> 
-  distinct(IDPTE, IDTUM, FITTO, ESTTON, TPGFN, trat) |>
-  pivot_wider(names_from = trat, values_from = FITTO) 
+  arrange(trat) |> 
+  pivot_wider(names_from = trat, values_from = FITTO) |> 
+  rowwise() |> 
+  mutate(cantidad = sum(as.logical(c_across(`1`:`33`)), na.rm = T)) 
+
+    
+tabla_tratamientos |> ungroup() |> 
+  count(cantidad)
+
+write_csv2(tabla_tratamientos, file = "tabla_tratamientos.csv", na = "")
+
+#  ))sum(as.logical(c(`1`, `2`)), rm.na = T)) |> View()
+
+
+#mutate(var_total = case_when(
+#  ID %in% 2 ~{
+#    x <- c_across(starts_with('var[0-9]+'))
+#    sum(x[x > 0])
+#  },
+#  TRUE ~ var_total
