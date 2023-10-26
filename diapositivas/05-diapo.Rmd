@@ -336,7 +336,7 @@ Las funciones de **dplyr** para esta tarea son:
 ]
 
 ---
-## Detección de duplicados
+## Gestión de duplicados
 
 
 
@@ -344,7 +344,15 @@ Las funciones de **dplyr** para esta tarea son:
 ---
 ## Escritura de datos (exportación)
 
+.font140[
+El mismo paquete **readr** que utilizamos para hacer lectura de datos nos permite exportarlos.
 
+Las funciones en este caso comienzan con el prefijo **write_** y entre sus argumentos obligatorios se encuentra el nombre del objeto dataframe que contiene los datos a exportar y el nombre del archivo de salida. 
+
+Las funciones comunes son `write_delim()`, `write_csv()`, `write_csv2()`, `write_excel_csv()` entre otras. 
+
+Para exportar archivos con formato Excel vamos a utilizar la función `write.xslx()` del paquete **openxlsx**.  
+]
 
 ---
 
