@@ -32,8 +32,8 @@ hpv |>
 hpv |> 
   select(where(is.POSIXct)) 
 
-# de las 6 tipo fecha/hora al menos la hora de
-# las primeras tres las vemos en 00:00:00
+# de las 6 tipo fecha/hora sus horas
+# las vemos en 00:00:00, dado que son solo fechas
 
 # Existe alguna otra variable de fecha mal leída?
 
@@ -60,6 +60,9 @@ hpv |>
 
 
 library(janitor)
+
+# primero convertimos en NA los valores "NO" y 
+# luego aplicamos excel_numeric_to_date() 
 
 hpv <- hpv |>
   mutate(pap_previo = na_if(pap_previo, "NO"),
