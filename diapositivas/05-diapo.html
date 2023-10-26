@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Gestión de tablas de datos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Instituto Nacional de Epidemiología" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="animate.min.css" type="text/css" />
+    <link rel="stylesheet" href="fonts_mtheme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Gestión de tablas de datos
+]
+.author[
+### Instituto Nacional de Epidemiología
+]
+.date[
+### 06-11-2023
+]
+
+---
+
+
+layout: true
+class: animated, fadeIn
+
+
+
+
+
+
+---
+background-image: url(assets/tidy.PNG)
+background-size: 650px
+background-position: 50% 80%
+
+## Datos ordenados
+
+.font140[ 
+Llamamos **tidy data** o "datos ordenados" cuando:
+
+- Cada variable está en una columna
+- Cada observación está en una fila
+- Cada celda del cruce entre una columna y una fila es un valor
+- Cada tabla pertenece a una unidad de observación
+]
+---
+class: left, top
+
+
+## Ejemplo de tabla de datos
+&lt;br&gt; 
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2010 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2011 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2012 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2013 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Argentina &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40374224 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40728738 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41086927 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41446246 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 195210154 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 196935134 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 198656019 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 200361925 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Uruguay &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3371982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3383486 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3395253 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3407062 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br&gt; 
+&lt;br&gt; 
+&lt;br&gt;
+.center[.font160[La tabla cumple con las reglas de "datos ordenados"?]]
+
+---
+## La misma tabla "ordenada"
+
+.font150[]
+&lt;br&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; pais &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; anio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; casos &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; poblacion &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afganistán &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 745 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19987071 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afganistán &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2666 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20595360 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brasil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37737 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 172006362 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brasil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80488 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174504898 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212258 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1272915272 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 213766 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1280428583 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+## Problemas comunes en tabla "desordenadas" de datos
+
+.font150[
+- Una variable se extiende por varias columnas.
+
+- Una observación está dispersa entre múltiples filas
+] 
+
+### Solución:
+
+.font150[
+Usamos funciones pivot del paquete **tidyr** de tidyverse
+
+- Función **pivot_longer()** - Convierte nombres de variables en valores de una nueva variable.
+
+- Función **pivot_wider()** - Convierte valores de una variable en variables nuevas.
+]
+
+---
+background-image: url(assets/tabla_longer.png)
+background-size: 700px
+background-position: 50% 75%
+
+## pivot_longer()
+.font140[
+
+```r
+tabla_casos |&gt; 
+  pivot_longer(cols = 2:3, names_to = "anio", values_to = "casos")
+```
+]
+---
+background-image: url(assets/tabla_wider.PNG)
+background-size: 700px
+background-position: 50% 70%
+
+## pivot_longer()
+.font140[
+
+```r
+tabla_ejemplo2 |&gt; 
+  pivot_wider(names_from = tipo, values_from = casos)
+```
+]
+---
+## Uniones en datos relacionales
+
+.font140[
+Existen situaciones donde debemos analizar datos que se encuentran en diferentes tablas.
+
+Con el fin de responder a nuestras preguntas de interés en ocasiones deberemos unirlas previamente.
+
+De manera general, se le llama **_datos relacionales_** a esas múltiples tablas de datos que provienen muchas veces de sistemas de bases de datos construidas bajo el modelo relacional o bien cuando las tablas de datos tienen fuentes distintas pero comparten alguna variable común que permita "conectarlas".
+
+]
+
+---
+## Tipos de operaciones
+
+.font140[ 
+Para trabajar con datos relacionales necesitamos de *funciones-verbos* que vinculen pares de tablas. 
+
+Las tres familias de funciones del paquete **dplyr** diseñadas para trabajar con datos relacionales son:
+
+- **Uniones de transformación** (del inglés *mutating joins*), agregan nuevas variables a una tabla a partir de observaciones coincidentes de otra tabla.
+
+- **Uniones de filtro** (del inglés *filtering joins*), filtran observaciones de una tabla en función de la coincidencia o no coincidencia de otra tabla.
+
+- **Operaciones en filas y columnas**,  sirven para unir tablas por columnas o por filas.
+]
+
+---
+## Claves
+
+.font140[
+
+- Las variables usadas para conectar cada par de variables se llaman **claves** (del inglés *key*)
+
+- Una clave es una variable (o un conjunto de variables) que identifican de manera *única* una observación.
+
+Existen dos tipos de claves:
+
+- Una **clave primaria** identifica únicamente una observación en su propia tabla. 
+
+- Una **clave foránea** únicamente identifica una observación en otra tabla. 
+]
+---
+background-image: url(assets/inner-join.PNG)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones de transformación
+
+
+.font150[.bold[Unión interior]
+
+La forma más simple de unión es la unión interior (del inglés inner join). Una unión interior une pares de observaciones siempre que sus claves sean iguales
+]
+
+---
+background-image: url(assets/inner-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Unión interior
+
+
+.font150[Función .bold[inner_join()]]
+
+---
+background-image: url(assets/uniones_exteriores.PNG)
+background-size: 400px
+background-position: 80% 70%
+
+## Uniones de transformación
+
+
+.pull-left[.font150[.bold[Uniones exteriores]]
+
+Una unión interior mantiene las observaciones que aparecen en ambas tablas. 
+
+Una unión exterior mantiene las observaciones que aparecen en al menos una de las tablas.
+
+- Una unión izquierda (left join) mantiene todas las observaciones en x.
+
+- Una unión derecha (right join) mantiene todas las observaciones en y.
+
+- Una unión completa (full join) mantiene todas las observaciones en x e y.
+]
+
+---
+background-image: url(assets/full-join.gif)
+background-size: 500px
+background-position: 50% 75%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[full_join()]]
+
+---
+background-image: url(assets/left-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[left_join()]]
+
+---
+background-image: url(assets/right-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[right_join()]]
+
+---
+background-image: url(assets/venn.PNG)
+background-size: 900px
+background-position: 50% 75%
+
+## Uniones de transformación
+
+.font140[Otra forma de ilustrar diferentes tipos de uniones es mediante un diagrama de Venn.
+
+Sin embargo, tiene una limitante importante: un diagrama de Venn no puede mostrar qué ocurre con las claves que no identifican de manera única una observación
+]
+
+---
+## Claves duplicadas
+
+&lt;br&gt;
+
+.font140[
+Hasta ahora todas las situaciones han asumido que las claves son únicas. Pero esto no siempre es así.  
+
+Existen dos posibilidades habituales:
+
+- Una tabla tiene claves duplicadas producto de una relación uno a varios.
+
+- Ambas tablas tienen claves duplicadas 
+
+Siempre que unimos claves duplicadas, obtenemos todas las posibles combinaciones, es decir, el producto cartesiano
+
+]
+---
+---
+background-image: url(assets/left-join-extra.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Claves duplicadas
+.font140[
+Ejemplo con **left_join()**
+]
+---
+background-image: url(assets/semi-join.gif)
+background-size: 500px
+background-position: 50% 95%
+
+## Uniones de filtro
+
+.font150[.bold[semi_join()]
+
+**Mantiene** todas las observaciones de la tabla **x** donde la **_clave coincide_** con la clave de la tabla **y**
+]
+
+---
+background-image: url(assets/anti-join.gif)
+background-size: 500px
+background-position: 50% 95%
+
+## Uniones de filtro
+
+.font150[.bold[anti_join()]
+
+**Descarta** todas las observaciones de la tabla **x** donde la **_clave coincide_** con la clave de la tabla **y**
+]
+
+---
+## Consejos útiles para evitar errores
+
+&lt;br&gt;
+
+.font140[
+- Identificar bien la variables que forman las claves de cada tabla.
+
+- Verificar la completitud de las claves. Si existe algún valor faltante no se podrá identificar la observación.
+
+- Verificar que las claves foráneas coinciden con las claves primarias de la otra tabla. Esto incluye comprobar coincidencia en el tipo de dato (numérico, caracter, etc)
+
+- Verificar claves duplicadas (se puede hacer aplicando **count()**)
+]
+
+---
+## Unión por filas y por columnas
+
+.font140[
+En algunas ocasiones necesitamos unir tablas que tienen formatos particulares por medio de filas o por medio de columnas.
+
+Las funciones de **dplyr** para esta tarea son:
+
+- **bind_rows()** Une una tabla debajo de otra. Aplica cuando tenemos la misma estructura en tabla de datos divida en varios archivos (por ejemplo, producto de carga simultánea de datos en diferentes computadoras con diferentes data entry)
+
+- **bind_cols()** Une una tabla al lado de la otra. Es peligroso su uso si la confundimos con las uniones de transformación porque perdemos integridad de datos en las observaciones. Sirve sólo si el "orden" de las observaciones pueden garantizar la misma identidad de las partes a unir.
+
+]
+
+---
+
+
+
+
+
+
+
+
+---
+
+class: left, middle
+
+background-image: url(assets/haven.png)
+background-size: 160px
+background-position: 50% 10%
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.font140[
+**haven** incorpora funciones de lectura de archivos provenientes de softwares privativos SPSS, SAS y Stata.
+
+Los argumentos comunes son similares entre estas funciones y coexisten con argumentos propios que se adaptan a las características particulares de cada formato de archivo.
+
+Por ejemplo, existe un argumento denominado *label* que recibe un vector de etiquetas asociado al archivo que se quiere leer. Otro argumento define la versión del archivo (actualmente, en Stata, soporta de la versión 8 a la 15)
+
+]
+
+---
+## Variables de tiempo
+
+.font150[ 
+
+- Las variables de tiempo pueden estar expresadas en diferentes unidades y formatos (fecha, hora, dia, mes, año, etc...)
+
+- Las fechas y las horas son complicadas porque tienen que reconciliar dos *fenómenos físicos* (la rotación de la Tierra y su órbita alrededor del sol), con todo un conjunto de *fenómenos geopolíticos* que incluyen: formatos distintos (dd/mm/aaaa - mm/dd/aaaa), husos horarios y horarios de verano (en algunas ocasiones y países).
+
+- Para pensar lo complejo del asunto contestemos estas preguntas:
+
+ - ¿Todos los años tienen 365 días?
+ - ¿Todos los días tienen 24 horas?
+ - ¿Cada minuto tiene 60 segundos?
+
+]
+---
+background-image: url(assets/Captura1.PNG)
+background-size: 650px
+background-position: 50% 65%
+
+## Sistemas de fechas
+
+Las variables de tiempo nos obliga a gestionar tipos de datos fecha y hora, así como también intervalos entre esos instantes.
+
+Coexisten 2 clases de objetos básicos en el lenguaje R
+
+.footnote[
+**POSIX** (acrónimo de **P**ortable **O**perating **S**ystem **I**nterface, y **X** viene de UNIX como seña de identidad de la API) es una norma escrita por la *IEEE*, que define una interfaz estándar del sistema operativo y el entorno. Los objetos fecha-hora se denominan formalmente tipos `POSIXt`, `POSIXct`, o `POSIXlt` (la diferencia no es importante)
+]
+---
+## Gestión de datos de tiempo
+&lt;br&gt;
+
+.font150[
+- Convertir a formato Date o POSIX
+
+- Extraer componentes (día, año, mes, semana, nombre del día, etc)
+
+- Trabajar con lapsos de tiempo (intervalos, duraciones y períodos)
+
+- Operaciones y cálculos con variables de tiempo
+]
+---
+background-image: url(assets/lubridate.svg), url(assets/hms.svg)
+background-size: 180px, 180px
+background-position: 30% 30%, 70% 30%
+
+## Paquete lubridate y hms
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt; 
+.font140[
+- Paquetes diseñados dentro del ecosistema **tidyverse** para el manejo de fechas y de horas.
+
+- Compatibles con tuberías y datos ordenados basados en clases de tiempo incluidas en R.
+
+- En el curso trabajaremos principalmente con **lubridate** dado que generalmente contamos con solo fechas en nuestras tablas de datos.
+]
+---
+## lubridate
+
+.font120[
+- Un **date** es un día almacenado como el número de días desde el *01/01/1970* (si es anterior los números son negativos)
+
+
+
+```r
+as_date(19660)
+```
+
+```
+## [1] "2023-10-30"
+```
+
+```r
+as_date(-1)
+```
+
+```
+## [1] "1969-12-31"
+```
+- Un **datetime** es un punto en el tiempo, almacenado como el número de segundos desde el *01/01/1970 00:00:00 UTC*
+
+```r
+as_datetime(1698624001)
+```
+
+```
+## [1] "2023-10-30 00:00:01 UTC"
+```
+]
+---
+## lubridate
+
+.pull-left[
+.font120[
+- Convierte cadenas en fechas
+
+```r
+dmy("30/10/2023")
+```
+
+```
+## [1] "2023-10-30"
+```
+
+```r
+dmy("30/10/2023") |&gt; class()
+```
+
+```
+## [1] "Date"
+```
+
+```r
+dmy_h("30/10/2023 13")
+```
+
+```
+## [1] "2023-10-30 13:00:00 UTC"
+```
+]]
+
+.pull-right[
+.font120[
+- Extrae partes de una fecha
+
+```r
+hoy &lt;- dmy("30/10/2023")
+hoy
+```
+
+```
+## [1] "2023-10-30"
+```
+
+```r
+# extraemos el año
+
+year(hoy)
+```
+
+```
+## [1] 2023
+```
+
+```r
+# extraemos la semana epidemiológica
+
+epiweek(hoy)
+```
+
+```
+## [1] 44
+```
+]]
+
+---
+## Lapsos de tiempo
+
+.font150[
+Un año trópico dura 365 días 5 h 48 min 45,10 s (365,242189 días), por lo que se produce un desfasaje con respecto a nuestro año calendario.
+
+Para realizar operaciones con fechas y date-times sorteando estas dificultades, **lubridate** ofrece tres tipos de lapsos:
+
+- **Intervalos**: lapso de tiempo que ocurre entre dos instantes específicos.
+
+- **Duraciones**: lapso de tiempo medidos en segundos exactos (máxima unidad temporal con una longitud consistente).
+
+- **Períodos**: intervalo de tiempo en unidades "humanas" mayores que segundos (minutos, días, meses, etc)
+]
+---
+## Operaciones de tiempo
+
+.font120[
+- Calculo de tiempo entre dos fechas
+]
+
+.pull-left[
+.font120[
+
+```r
+fecha1 &lt;- dmy("26/05/1973")
+fecha2 &lt;- dmy("30/10/2023")
+
+# creamos un intervalo entre las dos fechas
+intervalo &lt;- interval(start = fecha1, 
+                      end = fecha2)
+intervalo
+```
+
+```
+## [1] 1973-05-26 UTC--2023-10-30 UTC
+```
+
+```r
+# el intervalo puede ser divido por 
+# duraciones que tienen unidades diferentes
+# Las duraciones comienzan con d
+# ejemplo: dyears()
+```
+]]
+
+.pull-right[
+.font120[
+
+```r
+intervalo / dyears(1) # años
+```
+
+```
+## [1] 50.42847
+```
+
+```r
+intervalo %/% dyears(1) # solo enteros
+```
+
+```
+## [1] 50
+```
+
+```r
+intervalo / ddays()
+```
+
+```
+## [1] 18419
+```
+
+```r
+18419 / 365.25 # calculo de años
+```
+
+```
+## [1] 50.42847
+```
+]]
+
+---
+## Cadenas de caracteres (texto)
+
+.font140[ 
+
+- Para el lenguaje R, todo caracter que se encuentre entre comillas es una
+cadena de caracteres (en inglés llamada **“string”**).
+
+- Las cadenas de caracteres pueden contener letras (**“a”**), números (**“1”**) y símbolos (**“&amp;”**) o una combinación de todos ellos.
+
+Ejemplos de datos tipo cadena regular:
+
+| Valores ejemplo             | Descripción      |
+|-----------------------------|------------------|
+| C34.9                       | Topografía CIE-O |
+| 9061/6                      | Morfología CIE-O |
+| GAT-AAU-ATC-GAA             | Secuencia ADN    |
+| B188                        | Códigos CIE10    |
+| 7600XAD                     | Códigos postales |
+
+]
+---
+class: left, middle
+
+background-image: url(assets/stringr.png)
+background-size: 180px
+background-position: 50% 10%
+
+.font150[ 
+&lt;br&gt; 
+&lt;br&gt; 
+&lt;br&gt; 
+&lt;br&gt; 
+El paquete **stringr** se instala y activa cuando ejecutamos `library(tidyverse)`.
+
+- Contiene una familia de funciones diseñadas para trabajar con cadenas de caracteres.
+
+- Permite utilizar [expresiones regulares](https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular) (**regex**). 
+
+- Sus funciones comienzan con el prefijo **str_**
+
+]
+
+---
+## Algunas de sus funciones comunes
+.font140[ 
+- `str_lengtht()`: devuelve longitud de cadena
+
+- `str_sub()`: extrae o reemplaza caracteres por posición
+
+- `str_to_upper()`: convierte a mayúsculas
+
+- `str_to_lower()`: convierte a minúsculas
+
+- `str_trim()`: elimina espacios en blanco
+
+- `str_pad()`: agrega espacios en blanco u otros caracteres
+
+- `str_glue()`: une cadenas de caracteres
+]
+
+---
+background-image: url(assets/expreg1.PNG)
+background-size: 500px
+background-position: 50% 95%
+
+## Expresiones regulares
+.font140[ 
+Una expresión regular es una cadena de texto especial para describir un patrón de búsqueda que se puede utilizar generalmente para:
+
+- localizar cadenas de caracteres (ubicar - filtrar)
+
+- extraer una porción de los datos (extraer)
+
+- modificar los datos localizados (reemplazar)
+
+Una expresión regular habitualmente se construye concatenando la especificación de caracteres secuenciados.
+]
+
+---
+## Operaciones y funciones que permiten expresiones regulares
+.font150[ 
+- Detectar patrones `str_detect()`: Devuelve vector lógico
+
+- Filtrar patrones `str_subset()`: Devuelve coincidencia en patrón
+
+- Extraer patrones `str_extract()`: Extrae coincidencias
+
+- Localizar patrones `str_locate()`: Localiza comienzo y final del patrón
+
+- Reemplazar patrones `str_replace()`: Reemplaza por otra cadena
+
+]
+---
+## Expresiones regulares 
+|Símbolos y metacaracteres    |Descripción                                |
+|-----------------------------|-------------------------------------------|
+|^                            |Inicio de la cadena                                                 |
+|$                            |Final de la cadena                                                  |
+|[ ]                          |Cualquier carácter del conjunto entre   paréntesis                  |
+|[^]                          |Cualquier carácter no incluido en el   conjunto                     |
+|?                            |Cero   o una ocurrencia de lo que precede al símbolo                |
+|+                            |El caracter   que le precede debe aparecer al menos una vez         |
+|*                            |El caracter   que le precede debe aparecer cero, una o más veces    |
+|{x}                          |x   ocurrencias del caracter   que lo precede                       |
+|{x,z}                        |Entre   x y z ocurrencias del caracter   que lo precede             |
+|{x,}                         |x o   más ocurrencias de lo que lo precede                          |
+---
+## Expresiones regulares 
+
+|Símbolos y metacaracteres    |     Descripción    |
+|-|-|
+| &amp;#124;    |Une subexpresiones    |
+|.    |Concuerda con cualquier carácter individual    |
+|( )    |Agrupa   subexpresiones    |
+|0-9   a-z A-Z    |Rangos de números, letras…    |
+|\\    |Marca el carácter siguiente como un   carácter especial    |
+|\.    |Representa un punto dentro del patrón    |
+|\s    |Representa un espacio en blanco dentro   del patrón    |
+|\n    |Representa un salto de línea dentro del patrón    |
+|\d    |Representa un dígito numérico dentro del patrón    |
+|\w    |Representa un carácter alfanumérico dentro   del patrón    |
+---
+## Expresiones regulares
+.font140[ 
+Algunos ejemplos sencillos:
+
+**^[ML][0-9]$**
+
+Cadenas que comiencen con M o L y finalicen con algún número entre 0 y 9
+
+**4{3}**
+
+Cadenas que contengan tres números 4 repetidos continuos
+
+**^E\\\\d** 
+
+Cadenas que comiencen con E y continúen con un número cualquiera
+
+**[A-z]$** 
+
+Cadenas que finaliza con alguna letra mayúscula o minúscula
+]
+---
+## Factores
+
+.font150[ 
+
+- Los factores son el formato de datos que el lenguaje R reserva para trabajar con **variables categóricas**, es decir, variables que tienen un conjunto fijo y conocido de valores posibles (*categorías cerradas*). 
+
+- Están compuesto por valores numéricos internos asociados a etiquetas que definen cada uno de los **niveles** (categorías de la variable).
+
+- Son necesarios cuando necesitamos mostrar vectores de caracteres en un **orden** específico (no alfabético).
+]
+---
+class: left, middle
+background-image: url(assets/forcats.PNG)
+background-size: 180px
+background-position: 50% 10%
+
+.font150[ 
+&lt;br&gt; 
+&lt;br&gt; 
+&lt;br&gt; 
+&lt;br&gt;
+- El paquete forcats proporciona un conjunto de herramientas útiles que resuelven problemas comunes con factores en R.
+
+- Respeta los principios del tidyverse
+
+- Todas sus funciones comienzan con el prefijo **fct_**
+]
+
+---
+## Funciones mas relevantes
+&lt;br&gt;
+.font150[
+- `fct_recode()`: recodifica niveles
+
+- `fct_relevel()`: reordena niveles
+
+- `fct_expand()`: agrega nuevos niveles
+
+- `fct_drop()`: elimina niveles no utilizados
+
+- `fct_rev()`: revierte orden de los niveles
+
+- `fct_unique()`: muestra valores únicos del factor
+]
+---
+## Funciones mas relevantes
+&lt;br&gt;
+.font150[
+- `fct_infreq()`: ordena niveles por frecuencia
+
+- `fct_explicit_na()`: explicita valores NA (agrega etiqueta al nivel)
+ 
+- `fct_other()`: unifica niveles concretos en "otros"
+
+- `fct_lump()`: unifica niveles menos frecuentes absolutos en "otros"
+
+- `fct_lump_prop()`: unifica niveles menos frecuentes porcentuales en "otros"
+]
+---
+## Manejo de NA's con naniar
+
+.font150[
+El paquete **naniar** es otro paquete que reúne funciones para el manejo de valores faltantes (NA en R).
+
+- Proporciona funciones analíticas y visuales de detección y gestión
+
+- Es compatible con el mundo "tidy" de tidyverse
+
+- Posibilita el trabajo de imputación (no lo trataremos en el curso)
+]
+---
+## naniar
+
+.font150[
+De las muchas funciones que tiene el paquete seleccionamos algunas para mostrar que son muy útiles para nuestra tarea habitual.
+
+`miss_var_summary()`: proporciona un resumen sobre los valores NA en cada variable del dataframe
+
+`gg_miss_upset()`: genera un gráfico Upset sobre los valores NA de dataframe
+
+`replace_with_na()`: reemplaza valores específicos con valores NA
+
+`replace_na_with()`: reemplaza valores NA con valores específicos
+
+]
+---
+## gg_miss_upset() en dataframe rita
+
+&lt;img src="05-diapo_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url(logo_INE.PNG);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 55px;
+  height: 64px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
