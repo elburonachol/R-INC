@@ -204,11 +204,17 @@ gg_miss_upset(rita,
 
 # las funciones se integran con las conocidas del tidyverse
 
+# creamos un vector de nombres de variables de rita con
+# porcentajes de NA menores a 40 % 
+
 variables <- miss_var_summary(rita) |> 
   filter(pct_miss < 40) |> 
   pull(variable)
 
 variables 
+
+# utilizamos el vector para seleccionar esas variables
+# dentro del gráfico gg_miss_upset
 
 rita |> 
   select(any_of(variables)) |> 

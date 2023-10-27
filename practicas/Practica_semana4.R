@@ -25,16 +25,77 @@ tsomf <- read_csv2("practicas/tsomf_prueba.csv",
 
 glimpse(tsomf)
 
+# crearemos otros datos particulares de práctica
+
+datos <- tribble(
+  ~SEXO, ~EDUCACION, ~GRUPO_EDAD, 
+  "Varon", "Primario Incompleto", "0-9",
+  "MUJER", "Secundario Completo", "10-19",
+  "Mujer", "Secundario Completo", "40-49",
+  "Varon", "Secundario Incompleto", "10-19",
+  "Hombre", "Universitario Completo", "20-29"
+)
+
 # cadenas de caracteres
 
+# A las funciones de stringr vistas en el encuentro le
+# sumaremos otras para gestionar cadenas de caracteres 
+# en el marco de la depuración de datos
+
+# Observemos la variable SEXO de la tabla datos
+
+datos |> 
+  select(SEXO)
+
+# Evidentemente hay categorías que conceptualmente son las
+# mismas pero están escritas de diferente forma
+
+# Si quisieramos hacer una tabla de frecuencia, pasaría esto:
+
+datos |> 
+  count(SEXO)
+
+# tenemos 2 mujeres escritas con mayúsculas y minúsculas y
+# 2 varones escritos como Varon y Hombre
+
+# apliquemos un par de funciones de stringr para corregir esto
+
+datos |> 
+  mutate(SEXO = str_to_upper(SEXO),
+         SEXO = str_replace(SEXO, "HOMBRE", "VARON")) |> 
+  count(SEXO)
+
+# en primer lugar la estructura de modificar variables se
+# incluye dentro de un mutate
+# luego usamos str_to_upper para pasar a todos los valores a
+# mayúsculas unificando lo escrito
+# en tercer lugar usamos str_replace para reemplazar
+# el valor incorrecto 
+# finalmente armamos la tabla de frecuencia para verificar
+
+# habitualmente estas tareas de depuración se almacenan en
+# una nueva tabla de datos depurados o bien en el mismo dataframe
+
+# otra función útil cuando queremos editar variables con vistas
+# a presentaciones en tablas o gráficos es str_glue()
+
+datos |> 
+  select(GRUPO_EDAD)
+
+# si queremos tener etiquetas agregando la palabra años a 
+# estos grupos etarios se puede hacer:
+
+datos |> 
+  mutate(GRUPO_EDAD = str_glue("{GRUPO_EDAD} años")) |> 
+  select(GRUPO_EDAD)
 
 
-# fechas
+# variables de tiempo - fechas
 
 # hay varias variables de tipo fecha dentro de la tabla de datos
-# pero en la lectura fueron interpretadas como caracteres, porque
-# el formato dd/mm/aaaa con la que están configuradas no son más
-# que caracteres alfanuméricos
+# leída (tsomf.csv) pero en la lectura fueron interpretadas como
+# caracteres, porque el formato dd/mm/aaaa con la que están 
+# configuradas no son más que caracteres alfanuméricos
 # el formato interno que R reconoce como Date es aaaa-mm-dd
 
 # vamos a transformar tres de ellas en el formato adecuado y 
@@ -155,3 +216,73 @@ tsomf |>
 
 # factores
 
+# volvemos con la tabla datos que usamos en la gestión de caracteres
+
+datos
+
+# las tres variables pueden ser vistas como variables con 
+# categorías cerradas por lo tanto se pueden o, dependiendo
+# del uso futuro, deben convertir en factor.
+
+# veamos como ejemplo la variable EDUCACION
+
+# si vamos a crear una tabla de frecuencia quedaría así:
+
+datos |> 
+  count(EDUCACION)
+
+# resulta que el ordenamiento natural del R lleva a tener
+# la categoría Secundario Completo antes que el Secundario 
+# Incompleto, no respetando la ordinalidad de la variable
+
+# esta situación, como otras, nos obligan a convertirla en
+# factor, única forma en que podemos modificar el orden
+
+# si convertimos directamente el orden será automático y
+# estará mal al igual que cuando era de tipo caracter
+
+datos |> 
+  mutate(EDUCACION = factor(EDUCACION)) |> 
+  count(EDUCACION)
+
+# notese que debajo del nombre de la variable dice fct 
+# que significa factor
+
+# para indicarle los niveles correctos podemos declararlos
+# en la misma conversión
+
+datos |> 
+  mutate(EDUCACION = factor(EDUCACION, 
+                            labels = c("Primario Incompleto",
+                                       "Secundario Incompleto",
+                                       "Secundario Completo",
+                                       "Universitario Completo"))) |> 
+  count(EDUCACION)
+
+# en este ejemplo no estamos declarando todos los posibles niveles
+# dado que la tabla datos tiene un recorte de ellos
+
+# también podemos hacerlo en dos pasos con la función fct_relevel 
+
+datos |> 
+  mutate(EDUCACION = factor(EDUCACION),
+         EDUCACION = fct_relevel(EDUCACION,
+                                 "Secundario Incompleto",
+                                 after = 1)) |> 
+  count(EDUCACION)
+
+# primero transformamos en factor y luego
+# con fct_relevel cambiamos los niveles diciendo que
+# "Secundario Incompleto" va después de la primera posición
+
+# otra función utilizada cuando necesitamos invertir el orden 
+# de una variable de este tipo para, por ejemplo, la escala 
+# de un gráfico es fct_rev()
+
+datos |> 
+  mutate(EDUCACION = factor(EDUCACION),
+         EDUCACION = fct_relevel(EDUCACION,
+                                 "Secundario Incompleto",
+                                 after = 1),
+         EDUCACION = fct_rev(EDUCACION)) |> 
+  count(EDUCACION)
