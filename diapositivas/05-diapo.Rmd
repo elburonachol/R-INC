@@ -365,7 +365,7 @@ Por ejemplo, las tablas provenientes del **sistema RITA** tienen un **ID** para 
 La función `get_dupes()` del paquete **janitor** es una herramienta útil para identificar estas repeticiones. 
 ]
 ---
-## Elminación de duplicados por observaciones únicas
+## Eliminación de duplicados por observaciones únicas
 
 <br>
 .font150[
