@@ -196,7 +196,7 @@ tabla_ejemplo2 |&gt;
 ---
 ## Uniones en datos relacionales
 
-.font140[
+.font150[
 Existen situaciones donde debemos analizar datos que se encuentran en diferentes tablas.
 
 Con el fin de responder a nuestras preguntas de interés en ocasiones deberemos unirlas previamente.
@@ -223,7 +223,7 @@ Las tres familias de funciones del paquete **dplyr** diseñadas para trabajar co
 ---
 ## Claves
 
-.font140[
+.font150[
 
 - Las variables usadas para conectar cada par de variables se llaman **claves** (del inglés *key*)
 
@@ -403,7 +403,68 @@ Las funciones de **dplyr** para esta tarea son:
 ---
 ## Gestión de duplicados
 
+&lt;br&gt;
+.font150[
+Hay diferentes tareas que se pueden realizar para gestionar datos duplicados.
 
+- Detección de observaciones y/o partes de observaciones (variables clave) duplicadas
+
+- Eliminación de duplicados a partir de observaciones únicas.
+
+- Recortar tabla de datos para eliminar duplicados
+
+- Marcar duplicados (conservando duplicados en la tabla)
+
+]
+---
+## Detección de duplicados
+
+&lt;br&gt;
+.font140[
+Las observaciones duplicadas pueden ser completas, generalmente a raíz de algún problema informático o bien parcial.
+
+Habitualmente nuestras tablas tienen identificadores únicos de las unidades de análisis o una serie de identificadores que resultan en una clave combinada.
+
+Por ejemplo, las tablas provenientes del **sistema RITA** tienen un **ID** para *pacientes*, otro para *tumores* y otro para *tratamientos* y su relación en 1 a varios en cada caso.
+
+La función `get_dupes()` del paquete **janitor** es una herramienta útil para identificar estas repeticiones. 
+]
+---
+## Elminación de duplicados por observaciones únicas
+
+&lt;br&gt;
+.font150[
+Para eliminar filas duplicadas en una tabla de datos podemos utilizar la función `distinct()` de **dplyr**.
+
+La función tiene un argumento denominado `.keep_all` que permite valores *TRUE* o *FALSE*. Si se iguala a *TRUE* se mantienen en el resultado todas las variables que son parte de la tabla, aunque estas no estén declaradas dentro del `distinct()`.
+
+Por defecto, este argumento se encuentra igualado a *FALSE*.
+]
+
+---
+## Eliminación de duplicados por recorte de observaciones
+
+&lt;br&gt;
+.font140[
+Recortar es similar a filtrar, la diferencia está en que se filtra por condiciones y recortamos por posiciones.
+
+La familia de funciones que se puede utilizar para recortar es `slice_*()`.
+
+Estas funciones pueden ser muy útiles si se aplican a un dataframe agrupado porque la operación de recorte se realiza en cada grupo por separado.
+
+Si hay varias filas por persona con fechas distintas de un seguimiento y queremos quedarnos con la última visita, podemos utilizar combinado `group_by()` y `slice_max()` para quedarnos sólo con esa observación del último encuentro para cada uno.
+]
+---
+## Marcar duplicados
+
+&lt;br&gt;
+.font150[
+Si lo que buscamos es mantener a todas las observaciones de la tabla pero marcar aquellos que consideramos duplicados podemos hacer:
+
+1. Recortar el dataframe original a sólo las filas para el análisis. Guardar los ID de   este dataframe reducido en un vector.
+
+2. En el dataframe original, creamos una variable de marca usando `case_when()`, basándonos si el ID está presente en el dataframe reducido (vector de ID anterior).
+]
 
 
 ---
@@ -420,7 +481,20 @@ Para exportar archivos con formato Excel vamos a utilizar la función `write.xsl
 ]
 
 ---
+## Ejemplos
 
+&lt;br&gt;
+.font150[
+
+`write_csv2(x = tabla1, file = "tabla1.csv")` guarda la tabla1 en un archivo csv separado por punta y comas llamado "tabla1.csv"
+
+`write_csv(x = tabla1, file = "tabla1.csv")` guarda la tabla1 en un archivo csv separado por comas llamado "tabla1.csv"
+
+`write_delim(x = tabla1, file = "tabla1.csv", delim = "|)` guarda la tabla1 en un archivo csv separado por el caracter "|" llamado "tabla1.csv"
+
+`write.xlsx(x = tabla1, file = "tabla1.xlsx")` guarda la tabla1 en un archivo Excel llamado "tabla1.xlsx"
+
+]
 
 
     </textarea>
