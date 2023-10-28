@@ -9,7 +9,7 @@ library(tidyverse)
 
 library(readxl) # activamos paquete necesario
 
-hpv <- read_excel("practicas/Informe_HPV_anonimizado.xlsx", na = )
+hpv <- read_excel("practicas/Informe_HPV_anonimizado.xlsx")
 
 # Fechas
 
@@ -249,9 +249,10 @@ rita |>
     str_detect(IdGrpTopo, "C[18|19|20]") ~ "Colon-recto",
     str_detect(IdGrpTopo, "C4[7-9]") ~ "Tu. malig Tej blando",
     str_detect(IdGrpTopo, "C4[0-1]") ~ "Hueso",
-    str_detect(IdGrpTopo, "C7[0-2]") ~ "Encefalo_SNC"
-  )) |> filter(!is.na(IdGrpTopo_txt)) |> 
+    str_detect(IdGrpTopo, "C7[0-2]") ~ "Encefalo_SNC",
+    .default = "Otros"
+  )) |> 
   distinct(IdGrpTopo, IdGrpTopo_txt) |> 
-  arrange(IdGrpTopo)
+  count(IdGrpTopo_txt) 
   
 
