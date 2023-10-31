@@ -1,0 +1,439 @@
+---
+title: "Resultados descriptivos avanzados"
+subtitle: ""  
+author: 
+  - "Instituto Nacional de Epidemiología"
+date: "13-11-2023"
+output:
+  xaringan::moon_reader:
+    includes:
+      after_body: insert-logo.html
+    transition: slide
+    lib_dir: libs
+    css: 
+     - "xaringan-themer.css"
+     - "animate.min.css"
+     - "fonts_mtheme.css"
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+layout: true
+class: animated, fadeIn
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+library(xaringan)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#00746B", 
+                  colors = c(red = "#f34213",
+                             blue = '#0000ff',
+                             purple = "#3e2f5b",
+                             orange = "#ff8811",
+                             green = "#1d771d",
+                             white = "#FFFFFF"))
+```
+
+---
+
+## Funciones para operaciones masivas
+
+
+---
+class: left, top
+
+
+## across()
+
+
+---
+## colwise()
+
+---
+## Estadistica descriptiva con rstatix
+
+anunciar funciones de inferencia y modelado compatibles con tidyverse
+
+
+
+---
+## gtsummary
+
+---
+## Exportación de tablas a word
+
+flextable
+
+---
+
+
+
+
+## La misma tabla "ordenada"
+
+.font150[]
+<br>
+```{r, echo = F, warning=F, message=F}
+library(datos)
+knitr::kable(tabla1, format = "html")
+```
+
+---
+## Problemas comunes en tabla "desordenadas" de datos
+
+.font150[
+- Una variable se extiende por varias columnas.
+
+- Una observación está dispersa entre múltiples filas
+] 
+
+### Solución:
+
+.font150[
+Usamos funciones pivot del paquete **tidyr** de tidyverse
+
+- Función **pivot_longer()** - Convierte nombres de variables en valores de una nueva variable.
+
+- Función **pivot_wider()** - Convierte valores de una variable en variables nuevas.
+]
+
+---
+background-image: url(assets/tabla_longer.png)
+background-size: 700px
+background-position: 50% 75%
+
+## pivot_longer()
+.font140[
+```{r, eval=FALSE}
+tabla_casos |> 
+  pivot_longer(cols = 2:3, names_to = "anio", values_to = "casos")
+```
+]
+---
+background-image: url(assets/tabla_wider.PNG)
+background-size: 700px
+background-position: 50% 70%
+
+## pivot_longer()
+.font140[
+```{r, eval=FALSE}
+tabla_ejemplo2 |> 
+  pivot_wider(names_from = tipo, values_from = casos)
+```
+]
+---
+## Uniones en datos relacionales
+
+.font150[
+Existen situaciones donde debemos analizar datos que se encuentran en diferentes tablas.
+
+Con el fin de responder a nuestras preguntas de interés en ocasiones deberemos unirlas previamente.
+
+De manera general, se le llama **_datos relacionales_** a esas múltiples tablas de datos que provienen muchas veces de sistemas de bases de datos construidas bajo el modelo relacional o bien cuando las tablas de datos tienen fuentes distintas pero comparten alguna variable común que permita "conectarlas".
+
+]
+
+---
+## Tipos de operaciones
+
+.font140[ 
+Para trabajar con datos relacionales necesitamos de *funciones-verbos* que vinculen pares de tablas. 
+
+Las tres familias de funciones del paquete **dplyr** diseñadas para trabajar con datos relacionales son:
+
+- **Uniones de transformación** (del inglés *mutating joins*), agregan nuevas variables a una tabla a partir de observaciones coincidentes de otra tabla.
+
+- **Uniones de filtro** (del inglés *filtering joins*), filtran observaciones de una tabla en función de la coincidencia o no coincidencia de otra tabla.
+
+- **Operaciones en filas y columnas**,  sirven para unir tablas por columnas o por filas.
+]
+
+---
+## Claves
+
+.font150[
+
+- Las variables usadas para conectar cada par de variables se llaman **claves** (del inglés *key*)
+
+- Una clave es una variable (o un conjunto de variables) que identifican de manera *única* una observación.
+
+Existen dos tipos de claves:
+
+- Una **clave primaria** identifica únicamente una observación en su propia tabla. 
+
+- Una **clave foránea** únicamente identifica una observación en otra tabla. 
+]
+---
+background-image: url(assets/inner-join.PNG)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones de transformación
+
+
+.font150[.bold[Unión interior]
+
+La forma más simple de unión es la unión interior (del inglés inner join). Una unión interior une pares de observaciones siempre que sus claves sean iguales
+]
+
+---
+background-image: url(assets/inner-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Unión interior
+
+
+.font150[Función .bold[inner_join()]]
+
+---
+background-image: url(assets/uniones_exteriores.PNG)
+background-size: 400px
+background-position: 80% 70%
+
+## Uniones de transformación
+
+
+.pull-left[.font150[.bold[Uniones exteriores]]
+
+Una unión interior mantiene las observaciones que aparecen en ambas tablas. 
+
+Una unión exterior mantiene las observaciones que aparecen en al menos una de las tablas.
+
+- Una unión izquierda (left join) mantiene todas las observaciones en x.
+
+- Una unión derecha (right join) mantiene todas las observaciones en y.
+
+- Una unión completa (full join) mantiene todas las observaciones en x e y.
+]
+
+---
+background-image: url(assets/full-join.gif)
+background-size: 500px
+background-position: 50% 75%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[full_join()]]
+
+---
+background-image: url(assets/left-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[left_join()]]
+
+---
+background-image: url(assets/right-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[right_join()]]
+
+---
+background-image: url(assets/venn.PNG)
+background-size: 900px
+background-position: 50% 75%
+
+## Uniones de transformación
+
+.font140[Otra forma de ilustrar diferentes tipos de uniones es mediante un diagrama de Venn.
+
+Sin embargo, tiene una limitante importante: un diagrama de Venn no puede mostrar qué ocurre con las claves que no identifican de manera única una observación
+]
+
+---
+## Claves duplicadas
+
+<br>
+
+.font140[
+Hasta ahora todas las situaciones han asumido que las claves son únicas. Pero esto no siempre es así.  
+
+Existen dos posibilidades habituales:
+
+- Una tabla tiene claves duplicadas producto de una relación uno a varios.
+
+- Ambas tablas tienen claves duplicadas 
+
+Siempre que unimos claves duplicadas, obtenemos todas las posibles combinaciones, es decir, el producto cartesiano
+
+]
+---
+background-image: url(assets/left-join-extra.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Claves duplicadas
+.font140[
+Ejemplo con **left_join()**
+]
+---
+background-image: url(assets/semi-join.gif)
+background-size: 500px
+background-position: 50% 95%
+
+## Uniones de filtro
+
+.font150[.bold[semi_join()]
+
+**Mantiene** todas las observaciones de la tabla **x** donde la **_clave coincide_** con la clave de la tabla **y**
+]
+
+---
+background-image: url(assets/anti-join.gif)
+background-size: 500px
+background-position: 50% 95%
+
+## Uniones de filtro
+
+.font150[.bold[anti_join()]
+
+**Descarta** todas las observaciones de la tabla **x** donde la **_clave coincide_** con la clave de la tabla **y**
+]
+
+---
+## Consejos útiles para evitar errores
+
+<br>
+
+.font140[
+- Identificar bien la variables que forman las claves de cada tabla.
+
+- Verificar la completitud de las claves. Si existe algún valor faltante no se podrá identificar la observación.
+
+- Verificar que las claves foráneas coinciden con las claves primarias de la otra tabla. Esto incluye comprobar coincidencia en el tipo de dato (numérico, caracter, etc)
+
+- Verificar claves duplicadas (se puede hacer aplicando **count()**)
+]
+
+---
+## Unión por filas y por columnas
+
+.font140[
+En algunas ocasiones necesitamos unir tablas que tienen formatos particulares por medio de filas o por medio de columnas.
+
+Las funciones de **dplyr** para esta tarea son:
+
+- **bind_rows()** Une una tabla debajo de otra. Aplica cuando tenemos la misma estructura en tabla de datos divida en varios archivos (por ejemplo, producto de carga simultánea de datos en diferentes computadoras con diferentes data entry)
+
+- **bind_cols()** Une una tabla al lado de la otra. Es peligroso su uso si la confundimos con las uniones de transformación porque perdemos integridad de datos en las observaciones. Sirve sólo si el "orden" de las observaciones pueden garantizar la misma identidad de las partes a unir.
+
+]
+
+---
+## Gestión de duplicados
+
+<br>
+.font150[
+Hay diferentes tareas que se pueden realizar para gestionar datos duplicados.
+
+- Detección de observaciones y/o partes de observaciones (variables clave) duplicadas
+
+- Eliminación de duplicados a partir de observaciones únicas.
+
+- Recortar tabla de datos para eliminar duplicados
+
+- Marcar duplicados (conservando duplicados en la tabla)
+
+]
+---
+## Detección de duplicados
+
+<br>
+.font140[
+Las observaciones duplicadas pueden ser completas, generalmente a raíz de algún problema informático o bien parcial.
+
+Habitualmente nuestras tablas tienen identificadores únicos de las unidades de análisis o una serie de identificadores que resultan en una clave combinada.
+
+Por ejemplo, las tablas provenientes del **sistema RITA** tienen un **ID** para *pacientes*, otro para *tumores* y otro para *tratamientos* y su relación en 1 a varios en cada caso.
+
+La función `get_dupes()` del paquete **janitor** es una herramienta útil para identificar estas repeticiones. 
+]
+---
+## Eliminación de duplicados por observaciones únicas
+
+<br>
+.font150[
+Para eliminar filas duplicadas en una tabla de datos podemos utilizar la función `distinct()` de **dplyr**.
+
+La función tiene un argumento denominado `.keep_all` que permite valores *TRUE* o *FALSE*. Si se iguala a *TRUE* se mantienen en el resultado todas las variables que son parte de la tabla, aunque estas no estén declaradas dentro del `distinct()`.
+
+Por defecto, este argumento se encuentra igualado a *FALSE*.
+]
+
+---
+## Eliminación de duplicados por recorte de observaciones
+
+<br>
+.font140[
+Recortar es similar a filtrar, la diferencia está en que se filtra por condiciones y recortamos por posiciones.
+
+La familia de funciones que se puede utilizar para recortar es `slice_*()`.
+
+Estas funciones pueden ser muy útiles si se aplican a un dataframe agrupado porque la operación de recorte se realiza en cada grupo por separado.
+
+Si hay varias filas por persona con fechas distintas de un seguimiento y queremos quedarnos con la última visita, podemos utilizar combinado `group_by()` y `slice_max()` para quedarnos sólo con esa observación del último encuentro para cada uno.
+]
+---
+## Marcar duplicados
+
+<br>
+.font150[
+Si lo que buscamos es mantener a todas las observaciones de la tabla pero marcar aquellos que consideramos duplicados podemos hacer:
+
+1. Recortar el dataframe original a sólo las filas para el análisis. Guardar los ID de   este dataframe reducido en un vector.
+
+2. En el dataframe original, creamos una variable de marca usando `case_when()`, basándonos si el ID está presente en el dataframe reducido (vector de ID anterior).
+]
+
+
+---
+## Escritura de datos (exportación)
+
+.font140[
+El mismo paquete **readr** que utilizamos para hacer lectura de datos nos permite exportarlos.
+
+Las funciones en este caso comienzan con el prefijo **write_** y entre sus argumentos obligatorios se encuentra el nombre del objeto dataframe que contiene los datos a exportar y el nombre del archivo de salida. 
+
+Las funciones comunes son `write_delim()`, `write_csv()`, `write_csv2()`, `write_excel_csv()` entre otras. 
+
+Para exportar archivos con formato Excel vamos a utilizar la función `write.xslx()` del paquete **openxlsx**.  
+]
+
+---
+## Ejemplos
+
+<br>
+.font150[
+
+`write_csv2(x = tabla1, file = "tabla1.csv")` guarda la tabla1 en un archivo csv separado por punta y comas llamado "tabla1.csv"
+
+`write_csv(x = tabla1, file = "tabla1.csv")` guarda la tabla1 en un archivo csv separado por comas llamado "tabla1.csv"
+
+`write_delim(x = tabla1, file = "tabla1.csv", delim = "|)` guarda la tabla1 en un archivo csv separado por el caracter "|" llamado "tabla1.csv"
+
+`write.xlsx(x = tabla1, file = "tabla1.xlsx")` guarda la tabla1 en un archivo Excel llamado "tabla1.xlsx"
+
+]
+
+```{r, echo=F, message=F, warning=F, fig.align="center", fig.width=8}
+#rita <- read_csv2("assets/rita_prueba.csv", locale = locale(encoding = "UTF-8"))
+#library(naniar)
+
+#gg_miss_upset(rita)
+```
