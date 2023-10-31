@@ -115,36 +115,72 @@ rita_completo |>
 # necesitamos que cada una de ellas pasen a ser columnas (variables) y que en 
 # los valores aparezcan 0 y 1 cuando correspondan
 
+# un ejemplo sería algo así:
+
+# IDTUM  Quimioterapia  Radioterapia  Cirugia Otro
+#   500              1             1        0    0
+#   501              0             1        0    0
+#   502              0             1        1    0
+
+# almacenaremos la transformación en un dataframe llamado tabla
 
 tabla <- rita_completo |> 
-  select(IDPTE, IDTUM, IDTTO, FITTO, FINTO, ESTTON, TPGFN) |> 
   filter(!is.na(ESTTON) & ESTTON != "Ignorado") |> 
   count(IDPTE, IDTUM, ESTTON) |> 
   mutate(n = if_else(n > 0, 1, 0)) |> 
   pivot_wider(names_from = ESTTON, values_from = n , values_fill = 0) |> 
   select(-IDPTE)
 
+# veamos cada uno de los pasos
+# 1.- filtramos los valores NA y la categoría "Ignorado" de ESSTON
+# 2.- contabilizamos la frecuencia de ESTTON por cada combinación de IDPTE 
+#     y IDTUM
+# 3.- transformamos a 0 cuando el conteo es 0 y 1 cuando es 1 o más
+# 4.- pivoteamnos la tabla de frecuencia a lo "ancho", tomando en cuenta
+#     a ESTTON como names_from y n como values_from, rellenando con 0 cuando
+#     el valor haya que completarlo por sus ausencia implicita
+# 5.- quitamos la variable IDPTE
+
+# la estructura de tabla es:
+
+tabla
+
+# antes de usar upset() sebemos convertir el tipo de tabla en dataframe solo
+# esto es porque la función upset() de UpSetR requiere que los datos esten en
+# un dataframe de R base (no funciona con dataframes del tidyverse)
+
 tabla <- as.data.frame(tabla)
+
+# finalmente aplicamos upset() para construir el gráfico
 
 upset(tabla)
 
+# podemos configurar algunos argumentos para mejorar la salida
 
-# Datos ordenados
-
-# Pivoteos
-
-# Uniones de tablas
-
+upset(tabla, 
+      nsets = 6, 
+      order.by = "freq", 
+      text.scale = 2)
 
 
 # Guardar o exportar tablas de datos
 
+# imaginemos que necesitemos exportar los datos de tabla
+# lo vamos a realizar en dos formatos:
+
 # Formato texto plano
 
-
-
+write_csv2(x = tabla, 
+           file = "practicas/tabla.csv")
 
 # Formato Excel
 
 library(openxlsx)
+
+write.xlsx(x = tabla, 
+           file = "practicas/tabla.xlsx")
+
+
+
+
 
