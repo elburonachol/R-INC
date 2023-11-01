@@ -191,7 +191,19 @@ hpv |>
 ---
 ## gtsummary
 
-.font140[]
+.font140[
+
+]
+
+---
+
+```{r}
+library(gtsummary)
+
+hpv |> 
+  select(edad, resultado_hpv, metodo) |>
+  tbl_summary()
+```
 
 
 ---
