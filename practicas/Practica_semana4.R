@@ -14,11 +14,11 @@ library(tidyverse)
 
 # leemos datos
 
-guess_encoding("practicas/tsomf_prueba.csv")
+guess_encoding("Datos/tsomf_prueba.csv")
 
 # el encondign mayoritario del archivo es ISO-8859-1
 
-tsomf <- read_csv2("practicas/tsomf_prueba.csv", 
+tsomf <- read_csv2("Datos/tsomf_prueba.csv", 
                 locale = locale(encoding = "ISO-8859-1"))
 
 # exploramos estructura 
@@ -253,7 +253,7 @@ datos |>
 
 datos |> 
   mutate(EDUCACION = factor(EDUCACION, 
-                            labels = c("Primario Incompleto",
+                            levels = c("Primario Incompleto",
                                        "Secundario Incompleto",
                                        "Secundario Completo",
                                        "Universitario Completo"))) |> 
@@ -286,3 +286,4 @@ datos |>
                                  after = 1),
          EDUCACION = fct_rev(EDUCACION)) |> 
   count(EDUCACION)
+

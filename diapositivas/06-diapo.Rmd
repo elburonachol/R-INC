@@ -296,11 +296,57 @@ hpv |>
          resultado_hpv = as_factor(resultado_hpv)) |> 
    tbl_summary(by = resultado_hpv)
 ```
-
-
 ---
+background-image: url(assets/flextable.png)
+background-size: 160px
+background-position: 50% 25%
+
 ## Exportación de tablas a word
 
-flextable
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+.font140[
+El paquete **flextable** proporciona un marco de trabajo en R para crear fácilmente tablas para informes y publicaciones.
+
+Es compatible con el ecosistema tidyverse y con salidas gtsummary, por ejemplo. 
+
+Se puede utilizar para exportar en formatos Word, html, PDF, PowerPoint o imagen y se asocia con el contenido en estructuras de archivos rmarkdown y/o Quarto.
+]
+
 
 ---
+## flextable
+
+.font140[
+La función `flextable()` convierte la el objeto de salida a clase flextable 
+
+```{r, message=F, warning=F}
+library(flextable)
+
+hpv |> 
+  count(metodo, resultado_hpv, name = "Frec") |> 
+  flextable()
+
+
+```
+]
+
+---
+
+```{r}
+hpv |> 
+  select(edad, resultado_hpv, metodo) |>
+  set_variable_labels(resultado_hpv = "Resultado HPV", metodo = "Metodo") |> 
+  set_value_labels(resultado_hpv = c(Negativo = "NEG", Positivo = "POS"), 
+                   metodo = c(Dirigida = "DIRIGIDA", Autotoma = "AUTOTOMA")) |> 
+  count(metodo, resultado_hpv) |> 
+  flextable() |> 
+  flextable::labelizor()
+```
+
