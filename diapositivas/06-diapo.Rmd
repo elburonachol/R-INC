@@ -220,14 +220,24 @@ hpv |>
 ]
 
 ---
+background-image: url(assets/gtsummary.PNG)
+background-size: 160px
+background-position: 50% 25%
+
 ## gtsummary
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 .font140[
 Este paquete proporciona una forma elegante y flexible de crear tablas analíticas y de resumen, univariadas, estratificadas y complejas.
 
 Integran estimaciones estadísticas predefinidas y se pueden personalizar a gusto, interactuando con otros paquetes como **gt** y **labelled**.
 
-En el sitio del desarrollador encontrarán mucha documentación para adecuar los requerimientos de la salida buscada [gtsummary](https://www.danieldsjoberg.com/gtsummary/)
+En el sitio del desarrollador [(gtsummary)](https://www.danieldsjoberg.com/gtsummary/), encontrarán mucha documentación para adecuar los requerimientos de la salida buscada.
 ]
 
 ---
@@ -271,10 +281,21 @@ hpv |>
 ]
 
 ---
+background-image: url(assets/labelled.PNG)
+background-size: 160px
+background-position: 50% 25%
+
 ## Etiquetado de valores
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 .font140[
-El paquete **labelled** se basa en el etiquetado de variables y categorías que utiliza *SPSS*, *Stata* y *SAS* al ser importada por **haven**.
+El paquete [labelled](https://larmarange.github.io/labelled/) se basa en el etiquetado de variables y categorías que utiliza *SPSS*, *Stata* y *SAS* al ser importada por **haven**.
 
 Integrado con gtsummary permite que nuestras variables y valores tengan el nombre y/o código original pero le podamos incorporar una etiqueta que se va a respetar a la hora de presentar la información en tablas y gráficos.
 
@@ -316,7 +337,7 @@ El paquete **flextable** proporciona un marco de trabajo en R para crear fácilm
 
 Es compatible con el ecosistema tidyverse y con salidas gtsummary, por ejemplo. 
 
-Se puede utilizar para exportar en formatos Word, html, PDF, PowerPoint o imagen y se asocia con el contenido en estructuras de archivos rmarkdown y/o Quarto.
+Se puede utilizar para exportar en formatos *Word, html, PDF, PowerPoint* o *imagen* y se asocia con el contenido en estructuras de archivos **rmarkdown** y/o **Quarto**.
 ]
 
 
@@ -324,7 +345,7 @@ Se puede utilizar para exportar en formatos Word, html, PDF, PowerPoint o imagen
 ## flextable
 
 .font140[
-La función `flextable()` convierte la el objeto de salida a clase flextable 
+La función `flextable()` convierte el objeto de salida a clase flextable 
 
 ```{r, message=F, warning=F}
 library(flextable)
@@ -332,21 +353,93 @@ library(flextable)
 hpv |> 
   count(metodo, resultado_hpv, name = "Frec") |> 
   flextable()
-
-
 ```
 ]
 
 ---
+## Partes del objeto flextable
+
+.pull-left[
+.font140[
+Un objeto *flextable* está compuesto por tres partes:
+
+- **header**: de forma predeterminada, solo hay una fila de encabezado que contiene los nombres del dataframe.  
+- **body**: la parte del cuerpo contiene datos del dataframe.
+- **footer**: la parte del pie de tabla no está implementada de forma predeterminada, pero puede contener notas al pie o cualquier contenido.
+]
+]
+
+.pull-rigth[
+```{r,echo=F,  fig.align='center', out.width="40%"}
+knitr::include_graphics("assets/flextable-partes.PNG")
+```
+]
+
+---
+## Partes del objeto flextable
+
+.font140[
+```{r, message=F, warning=F}
+hpv |> 
+  count(metodo, resultado_hpv, name = "Frec") |> 
+  pivot_wider(names_from = metodo, values_from = Frec) |> 
+  flextable() |> 
+  set_header_labels(resultado_hpv = "Resultado") |> 
+  add_header_row(values = "HPV", colwidths = 3) |> 
+  align(align = "center", part = "header") |> 
+  add_footer_lines("Fuente: tamizaje INC")
+```
+
+]
+---
+## Combinado con gtsummary
+
+.font130[
+Las tablas de **gtsummary** se pueden transformar en **flextable** a partir de la función `as_flex_table()`.
+]
 
 ```{r}
 hpv |> 
   select(edad, resultado_hpv, metodo) |>
-  set_variable_labels(resultado_hpv = "Resultado HPV", metodo = "Metodo") |> 
-  set_value_labels(resultado_hpv = c(Negativo = "NEG", Positivo = "POS"), 
-                   metodo = c(Dirigida = "DIRIGIDA", Autotoma = "AUTOTOMA")) |> 
-  count(metodo, resultado_hpv) |> 
-  flextable() |> 
-  flextable::labelizor()
+  tbl_summary(by = resultado_hpv,
+              statistic = list(
+                            all_continuous() ~ "{mean} ({sd})",
+                            all_categorical() ~ "{n} / {N} ({p}%)"),
+     digits = all_continuous() ~ 1) |> 
+    modify_header(label ~ "**Variable**") |> 
+  as_flex_table() |> 
+  autofit() |> 
+  theme_box() 
+  
+  
 ```
+
+
+
+
+---
+## Exportación
+
+.font140[
+Es posible exportar fácilmente un a o más tablas a partir de los objetos flextables a documentos tipo html, RTF, Word, PowerPoint o PNG.
+
+Un ejemplo para salidas tipo Word es: `save_as_docx()`
+
+```{r, eval=F}
+save_as_docx(
+  "tabla 1" = ft1, "tabla 2" = ft2, 
+  path = "/resultados/tablas.docx")
+```
+
+Exporta los objetos *ft1* y *ft2* dentro del archivo **tablas.docx** en la carpeta *resultados*. 
+
+Si deseamos un preview podemos ejecutar (por cada tabla):
+
+```{r, eval=F}
+print(ft1, preview = "docx")
+```
+
+]
+
+
 
