@@ -432,13 +432,6 @@ save_as_docx(
 ```
 
 Exporta los objetos *ft1* y *ft2* dentro del archivo **tablas.docx** en la carpeta *resultados*. 
-
-Si deseamos un preview podemos ejecutar (por cada tabla):
-
-```{r, eval=F}
-print(ft1, preview = "docx")
-```
-
 ]
 
 
