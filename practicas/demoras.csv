@@ -1,6 +1,6 @@
 IDPTE;IDTUM;demora1;demora2;demora3;PTESXN;TPGFN;MFGN
 35847;33500;214;2;110;Hombre;(C61.9)-Próstata. SAI;(8550)-Carcinoma de células acinosas
-111488;108900;0;10;0;Hombre;(C44.1)-Párpado, SAI;(8095)-Carcinoma metatípico (C44._)
+111488;108900;NA;10;0;Hombre;(C44.1)-Párpado, SAI;(8095)-Carcinoma metatípico (C44._)
 120569;118178;96;14;50;Hombre;(C34.9)-Pulmonar, SAI;(8072)-Carcinoma de células escamosas, células grandes, no queratinizante, SAI
 105369;102677;59;27;27;Hombre;(C62.9)-Testículo, SAI;(9065)-Tumor de células germinales, no seminomatoso (C62._)
 34278;31942;35;308;22;Hombre;(C67.9)-Vejiga urinaria, SAI;(8010)-Carcinoma, SAI
@@ -128,7 +128,7 @@ IDPTE;IDTUM;demora1;demora2;demora3;PTESXN;TPGFN;MFGN
 67610;64802;107;28;112;Hombre;(C61.9)-Próstata. SAI;(8550)-Adenocarcinoma acinar
 46353;43738;107;13;515;Mujer;(C50.8)-Mama superior;(8500)-Carcinoma ductal infiltrante, SAI (C50._)
 59356;56528;30;6;142;Mujer;(C50.9)-Mama, SAI;(8010)-Carcinoma, SAI
-19204;17017;0;107;12;Hombre;(C34.9)-Pulmón, SAI;(8140)-Adenocarcinoma, SAI
+19204;17017;NA;107;12;Hombre;(C34.9)-Pulmón, SAI;(8140)-Adenocarcinoma, SAI
 6294;5202;79;16;346;Hombre;(C09.9)-Amígdala, SAI (excluye amígdala lingual, C02.4 y amígdala parafaríngea C11.1);(8070)-Carcinoma escamoso
 10903;9594;184;26;30;Hombre;(C34.9)-Pulmón, SAI;(8480)-Adenocarcinoma mucinoso
 69192;66463;761;9;41;Mujer;(C53.9)-Cérvix, SAI;(8070)-Carcinoma escamoso

@@ -7,99 +7,194 @@ library(tidyverse)
 
 # leemos datos
 
-guess_encoding("demoras.csv")
+guess_encoding("practicas/demoras.csv")
 
-datos <- read_csv2("demoras.csv")
+datos <- read_csv2("practicas/demoras.csv")
 
+# exploración rápida
 
-  
-datos <- datos |> filter(!is.na(demora1), !is.na(demora2), !is.na(demora3))
+glimpse(datos)
 
+# tenemos 8 variables y 1000 observaciones
+# Vamos a trabajar con las variables demora1, 2 y 3
 
+# estas variables representan los intervalos medidos en días
+# según:
 
-datos |> 
-  summarise(across(.cols =  starts_with("demora"), 
-                   .fns = mean))
+# demora1: días entre fecha de inicio de síntomas y fecha de 
+# primera consulta
 
-datos <- datos |> 
-  filter(demora1 >= 0, demora2 >=0, demora3 >= 0)
+# demora2: días entre fecha de primera consulta y fecha de 
+# diagnóstico
 
-datos <- datos |> 
-  filter(demora1 < 2000, demora2 < 2000, demora3 < 2000)
+# demora3: días entre fecha de diagnóstico y fecha de inicio 
+# de tratamiento
 
-datos <- datos |> sample_n(size = 1000, replace = F)
+# función across()
 
-# across()
+# si quisieramos calcular la media de estas variables 
+# podríamos hacer así:
 
 datos |> 
   summarise(media_demora1 = mean(demora1),
             media_demora2 = mean(demora2),
             media_demora3 = mean(demora3))
 
+# como en demora1 tenemos valores NA tenenos que agregar
+# el argumento na.rm = T
+
+datos |> 
+  summarise(media_demora1 = mean(demora1, na.rm = T),
+            media_demora2 = mean(demora2),
+            media_demora3 = mean(demora3))
+
+# observemos que se repite la misma estructura por cada una
+# de ellas y la idea de la codificación es tratar de evitar 
+# las reiteraciones
+
+# el paquete dplyr propone entonces el uso de across()
 
 datos |> 
   summarise(across(.cols =  starts_with("demora"), 
                    .fns = mean))
 
+# tenemos el mismo problema de los NA, entonces debemos
+# agregar el argumento dentro del esquema del across
+# esto se hace de la siguiente forma:
 
 datos |> 
   summarise(across(.cols =  starts_with("demora"), 
-                   .fns = c(mean, min, max)))
+                   .fns = ~ mean(.x, na.rm = T)))
 
+# también podemos pedir varios resúmenes simultáneos
 
 datos |> 
   summarise(across(.cols =  starts_with("demora"), 
-                   .fns = list(media = mean, min = min, max = max), 
-                   .names = "{.col}_{.fn}"))
+                   .fns = list(media = ~ mean(.x, na.rm = T),
+                               min = ~ min(.x, na.rm = T),
+                               max = ~ max(.x, na.rm = T))))
 
-# rowwise()
+
+# de esta forma estamos realizando operaciones masivas bajo
+# una misma estructura
+
+# también es muy útil cuando tenemos muchas variables que queremos 
+# convertir en un solo paso
+
+
+# función rowwise()
+
+# así como la gunción group_by() no hace nada sola
 
 datos |> 
   group_by(IDPTE)
 
+# observemos que solo agrega un metadato de agrupamiento
+# al dataframe que será respetado cuando combinemos el
+# código con un summarise() por ejemplo
+
+# la función rowwise() hace lo mismo
+
 datos |> 
   rowwise()
+
+# veamos que el metadato en este caso dice rowwise
+
+# si necetiamos calcular una nueva variable que sea
+# la sumatoria de días de las tres demoras podemos hacer:
 
 datos |> 
     mutate(sumatoria = demora1 + demora2 + demora3)
 
+# tenemos el problema de la segundo observacion que tiene 
+# un NA en demora1, la suma devuelve NA
+
+# rowwise viene a posibilitar aplicar funciones que solo
+# funcionan naturalmente en forma vertical o por columna, 
+# por fila 
+
+# por ejemplo la función sum()
+
 datos |> 
   rowwise() |> 
-  mutate(sumatoria = sum(c(demora1, demora2, demora3)))
+  mutate(sumatoria = sum(c(demora1, demora2, demora3), na.rm = T))
 
-# ver de agregar NA`s`
+# aquí estamos sumando a las tres demoras con esa función sum()
+# a partir de indicar que la tabla trabaja por fila (rowwise)
+
+# al poder usar na.rm = T evitamos que los resultados de observaciones
+# donde alguna de las variables participantes tenga NA sean NA
 
 
-# c_across()
+# función c_across()
+
+# esta función es igual a across pero para filas
 
 datos |> 
   rowwise() |> 
-  mutate(sumatoria = sum(c_across(demora1:demora3)))
+  mutate(sumatoria = sum(c_across(demora1:demora3), na.rm = T))
 
+# se usa un rango o bien cualquier selección de variables
 
-# rstatix
-# get_summary_stats()
+datos |> 
+  rowwise() |> 
+  mutate(sumatoria = sum(c_across(starts_with("demora")), na.rm = T))
+
+# paquete rstatix
+
+# el paquete rstatix tiene un conjunto de funciones compatibles
+# con las tuberías y la filosofia de trabajo de tidyverse
+
+# muchas funciones vienen a reemplazar funciones de R base que
+# no son compatibles
+
+# los apartados de funciones de inferencia y post-hoc de modelos
+# no será vistas pero avisamos que existen dentro de este paquete
+
 
 library(rstatix)
+
+# get_summary_stats()
+
+# esta función descriptiva trabaja sobre variables numéricas
+# de nuestro dataframe, como por ejemplo las demoras
+
+# el argumento type permite que definamos el conjunto de 
+# medidas resumen que queremos visualizar
 
 datos |> 
   select(starts_with("demora")) |> 
   get_summary_stats(type = "common")
 
+# medidas robustas
+
 datos |> 
   select(starts_with("demora")) |> 
   get_summary_stats(type = "robust")
+
+# todas las medidas
 
 datos |> 
   select(starts_with("demora")) |> 
   get_summary_stats(type = "full")
 
+# en todos los casos se omiten los valores NA de las variables
+
+
 # get_mode()
+
+# una medida ausente entre las funciones comunes del lenguaje 
+# es la moda de una variable, es decir el valor que más se repite
+# la función get_mode() de rstatix lo hace
 
 datos |> 
   summarise(across(.cols =  starts_with("demora"), 
                    .fns = get_mode))
 
+# aquí implementada mediante across
+
+# como los ceros son los números más repetidos los podemos
+# obviar
 
 datos |> 
   filter(demora1 > 0, demora2 > 0, demora3 > 0) |> 
@@ -107,22 +202,35 @@ datos |>
                    .fns = get_mode))
 
 
-# freq_table()
+# función freq_table()
+
+# para las variables categóricas tenemos freq_table() 
+# que realiza tablas de frecuencia automáticas
+
+# por ejemplo, sobre la variable sexo del paciente
 
 datos |> 
   freq_table(PTESXN)
 
-# gtsummary
+# paquete gtsummary
+
+# el paquete gtsummary 
 
 library(gtsummary)
+
+# tabla univariada de todo el dataframe
 
 datos |> 
   tbl_summary()
     
+# tabla univariada de las variables de interes
 
 datos |> 
   select(starts_with("demora"), PTESXN) |> 
   tbl_summary()
+
+# agregamos mayor especificidad sobre las medidas
+# y etiquetas
 
 datos |> 
   select(starts_with("demora"), PTESXN) |> 
@@ -131,6 +239,8 @@ datos |>
     all_categorical() ~ "{n} / {N} ({p}%)"
   ),
   label = PTESXN ~ "Sexo")
+
+# tabla estratificada por sexo 
 
 datos |> 
   select(starts_with("demora"), PTESXN) |> 
