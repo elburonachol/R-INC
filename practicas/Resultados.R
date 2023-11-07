@@ -7,6 +7,15 @@ library(tidyverse)
 
 # leemos datos
 
+datos <- read_csv2("demoras.csv")
+  
+datos <- datos |> filter(!is.na(demora1), !is.na(demora2), !is.na(demora3))
+
+
+
+datos |> 
+  summarise(across(.cols =  starts_with("demora"), 
+                   .fns = mean))
 
 # across()
 
