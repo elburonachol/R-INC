@@ -250,7 +250,12 @@ datos |>
 
 # Etiquetado - labelled
 
+# labelled implementa un etiquetado con metadatos similar al usado por  
+# haven a la hora de importar datos de archivos tipo SPSS
+
 library(labelled)
+
+# la función set_variable_labels() incorpora etiquetas en las variables
 
 datos_etiquetados <- datos |> 
   set_variable_labels(PTESXN = "Sexo", 
@@ -258,26 +263,45 @@ datos_etiquetados <- datos |>
                       demora2 = "Demora 1raConsulta-Diagnostico", 
                       demora3 = "Demora Diagnostico-Tratamiento") 
 
+# estas etiquetas son respetadas por gtsummary a la hora de hacer sus tablas
+
 datos_etiquetados |> 
   select(starts_with("demora"), PTESXN) |> 
   tbl_summary(by = PTESXN) |> 
   modify_header(label ~ "**Variable**") |> 
   bold_labels()
 
+# la función look_for() produce un diccionario de datos donde aparecen
+# las etiquetas
+
 look_for(datos_etiquetados)
+
+# la función set_value_labels() hace lo mismo con los valores de las variables
 
 datos_etiquetados <- datos_etiquetados |> 
   set_value_labels(PTESXN = c(Varon = "Hombre", Mujer = "Mujer")) 
 
+# veamos el cambio
 
 look_for(datos_etiquetados)
 
 
 # Exportar con flextable
 
+# el paquete flextable permite crear tablas para reportes y publicaciones
+
+library(flextable)
+
+# aporta la clase de objeto flextable que luego permite las modificaciones
+# estéticas deseadas
+
+# creamos dos objetos flextables
+# una tabla de frecuencia (dataframe) y una tabla gtsummary
+
 frec_sexo <- datos |> 
   freq_table(PTESXN) |> 
-  flextable()
+  flextable() |> 
+  theme_box()
 
 resumen_demora <- datos_etiquetados |> 
   select(starts_with("demora"), PTESXN) |> 
@@ -286,8 +310,10 @@ resumen_demora <- datos_etiquetados |>
   bold_labels() |> 
   as_flex_table()
 
-save_as_docx("tabla 1" = frec_sexo, 
-             "tabla 2" = resumen_demora, 
+# exportamos las dos tablas dentro del documento tablas.docx 
+
+save_as_docx("Tabla 1" = frec_sexo, 
+             "Tabla 2" = resumen_demora, 
              path = "practicas/tablas.docx")
 
 
