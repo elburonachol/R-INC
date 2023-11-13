@@ -161,7 +161,7 @@ Por ejemplo, para el mismo ejemplo anterior podemos simplificar la sumatoria hac
 ```{r}
 tabla |> 
   rowwise() |> 
-  mutate(cantidad = sum(c_across(Quimioterapia:`Control sintomático diferente a opioides`))) |> 
+  summarise(cantidad = sum(c_across(Quimioterapia:`Control sintomático diferente a opioides`))) |> 
   count(cantidad)
 ```
 ]
