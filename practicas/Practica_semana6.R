@@ -110,7 +110,8 @@ rita  |>
       "{mean} ({sd})",
       "{median} ({p25}, {p75})",
       "{min}, {max}"
-    )) |> 
+    ), 
+    missing = "no") |> 
   modify_header(label ~ "**Variable**") |> 
   italicize_levels()
   
@@ -153,6 +154,7 @@ rita  |>
 # label = para cambiar la etiqueta de DGED
 # statistic = pedimos la media con el desvio, la mediana y los
 # quantiles 25 y 75 y el minimo y máximo
+#  missing = "no", no muestra los valores NA
 
 # modify_header(label ~ "**Variable**") |> 
 #   italicize_levels()
