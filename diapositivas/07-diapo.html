@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Visualización de datos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Instituto Nacional de Epidemiología" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="animate.min.css" type="text/css" />
+    <link rel="stylesheet" href="fonts_mtheme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Visualización de datos
+]
+.author[
+### Instituto Nacional de Epidemiología
+]
+.date[
+### 20-11-2023
+]
+
+---
+
+
+layout: true
+class: animated, fadeIn
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.code {
+  color: #777;
+  width: 48%;
+  height: 92%;
+  float: left;
+}
+.plot {
+  width: 50%;
+  height: 70%;
+  float: right;
+  padding-left: 1%;
+}
+&lt;/style&gt;
+
+---
+class: inverse, hide-logo, center, middle
+
+.font180[
+“Un simple gráfico ha brindado más información a la mente del analista de datos que cualquier otro dispositivo”. — *John Tukey*
+]
+---
+## Objetivos de la visualización
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.font160[
+
+
+- **Análisis exploratorio**: descubrir y describir patrones en los datos (parte del Análisis Exploratorio de Datos - EDA)
+
+- **Presentación y comunicación**: capacidad de transmitir el mensaje de forma clara y atractiva. 
+]
+---
+background-image: url(assets/signos.png) 
+background-size: 850px
+background-position: 50% 75%
+## Señales visuales
+---
+## Gramática de gráficos
+
+.code[.font140[
+De manera similar a la gramática lingüística, *"La gramática de gráficos"* define un conjunto de reglas para construir gráficos estadísticos combinando diferentes tipos de capas. 
+
+Esta gramática fue creada por **Leland Wilkinson** (*2005, The Grammar of Graphics (Statistics and Computing). Secaucus, NJ, USA: Springer-Verlag New York, Inc.*)
+]]
+
+.plot[
+&lt;img src="assets/layers.PNG" width="585" /&gt;
+
+]
+---
+background-image: url(assets/ggplot2_exploration_es.png) 
+background-size: 650px
+background-position: 50% 40%
+
+.footnote[[Artwork by @allison_horst](https://twitter.com/allison_horst)]
+---
+
+
+---
+class: left
+
+background-image: url(assets/ggplot2.PNG), url(assets/str_ggplot2.PNG), url(assets/sistema_ggplot2.PNG)
+background-size: 160px, 600px, 400px
+background-position: 50% 5%, 50% 65%, 50% 95%
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.font140[
+**ggplot2** es un paquete que se autodefine como librería para _**“crear elegantes visualizaciones de datos usando una gramática de gráficos”**_
+
+El paquete propone un sistema que se basa en la idea que cualquier gráfico se puede construir usando tres componentes básicos:
+]
+---
+## Esquema gráfico ggplot2 
+&lt;br&gt;
+.font150[
+- **Datos** con estructura "ordenada"
+
+]
+---
+## Esquema gráfico ggplot2 
+&lt;br&gt;
+.font150[
+- **Datos** con estructura "ordenada"
+
+- Mapeo estético (**aes**thetic) de los datos
+
+
+]
+---
+## Esquema gráfico ggplot2 
+&lt;br&gt;
+.font150[
+- **Datos** con estructura "ordenada"
+
+- Mapeo estético (**aes**thetic) de los datos
+
+- Objetos **geom**étricos que dan nombre al tipo de gráfico
+
+
+]
+---
+## Esquema gráfico ggplot2 
+&lt;br&gt;
+.font150[
+- **Datos** con estructura "ordenada"
+
+- Mapeo estético (**aes**thetic) de los datos
+
+- Objetos **geom**étricos que dan nombre al tipo de gráfico
+
+- **Coord**enadas que organizan los objetos geométricos
+
+
+]
+---
+## Esquema gráfico ggplot2 
+&lt;br&gt;
+.font150[
+- **Datos** con estructura "ordenada"
+
+- Mapeo estético (**aes**thetic) de los datos
+
+- Objetos **geom**étricos que dan nombre al tipo de gráfico
+
+- **Coord**enadas que organizan los objetos geométricos
+
+- Escalas (**scale**) definen el rango de valores de las estéticas
+
+]
+---
+## Esquema gráfico ggplot2 
+&lt;br&gt;
+.font150[
+- **Datos** con estructura "ordenada"
+
+- Mapeo estético (**aes**thetic) de los datos
+
+- Objetos **geom**étricos que dan nombre al tipo de gráfico
+
+- **Coord**enadas que organizan los objetos geométricos
+
+- Escalas (**scale**) definen el rango de valores de las estéticas
+
+- **Facet**as que agrupan en subgráficos
+]
+---
+background-image: url(assets/geoms.png) 
+background-size: 900px
+background-position: 50% 65%
+## Las geometrias definen el tipo de gráfico
+---
+
+
+
+---
+---
+## El esquema básico
+&lt;br&gt;
+.font160[ 
+.content-box-green[
+
+```r
+&lt;DATOS&gt; %&gt;% 
+  ggplot(mapping = aes(&lt;MAPEO&gt;)) +
+  &lt;GEOM_FUNCION&gt;()
+```
+]]
+---
+## Construcción paso a paso
+
+---
+## Geometría
+
+---
+## Propiedades visuales de la capa geométrica
+
+
+---
+## Seteo vs mapeo en propiedades visuales
+
+
+---
+## Mapeando expresiones
+
+
+
+---
+## Mapeo global vs local
+
+---
+## Agregamos más capas
+
+---
+## La estética group
+
+---
+## Resumenen estadísticos
+
+---
+## Leyenda
+
+---
+## Agregamos etiquetas
+
+---
+## Cambiamos temas
+
+---
+background-image: url(assets/ggplot2_obra_maestra.png) 
+background-size: 700px
+background-position: 50% 40%
+
+.footnote[[Artwork by @allison_horst](https://twitter.com/allison_horst)]
+---
+### Exportar gráficos de ggplot2
+
+.font120[ 
+- Desde el **_panel Plot_** de .bold[RStudio]
+
+- En formatos conocidos como JPG, PNG, PDF, etc
+
+- Mayor control con la función **_ggsave()_**
+
+
+```r
+ggsave(filename,               # nombre del archivo
+  plot = last_plot(),          # nombre del objeto gráfico
+  device = NULL,               # formato de salida "jpeg", "png", "tiff", "pdf", etc
+  width = NA,                  # ancho en unidades de units
+  height = NA,                 # alto en unidades de units
+  units = c("in", "cm", "mm"), # unidades de medidas
+  dpi = 300)                   # resolución de salida en dpi
+```
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url(logo_INE.PNG);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 55px;
+  height: 64px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
