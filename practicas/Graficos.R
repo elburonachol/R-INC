@@ -327,9 +327,10 @@ tabla_pob <- tsomf |>
   count(sexo, grupo_edad) |> 
   mutate(n = if_else(sexo == "F", n, n*-1))
 
-# creamos gráfico de columnas invertido
+# creamos gráfico de columnas invertido guardándolo en el 
+# objeto piramide
 
-tabla_pob |> 
+piramide <- tabla_pob |> 
   ggplot(aes(x = grupo_edad,
            y = n,
            fill = sexo)) +
@@ -339,6 +340,20 @@ tabla_pob |>
                      labels = abs(seq(-20, 20, by = 5))) +
   scale_fill_brewer(palette = "Accent",
                     name = "") +
+  xlab("Edad") +
+  ylab("") +
   theme_minimal() +
   theme(legend.position = "bottom")
 
+piramide
+
+# lo exportamos a un archivo jpg
+
+ggsave(piramide, 
+       filename = "piramide.jpg",
+       device = "jpeg", 
+       dpi = 600,
+       units = "cm",
+       width = 15,
+       height = 10,
+       path = "practicas")
