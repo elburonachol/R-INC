@@ -159,6 +159,31 @@ tsomf |>
 # definimos posición en dodge y ajustamos el desplazamiento vertical
 # además aumentamos los límites de la escala para que se vea la etiqueta
 
+# gráficos de torta
+
+# parte de un gráfico apilado al 100% de una sola barra
+
+tsomf |> 
+  count(sexo) |>
+  ggplot(aes(x = "", y = n, fill = sexo)) +
+  geom_bar(stat="identity", width=1) +
+  scale_fill_manual(values = c("violetred", "dodgerblue2")) +
+  geom_text(aes(label = round(n/sum(n)*100, 1)), 
+            position = position_stack(vjust = 0.5))
+
+# la clave está en cambiar el sistema de coordenadas a polar
+
+tsomf |> 
+  count(sexo) |>
+  ggplot(aes(x = "", y = n, fill = sexo)) +
+  geom_bar(stat="identity", width=1) +
+  scale_fill_manual(values = c("violetred", "dodgerblue2")) +
+  geom_text(aes(label = paste0(round(n/sum(n)*100, 1), "%")), 
+            position = position_stack(vjust = 0.5), color = "white") +
+  coord_polar("y", start=0) +
+  theme_void() 
+    
+
 # Gráficos de variables cuantitativas
 
 # vamos a calcular la edad a partir de la fecha de nacimiento para poder
@@ -174,11 +199,146 @@ tsomf <- tsomf |>
 
 tsomf |> 
   ggplot(aes(x = edad)) +
-  geom_histogram(binwidth = 5, fill = "firebrick", color = "white") 
+  geom_histogram(binwidth = 5, 
+                 fill = "firebrick",
+                 color = "white") 
    
 # definimos ancho de 5 años y colores de relleno y contorno
 
+# binwidth llama internamnete a cut_width() del propio ggplot2
+
+tsomf |> 
+  mutate(intervalo5 = cut_width(edad, width = 5, center = 0))
+
+# podemos graficar lo mismo con geom_bar()
+
+tsomf |> 
+  mutate(intervalo_edad = cut_width(edad, width = 5, center = 0)) |> 
+  count(intervalo_edad) |> 
+  ggplot(aes(x = intervalo_edad, y = n)) +
+  geom_bar(stat = "identity", 
+           fill = "firebrick",
+           color = "white")
+
+# como la variable intervalo de edad es continua debemos hacer que
+# las barras se toquen y además acomodar mejor las etiquetas de x
+
+tsomf |> 
+  mutate(intervalo_edad = cut_width(edad, width = 5, center = 0)) |> 
+  count(intervalo_edad) |> 
+  ggplot(aes(x = intervalo_edad, y = n)) +
+  geom_bar(stat = "identity", 
+           fill = "firebrick",
+           color = "white", 
+           width = 1) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
+# en cambio si queremos que el ancho de la barra del histograma
+# coincida con grupos etarios en enteros (de 5 en 5 por ejemplo)
+
+tsomf |> 
+  mutate(intervalo5 = cut_interval(edad, length =  5)) |> 
+  count(intervalo5)
+
+tsomf |> 
+  mutate(intervalo5 = cut_interval(edad, length =  5)) |> 
+  count(intervalo5) |> 
+  ggplot(aes(x = intervalo5, y = n)) +
+  geom_bar(stat = "identity", 
+           fill = "firebrick",
+           color = "white", 
+           width = 1) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
+# distribución de una variable cuantitativa segun una categórica
+
+# veamos la categórica
+
+tsomf |> 
+  count(centrosalud_informe)
+
+# achiquemos las categorías reduciendo a partir de n = 2
+
+tsomf <- tsomf |> 
+  mutate(centro_salud = fct_lump_n(centrosalud_informe, n = 2, other_level = "Otros")) 
+
+# verifiquemos
+
+tsomf |> 
+  count(centro_salud)
+
+# ahora tenemos 3 categorías
+
+# la capa de puntos se superponen en la misma línea vertical
+
+tsomf |> 
+  ggplot(aes(x = centro_salud, y = edad)) +
+  geom_point() 
+
+
+# mejor es geom_jitter() que distribuye aleatoriamente a lo "ancho"
+
+tsomf |> 
+  ggplot(aes(x = centro_salud, y = edad)) +
+  geom_jitter()
+
+# se puede mostrar resúmenes estadísticos
+
+tsomf |> 
+  ggplot(aes(x = centro_salud, y = edad)) +
+  geom_boxplot()
+
+# o violines
+
+tsomf |> 
+  ggplot(aes(x = centro_salud, y = edad)) +
+  geom_violin()
+
+# o las dos capas juntas (boxplot + jitter)
+
+tsomf |> 
+  ggplot(aes(x = centro_salud, y = edad)) +
+  geom_boxplot() +
+  geom_jitter()
+
+# algo más completo
+
+tsomf |> 
+  ggplot(aes(x = centro_salud, 
+             y = edad,  
+             fill = centro_salud)) +
+  geom_boxplot(outlier.color = "red", alpha = 0.5) +
+  geom_jitter(width = 0.2, shape = 1, size = 3) +
+  xlab(label = "") +
+  scale_fill_brewer(name = "Centro de Salud", 
+                    palette = "Set1") +
+  theme(legend.position = "bottom")
+
 # Pirámides poblacionales
 
+# preparación de los datos
 
+# creamos intervalos cada 5 años
+# contamos sexo e intervalos
+# hacemos que los valores de hombres sea negativo
+
+tabla_pob <- tsomf |> 
+  mutate(grupo_edad = cut_interval(edad, length =  5)) |> 
+  count(sexo, grupo_edad) |> 
+  mutate(n = if_else(sexo == "F", n, n*-1))
+
+# creamos gráfico de columnas invertido
+
+tabla_pob |> 
+  ggplot(aes(x = grupo_edad,
+           y = n,
+           fill = sexo)) +
+  coord_flip() +
+  geom_col() +
+  scale_y_continuous(breaks  = seq(-20, 20, by = 5),
+                     labels = abs(seq(-20, 20, by = 5))) +
+  scale_fill_brewer(palette = "Accent",
+                    name = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 
