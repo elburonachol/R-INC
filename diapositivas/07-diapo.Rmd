@@ -102,8 +102,6 @@ background-position: 50% 40%
 .footnote[[Artwork by @allison_horst](https://twitter.com/allison_horst)]
 ---
 
-
----
 class: left
 
 background-image: url(assets/ggplot2.PNG), url(assets/str_ggplot2.PNG), url(assets/sistema_ggplot2.PNG)
@@ -199,62 +197,525 @@ background-image: url(assets/geoms.png)
 background-size: 900px
 background-position: 50% 65%
 ## Las geometrias definen el tipo de gráfico
----
-
-
 
 ---
----
-## El esquema básico
+## El esquema básico de un gráfico
 <br>
-.font160[ 
-.content-box-green[
+.font150[ 
+.bg-green[
 ```{r, eval=FALSE}
-<DATOS> %>% 
+<DATOS> |>  
   ggplot(mapping = aes(<MAPEO>)) +
   <GEOM_FUNCION>()
 ```
 ]]
+
+.font150[
+Las capas posteriores son opcionales. Algunas de ellas son:
+]
+
+.font150[
+```{r, eval=FALSE}
+[dataframe] |>  
+  ggplot(mapping = aes(x = [x-varible],
+                       y = [y-variable])) +
+  geom_xxx() +
+  scale_x_...() +
+  scale_y_...() +
+  scale_fill_...() +
+  otras capas más
+```
+]
 ---
-## Construcción paso a paso
+background-image: url(assets/pingui.PNG)
+background-size: 200px
+background-position: 90% 70%
+
+## Construcción de un gráfico paso a paso
+
+.font140[
+En estas diapositivas vamos a utilizar unos datos de ejemplo que vienen incorporados en el dataset `pinguinos` del paquete **datos**.
+]
+
+```{r, warning=F, message=F}
+library(tidyverse)
+library(datos)
+
+glimpse(pinguinos)
+```
+
+
+---
+## Coordenadas base
+
+.code[.font140[
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm))
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=FALSE, fig.retina=3}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, y = largo_pico_mm))
+```
+
+]
 
 ---
 ## Geometría
 
+.code[.font130[
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm)) +
+  geom_point() #<<
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=FALSE, fig.retina=3}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm)) +
+  geom_point()
+```
+
+]
 ---
 ## Propiedades visuales de la capa geométrica
 
 
+.code[.font130[
+Seteamos propiedades de los puntos.
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm)) +
+  geom_point(color = "blue", #<<
+             shape = 17,     #<<
+             size = 3,       #<<
+             alpha = 0.5)    #<<
+```
+]]
+
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3}
+
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, y = largo_pico_mm)) +
+  geom_point(color = "blue",
+             shape = 17, 
+             size = 3,
+             alpha = 0.5)
+```
+]
 ---
-## Seteo vs mapeo en propiedades visuales
+## Colores
 
+.font140[
+Se puede usar colores bajo el argumento **color** para geometrías de puntos, líneas y contornos y **fill** para rellenos de polígonos.
+
+El lenguaje maneja una serie de colores numerados y bajo 657 nombres reservados en la función `colors()`. También permite incorporar valores hexadecimales de la paleta (16.777.216 colores posibles).
+]
+
+.code[
+```{r,echo=F,  fig.align='center', out.width = "60%"}
+knitr::include_graphics("assets/colores_R.PNG")
+```
+]
+
+.plot[
+```{r,echo=F,  fig.align='center', out.width = "40%"}
+knitr::include_graphics("assets/colores_hexa.PNG")
+```
+]
+---
+## Forma
+
+.font140[
+En el caso del elemento geométrico punto hay disponibles una serie de formas (**shape**) bajo estos código numéricos.
+]
+
+```{r,echo=F,  fig.align='center', out.width = "40%"}
+knitr::include_graphics("assets/shapes.PNG")
+```
 
 ---
-## Mapeando expresiones
+## Tamaño y transparencia
 
+.font140[
+Las otras dos propiedades visuales son el tamaño del punto (**size**) y la transparencia u opacidad (según desde donde se lo mire) llamada **alpha**. 
 
+Esta propiedad tiene valores de 0 a 1, 0 es todo transparente (no se visualiza) y 1 es todo opaco (no tiene transparencia)
+]
+```{r,echo=F,  fig.align='center', out.width = "25%"}
+knitr::include_graphics("assets/alpha.PNG")
+```
+---
+## Mapeo de propiedades visuales
+
+.code[.font130[
+Mapeamos variable `especie` a color. 
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) +  #<<
+  geom_point()
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) +
+  geom_point()
+```
+]
+---
+## Mapeando condiciones
+
+.code[.font130[
+Mapeamos en color la condición `alto_pico_mm > 19`.
+```{r, eval=F}
+pinguinos |> 
+  filter(!is.na(alto_pico_mm)) |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = alto_pico_mm > 19)) +  #<<
+  geom_point()
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3}
+pinguinos |> 
+  filter(!is.na(alto_pico_mm)) |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = alto_pico_mm > 19)) +
+  geom_point()
+```
+]
+
+---
+## Agregando variables a otras propiedades visuales
+
+.code[.font130[
+Mapeamos `isla` con forma (shape)
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie,
+             shape = isla)) + #<<
+  geom_point()
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie,
+             shape = isla)) + 
+  geom_point()
+```
+]
+---
+## Agregando variables a otras propiedades visuales
+
+.code[.font130[
+Mapeamos `masa_corporal_g` con tamaño (size).
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie,
+             shape = isla,
+             size = masa_corporal_g)) + #<<
+  geom_point()
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie,
+             shape = isla,
+             size = masa_corporal_g)) + 
+  geom_point()
+```
+]
+---
+## Agregando capas geométricas
+
+.code[.font130[
+Volvemos a una versión del gráfico más básica y agregamos otra capa geométrica.
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") #<<
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+]
 
 ---
 ## Mapeo global vs local
 
----
-## Agregamos más capas
+.code[.font130[
+El gráfico anterior mapea la variable **especie** en color de manera *global*. Ahora lo hacemos *localmente* solo en `geom_point()`.
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm)) + 
+  geom_point(aes(color = especie)) + #<<
+  geom_smooth(method = "lm") 
+```
+]
+]
 
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm)) + 
+  geom_point(aes(color = especie)) + 
+  geom_smooth(method = "lm") 
+```
+]
 ---
-## La estética group
+## Escalas de eje
 
+.code[.font130[
+Hay escalas para varios elementos del gráfico. Uno de ellos son los ejes. Acá modificamos el eje x.
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  scale_x_continuous(name = "Alto del pico (mm)",   #<<
+                     limits = c(12,23),             #<<
+                     breaks = seq(12, 23, by = 1))  #<<
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  scale_x_continuous(name = "Alto del pico (mm)", 
+                     limits = c(12,23),               
+                     breaks = seq(12, 23, by = 1))
+```
+]
 ---
-## Resumenen estadísticos
+## Escalas de colores
 
+.code[.font130[
+Modificamos la escala de colores para los puntos, incorporando valores manuales.
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  scale_color_manual(values = c("darkorange", #<<
+                                "darkorchid",#<<
+                                "cyan4"))  #<<
+                     
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  scale_color_manual(values = c("darkorange","darkorchid","cyan4"))
+```
+]
 ---
 ## Leyenda
 
+
+.code[.font130[
+La leyenda se puede mostrar en diferentes partes o no hacerlo. Aquí lo hacemos debajo del gráfico.
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  theme(legend.position = "bottom")  #<<
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  theme(legend.position = "bottom")
+```
+]
 ---
 ## Agregamos etiquetas
+
+.code[.font130[
+Agregamos etiquetas a los ejes, titulo, etc.
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  labs(x = "Alto del pico (mm)",   #<<
+       y = "Largo del pico (mm)",  #<<
+       title = "Relación entre alto y largo de los picos", #<<
+       subtitle = "Dimensiones para pinguinos Adelie, Chinstrap y Gentoo",                                    #<<
+       caption = "Fuente: Dataset pinguinos")  #<<
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+    labs(x = "Alto del pico (mm)",   
+       y = "Largo del pico (mm)",  
+       title = "Relación entre alto y largo de los picos", 
+       subtitle = "Dimensiones para pinguinos Adelie, Chinstrap y Gentoo",                                    
+       caption = "Fuente: Dataset pinguinos") 
+```
+]
 
 ---
 ## Cambiamos temas
 
+.code[.font130[
+Cambiamos el tema estético del fondo del gráfico.
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  theme_bw()  #<<
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  theme_bw()
+```
+]
+
+---
+## Facetas
+
+.code[.font130[
+Facetamos usando una variable (`sexo`)
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  facet_wrap(~sexo)  #<<
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  filter(!is.na(sexo)) |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  facet_wrap(~sexo)
+```
+]
+---
+## Facetas
+
+.code[.font130[
+Facetamos usando dos variables (`sexo` e `isla`)
+```{r, eval=F}
+pinguinos |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  facet_grid(isla ~ sexo)  #<<
+```
+]
+]
+
+.plot[
+```{r, echo=F, warning=F, fig.retina=3, message=FALSE}
+pinguinos |> 
+  filter(!is.na(sexo)) |> 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+  facet_grid(isla ~ sexo)
+```
+]
 ---
 background-image: url(assets/ggplot2_obra_maestra.png) 
 background-size: 700px

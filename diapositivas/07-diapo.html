@@ -93,8 +93,6 @@ background-position: 50% 40%
 .footnote[[Artwork by @allison_horst](https://twitter.com/allison_horst)]
 ---
 
-
----
 class: left
 
 background-image: url(assets/ggplot2.PNG), url(assets/str_ggplot2.PNG), url(assets/sistema_ggplot2.PNG)
@@ -190,63 +188,434 @@ background-image: url(assets/geoms.png)
 background-size: 900px
 background-position: 50% 65%
 ## Las geometrias definen el tipo de gráfico
----
-
-
 
 ---
----
-## El esquema básico
+## El esquema básico de un gráfico
 &lt;br&gt;
-.font160[ 
-.content-box-green[
+.font150[ 
+.bg-green[
 
 ```r
-&lt;DATOS&gt; %&gt;% 
+&lt;DATOS&gt; |&gt;  
   ggplot(mapping = aes(&lt;MAPEO&gt;)) +
   &lt;GEOM_FUNCION&gt;()
 ```
 ]]
+
+.font150[
+Las capas posteriores son opcionales. Algunas de ellas son:
+]
+
+.font150[
+
+```r
+[dataframe] |&gt;  
+  ggplot(mapping = aes(x = [x-varible],
+                       y = [y-variable])) +
+  geom_xxx() +
+  scale_x_...() +
+  scale_y_...() +
+  scale_fill_...() +
+  otras capas más
+```
+]
 ---
-## Construcción paso a paso
+background-image: url(assets/pingui.PNG)
+background-size: 200px
+background-position: 90% 70%
+
+## Construcción de un gráfico paso a paso
+
+.font140[
+En estas diapositivas vamos a utilizar unos datos de ejemplo que vienen incorporados en el dataset `pinguinos` del paquete **datos**.
+]
+
+
+```r
+library(tidyverse)
+library(datos)
+
+glimpse(pinguinos)
+```
+
+```
+## Rows: 344
+## Columns: 8
+## $ especie         &lt;fct&gt; Adelia, Adelia, Adelia, Adelia, Adelia, Adelia, Adelia…
+## $ isla            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgersen,…
+## $ largo_pico_mm   &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42…
+## $ alto_pico_mm    &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20…
+## $ largo_aleta_mm  &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, …
+## $ masa_corporal_g &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 42…
+## $ sexo            &lt;fct&gt; macho, hembra, hembra, NA, hembra, macho, hembra, mach…
+## $ anio            &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, …
+```
+
+
+---
+## Coordenadas base
+
+.code[.font140[
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm))
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-7-1.png" width="504" /&gt;
+
+]
 
 ---
 ## Geometría
 
+.code[.font130[
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm)) +
+* geom_point()
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-9-1.png" width="504" /&gt;
+
+]
 ---
 ## Propiedades visuales de la capa geométrica
 
 
+.code[.font130[
+Seteamos propiedades de los puntos.
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm)) +
+* geom_point(color = "blue",
+*            shape = 17,
+*            size = 3,
+*            alpha = 0.5)
+```
+]]
+
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-11-1.png" width="504" /&gt;
+]
 ---
-## Seteo vs mapeo en propiedades visuales
+## Colores
 
+.font140[
+Se puede usar colores bajo el argumento **color** para geometrías de puntos, líneas y contornos y **fill** para rellenos de polígonos.
+
+El lenguaje maneja una serie de colores numerados y bajo 657 nombres reservados en la función `colors()`. También permite incorporar valores hexadecimales de la paleta (16.777.216 colores posibles).
+]
+
+.code[
+&lt;img src="assets/colores_R.PNG" width="60%" style="display: block; margin: auto;" /&gt;
+]
+
+.plot[
+&lt;img src="assets/colores_hexa.PNG" width="40%" style="display: block; margin: auto;" /&gt;
+]
+---
+## Forma
+
+.font140[
+En el caso del elemento geométrico punto hay disponibles una serie de formas (**shape**) bajo estos código numéricos.
+]
+
+&lt;img src="assets/shapes.PNG" width="40%" style="display: block; margin: auto;" /&gt;
 
 ---
-## Mapeando expresiones
+## Tamaño y transparencia
 
+.font140[
+Las otras dos propiedades visuales son el tamaño del punto (**size**) y la transparencia u opacidad (según desde donde se lo mire) llamada **alpha**. 
 
+Esta propiedad tiene valores de 0 a 1, 0 es todo transparente (no se visualiza) y 1 es todo opaco (no tiene transparencia)
+]
+&lt;img src="assets/alpha.PNG" width="25%" style="display: block; margin: auto;" /&gt;
+---
+## Mapeo de propiedades visuales
+
+.code[.font130[
+Mapeamos variable `especie` a color. 
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+*            color = especie)) +
+  geom_point()
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-17-1.png" width="504" /&gt;
+]
+---
+## Mapeando condiciones
+
+.code[.font130[
+Mapeamos en color la condición `alto_pico_mm &gt; 19`.
+
+```r
+pinguinos |&gt; 
+  filter(!is.na(alto_pico_mm)) |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+*            color = alto_pico_mm &gt; 19)) +
+  geom_point()
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-19-1.png" width="504" /&gt;
+]
+
+---
+## Agregando variables a otras propiedades visuales
+
+.code[.font130[
+Mapeamos `isla` con forma (shape)
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie,
+*            shape = isla)) +
+  geom_point()
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-21-1.png" width="504" /&gt;
+]
+---
+## Agregando variables a otras propiedades visuales
+
+.code[.font130[
+Mapeamos `masa_corporal_g` con tamaño (size).
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie,
+             shape = isla,
+*            size = masa_corporal_g)) +
+  geom_point()
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-23-1.png" width="504" /&gt;
+]
+---
+## Agregando capas geométricas
+
+.code[.font130[
+Volvemos a una versión del gráfico más básica y agregamos otra capa geométrica.
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() + 
+* geom_smooth(method = "lm")
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-25-1.png" width="504" /&gt;
+]
 
 ---
 ## Mapeo global vs local
 
----
-## Agregamos más capas
+.code[.font130[
+El gráfico anterior mapea la variable **especie** en color de manera *global*. Ahora lo hacemos *localmente* solo en `geom_point()`.
 
----
-## La estética group
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm)) + 
+* geom_point(aes(color = especie)) +
+  geom_smooth(method = "lm") 
+```
+]
+]
 
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-27-1.png" width="504" /&gt;
+]
 ---
-## Resumenen estadísticos
+## Escalas de eje
 
+.code[.font130[
+Hay escalas para varios elementos del gráfico. Uno de ellos son los ejes. Acá modificamos el eje x.
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+* scale_x_continuous(name = "Alto del pico (mm)",
+*                    limits = c(12,23),
+*                    breaks = seq(12, 23, by = 1))
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-29-1.png" width="504" /&gt;
+]
+---
+## Escalas de colores
+
+.code[.font130[
+Modificamos la escala de colores para los puntos, incorporando valores manuales.
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+* scale_color_manual(values = c("darkorange",
+*                               "darkorchid",
+*                               "cyan4"))
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-31-1.png" width="504" /&gt;
+]
 ---
 ## Leyenda
 
+
+.code[.font130[
+La leyenda se puede mostrar en diferentes partes o no hacerlo. Aquí lo hacemos debajo del gráfico.
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+* theme(legend.position = "bottom")
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-33-1.png" width="504" /&gt;
+]
 ---
 ## Agregamos etiquetas
+
+.code[.font130[
+Agregamos etiquetas a los ejes, titulo, etc.
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+* labs(x = "Alto del pico (mm)",
+*      y = "Largo del pico (mm)",
+*      title = "Relación entre alto y largo de los picos",
+*      subtitle = "Dimensiones para pinguinos Adelie, Chinstrap y Gentoo",
+*      caption = "Fuente: Dataset pinguinos")
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-35-1.png" width="504" /&gt;
+]
 
 ---
 ## Cambiamos temas
 
+.code[.font130[
+Cambiamos el tema estético del fondo del gráfico.
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+* theme_bw()
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-37-1.png" width="504" /&gt;
+]
+
+---
+## Facetas
+
+.code[.font130[
+Facetamos usando una variable (`sexo`)
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+* facet_wrap(~sexo)
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-39-1.png" width="504" /&gt;
+]
+---
+## Facetas
+
+.code[.font130[
+Facetamos usando dos variables (`sexo` e `isla`)
+
+```r
+pinguinos |&gt; 
+  ggplot(aes(x=alto_pico_mm, 
+             y = largo_pico_mm,
+             color = especie)) + 
+  geom_point() +
+* facet_grid(isla ~ sexo)
+```
+]
+]
+
+.plot[
+&lt;img src="07-diapo_files/figure-html/unnamed-chunk-41-1.png" width="504" /&gt;
+]
 ---
 background-image: url(assets/ggplot2_obra_maestra.png) 
 background-size: 700px
