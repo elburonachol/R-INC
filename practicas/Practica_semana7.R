@@ -16,7 +16,7 @@ library(tidyverse)
 rita <- read_csv2("practicas/rita_prueba.csv")
 
 
-# grafico de líneas para tendencias
+# gráfico de líneas para tendencias
 
 # extraemos año de la fecha de registro
 
@@ -110,6 +110,9 @@ rita |>
   theme(legend.position = "bottom",
         legend.title = element_blank())
 
+
+# personalizar temas gráficos
+
 # podemos especificar ciertas caracteristicas generales de theme
 # como tipo de fuentes, tamaños, etc
 
@@ -125,7 +128,7 @@ system_fonts() |> View()
 system_fonts() |> 
   filter(family == "Times New Roman")
 
-# guardamos las caracteristicas del tema que usamos 
+# guardamos las características del tema que usamos 
 
 backup_tema <- theme_set(theme_minimal())
 
@@ -135,12 +138,12 @@ backup_tema
 
 # en texto la familia es ""
 
-# seteamos la familia "Times New Roman" en el tema minimo
+# seteamos el theme_minimal() con la familia "Times New Roman" 
 
 theme_set(theme_minimal(base_family = "Times New Roman"))
 
 # con theme_update() podemos actualizar otros elementos
-# del tema
+# del tema seteado
 
 theme_update( 
   axis.text.x = element_text(color = "black", face = "bold", size = 12, 
@@ -178,9 +181,41 @@ rita |>
   scale_color_manual(values = c("royalblue3", "peru", "forestgreen")) 
 
 # los cambios en el tema desaparecen cuando iniciamos una sesión de R
-# nueva
+# nueva o bien podemos recuperar el tema minimal original almacenado
 
-# tambien se podría guardar los cambios en un objeto de tema de ggplot
-# para aplicar al gráfico que deseamos
+theme_set(backup_tema)
+
+rita |> 
+  group_by(año) |> 
+  summarise(Pacientes = n_distinct(IDPTE),
+            Tumores = n_distinct(IDTUM),
+            Tratamientos = n_distinct(IDTTO)) |> 
+  pivot_longer(cols = 2:4, names_to = "tipo", values_to = "cantidad") |> 
+  ggplot(aes(x = año, y = cantidad, color = tipo)) +
+  geom_point(aes(shape = tipo), size = 3) +
+  geom_line(linewidth = 0.7) +
+  scale_x_continuous(name = "Año", breaks = seq(2012, 2023, by = 1)) +
+  scale_y_continuous(name = "Frecuencia", limits = c(0,150), 
+                     breaks = seq(0,150, by = 10)) +
+  labs(title = "Número de registros en RITA por año", 
+       subtitle = "Argentina - 2012-2023" , 
+       caption = "Fuente: SIVER-Ca en base a datos del RITA. INC") +
+  scale_color_manual(values = c("royalblue3", "peru", "forestgreen")) 
+
+# 
+
+
+# lineas longitudinales  con rita ( ggpubr::ggtexttable() )
+
+# start de coord_polar() en grafico de tortas
+
+# annotate
+
+# ordenar con factores
+
+# ggupset, ggrepel, ggtext, patchwork, rcartocolor, systemfonts, scales
+
+# ver cambio de fuentes y tamaños
+# caracteristicas de temas
 
 
