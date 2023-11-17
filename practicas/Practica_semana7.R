@@ -202,20 +202,181 @@ rita |>
        caption = "Fuente: SIVER-Ca en base a datos del RITA. INC") +
   scale_color_manual(values = c("royalblue3", "peru", "forestgreen")) 
 
-# 
+# graficos de sectores
+
+# usamos una categórica con pocas categorías
+
+rita |> 
+  rstatix::freq_table(PTESXN)
+
+# los valores de la tabla de frecuencia de rstatix pueden servir
+
+rita  |> 
+  rstatix::freq_table(PTESXN) |>
+  ggplot(aes(x = "", y = n, fill = PTESXN)) +
+  geom_bar(stat="identity", width=1) +
+  scale_fill_manual(name = "Sexo",
+                    values = c("violetred", "dodgerblue2")) +
+  geom_text(aes(label = paste0(round(prop, 1), "%")), 
+            position = position_stack(vjust = 0.5), color = "white") +
+  coord_polar("y", start=0) +
+  theme_void() 
+
+# cambiamos la disposición
+
+# el argumento start dentro de la función coord_polar() permite
+# decidir donde comienza a dibujarse los sectores
+# también direction determina la dirección (1 = dirección horaria,
+# -1 dirección antihoraria)
+# los valores de start se miden en radianes 
+# 1 grado es igual 0.0174533 radianes
+
+# ejemplo comenzando en 90 grados sentido horario
+
+rita  |> 
+  rstatix::freq_table(PTESXN) |>
+  ggplot(aes(x = "", y = n, fill = PTESXN)) +
+  geom_bar(stat="identity", width=1) +
+  scale_fill_manual(name = "Sexo",
+                    values = c("violetred", "dodgerblue2")) +
+  geom_text(aes(label = paste0(round(prop, 1), "%")), 
+            position = position_stack(vjust = 0.5), color = "white") +
+  coord_polar("y", start=90*0.0174533, direction = 1) +
+  theme_void() 
+
+# igual sentido antihorario - cambiamos text a label
+
+rita  |> 
+  rstatix::freq_table(PTESXN) |>
+  ggplot(aes(x = "", y = n, fill = PTESXN)) +
+  geom_bar(stat="identity", width=1) +
+  scale_fill_manual(name = "Sexo", 
+                    values = c("violetred", "dodgerblue2")) +
+  geom_text(aes(label = paste0(round(prop, 1), "%")), 
+            position = position_stack(vjust = 0.5), color = "white") +
+  coord_polar("y", start=90*0.0174533, direction = -1) +
+  theme_void() 
 
 
-# lineas longitudinales  con rita ( ggpubr::ggtexttable() )
+# ordenar barras con factores
 
-# start de coord_polar() en grafico de tortas
+rita |> 
+  count(ESTTON)
 
-# annotate
+# graficamos barras horizontales
 
-# ordenar con factores
+rita |> 
+  filter(!is.na(ESTTON)) |> 
+  count(ESTTON) |> 
+  ggplot(aes(x = ESTTON, y = n, fill = ESTTON)) + 
+  geom_bar(stat = "identity", width = 0.6) + 
+  scale_fill_brewer(name = "Estrategia", palette = "Set3") +
+  theme(legend.position = "none") +
+  geom_text(aes(label = n), nudge_y = 5) +
+  coord_flip() +
+  xlab(label = "") +
+  scale_y_continuous(name = "Frecuencia", 
+                     limits = c(0, 265), 
+                     breaks = seq(0, 265, by = 10)) +
+  theme_minimal()
 
-# ggupset, ggrepel, ggtext, patchwork, rcartocolor, systemfonts, scales
+# el gráfico tiene categorías desordenadas
+# las ordenamos por frecuencia e invertimos - usamos fct_infre() y
+# fct_rev()
 
-# ver cambio de fuentes y tamaños
-# caracteristicas de temas
+rita |> 
+  filter(!is.na(ESTTON)) |> 
+  mutate(ESTTON = fct_rev(fct_infreq(ESTTON))) |> 
+  count(ESTTON) |> 
+  ggplot(aes(x = ESTTON, y = n, fill = ESTTON)) + 
+  geom_bar(stat = "identity", width = 0.6) + 
+  scale_fill_brewer(name = "Estrategia", palette = "Set3") +
+  theme(legend.position = "none") +
+  geom_text(aes(label = n), nudge_y = 5) +
+  coord_flip() +
+  xlab(label = "") +
+  scale_y_continuous(name = "Frecuencia", 
+                     limits = c(0, 265), 
+                     breaks = seq(0, 265, by = 10)) +
+  theme_minimal()
+
+# otros paquetes relevantes
+
+# patchwork
+
+# en ocasiones vamos a necesitar componer gráficos individuales en
+# estructuras combinadas
+
+# el paquete pachwork se ocupa de esta tarea de forma sencilla
+
+# almacenemos dos graficos de los realizados anteriormente en objetos
+# además de tendencia que ya está guardado
+
+sectores <- rita  |> 
+  rstatix::freq_table(PTESXN) |>
+  ggplot(aes(x = "", y = n, fill = PTESXN)) +
+  geom_bar(stat="identity", width=1) +
+  scale_fill_manual(name = "Sexo",
+                    values = c("violetred", "dodgerblue2")) +
+  geom_text(aes(label = paste0(round(prop, 1), "%")), 
+            position = position_stack(vjust = 0.5), color = "white") +
+  coord_polar("y", start=90*0.0174533, direction = 1) +
+  theme_void() 
+
+estrategias <- rita |> 
+  filter(!is.na(ESTTON)) |> 
+  mutate(ESTTON = fct_rev(fct_infreq(ESTTON))) |> 
+  count(ESTTON) |> 
+  ggplot(aes(x = ESTTON, y = n, fill = ESTTON)) + 
+  geom_bar(stat = "identity", width = 0.6) + 
+  scale_fill_brewer(name = "Estrategia", palette = "Set3") +
+  theme(legend.position = "none") +
+  geom_text(aes(label = n), nudge_y = 5) +
+  coord_flip() +
+  xlab(label = "") +
+  scale_y_continuous(name = "Frecuencia", 
+                     limits = c(0, 265), 
+                     breaks = seq(0, 265, by = 10)) +
+  theme_minimal()
+
+# compongamos algunos gráficos
+
+library(patchwork)
+
+tendencia / estrategias
+
+(tendencia | sectores) / estrategias +
+  plot_annotation(tag_levels = "A")
+
+# mediante operadores matemáticos como sumas, 
+# cocientes, paréntesis, etc se puede diseñar una
+# combinación de gráficos
+
+# además se pueden añadir tags (por ejemplo con letas)
+
+# ggupset
+
+# en encuentros anteriores conocimos la utilidad del
+# gráfico Upset para variables cualitativas con categorías
+# que no son mutuamente excluyentes
+
+# existe un paquete que conecta la posibilidad de hacer este
+# tipo de gráficos con la posibilidad de hacerlo con ggplot
+
+library(ggupset)
+
+# la librería aporta la capa scale_x_upset()
+
+rita |> 
+  filter(!is.na(ESTTON) & ESTTON != "Ignorado") |> 
+  group_by(IDPTE) |> 
+  summarize(Estrategias = list(ESTTON)) |> 
+  ggplot(aes(x=Estrategias)) +
+  geom_bar() +
+  scale_x_upset(order_by = "degree", n_sets = 6)
+
+# los datos deben de estar en un formato lista agrupados
+# por el identificador (usamos IDPTE en este caso por los
+# datos con los que contamos en el dataframe)
 
 
