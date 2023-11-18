@@ -3,6 +3,11 @@
 # La idea es ver algunas otras funciones o aplicaciones de lo
 # mostrado durante el encuentro sincrónico
 
+# los gráficos siempre se dibujaran en el panel Plots de RStudio
+# que tiene un boton de Zoom que al presionar abrirá una 
+# ventana emergente que podemos maximizar al tamaño de la 
+# pantalla
+
 # Este código está comentado a modo de guía 
 
 #-----------------------
@@ -32,6 +37,7 @@ rita |>
             Tratamientos = n_distinct(IDTTO))
 
 # debemos "ordenar" los datos 
+# para esto, pivoteamos de ancho a largo
 
 rita |> 
   group_by(año) |> 
@@ -52,7 +58,13 @@ tendencia <- rita |>
   geom_point(aes(shape = tipo), size = 3) +
   geom_line(linewidth = 0.7) 
 
-# almacenamos el gráfico en el objeto tendencia
+# donde año estará en el eje x, cantidad en el eje y
+# color será diferente según las categorías de tipo
+# la forma del punto cambiará según tipo y será de tamaño 3
+# las líneas tendran un grosor de 0.7
+
+# finalmente almacenamos el gráfico en el objeto tendencia,
+# que podemos visualizar
 
 tendencia
 
