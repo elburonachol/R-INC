@@ -6,7 +6,7 @@
 # los gráficos siempre se dibujaran en el panel Plots de RStudio
 # que tiene un boton de Zoom que al presionar abrirá una 
 # ventana emergente que podemos maximizar al tamaño de la 
-# pantalla
+# pantalla (realicen esto para ver mejor las producciones gráficas)
 
 # Este código está comentado a modo de guía 
 
@@ -69,28 +69,44 @@ tendencia <- rita |>
 tendencia
 
 # luego podemos ir agregando caracteristicas y capas al objeto
+# mediante el operador +
 
 # por ejemplo, agregamos escalas de ejes x e y
 
 tendencia +
-  scale_x_continuous(name = "Año", breaks = seq(2012, 2023, by = 1)) +
-  scale_y_continuous(name = "Frecuencia", limits = c(0,150), 
-                     breaks = seq(0,150, by = 10))
+  scale_x_continuous(name = "Año", 
+                     breaks = seq(2012, 2023, by = 1)) +
+  scale_y_continuous(name = "Frecuencia", 
+                     limits = c(0, 150), 
+                     breaks = seq(0, 150, by = 10))
+
+# los argumentos habituales son:
+# name = nombre del eje
+# limits = limites de la escala
+# breaks = cortes a mostrar en la escala
 
 # ahora le podemos incorporar etiquetas (de titulo, subtitulo y pie)
 
 tendencia <- tendencia +
-  scale_x_continuous(name = "Año", breaks = seq(2012, 2023, by = 1)) +
-  scale_y_continuous(name = "Frecuencia", limits = c(0,150), 
-                     breaks = seq(0,150, by = 10)) +
+  scale_x_continuous(name = "Año", 
+                     breaks = seq(2012, 2023, by = 1)) +
+  scale_y_continuous(name = "Frecuencia", 
+                     limits = c(0, 150), 
+                     breaks = seq(0, 150, by = 10)) +
   labs(title = "Número de registros en RITA por año", 
        subtitle = "Argentina - 2012-2023" , 
        caption = "Fuente: SIVER-Ca en base a datos del RITA. INC")
 
+# la función labs posibilita agregar etiquetas
+# algunos de sus argumentos son
+# title = titulo del gráfico
+# subtitle = subtitulo del gráfico
+# caption = pie de gráfico
+
 tendencia
 
-# además podemos cambiar el tema, ubicar la leyenda debajo y sin titulo,
-# y cambiar colores
+# además podemos cambiar el tema, ubicar la leyenda debajo y 
+# sin titulo, y cambiar colores
 
 tendencia <- tendencia +
   scale_color_manual(values = c("royalblue3", "peru", "forestgreen")) +
@@ -100,7 +116,34 @@ tendencia <- tendencia +
 
 tendencia
 
-# estos es lo mismo que construirlo todo junto
+# agregamos escalas de colores manuales
+# en este ejemplo estamos utilizando colores de colors()
+
+colors()
+
+# hay 657 colores posibles almacenados dentro del lenguaje
+# bajo estos nombres
+
+# también podriamos usar colores en números hexadecimales 
+# que se pueden sacar de sitios como https://www.colorhexa.com/
+
+tendencia +
+  scale_color_manual(values = c("#2e76ac", "#9400ff", "#85ae38")) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+
+# por otra parte seleccionamos un tema minimo ()
+# existen varios temas incorporados en ggplot2 y otros
+# provenientes en varios paquetes 
+
+# estos temas se pueden modificar, haciendo que la leyenda
+# se ubique debajo del gráfico y que no aparezca el titulo
+# como en este ejemplo
+
+####
+
+# esto generalmente se construye todo junto
 
 rita |> 
   group_by(año) |> 
@@ -123,7 +166,7 @@ rita |>
         legend.title = element_blank())
 
 
-# personalizar temas gráficos
+# Personalizar temas gráficos
 
 # podemos especificar ciertas caracteristicas generales de theme
 # como tipo de fuentes, tamaños, etc
@@ -135,12 +178,12 @@ library(systemfonts)
 # mostramos las fuentes instaladas
 system_fonts() |> View()
 
-# una fuente habitualmente instalada es Times New Roman
+# una fuente habitualmente instalada es "Times New Roman"
 
 system_fonts() |> 
   filter(family == "Times New Roman")
 
-# guardamos las características del tema que usamos 
+# guardamos las características del tema que usamos (como backup)
 
 backup_tema <- theme_set(theme_minimal())
 
@@ -173,6 +216,10 @@ theme_update(
   plot.margin = margin(rep(20, 4))
 )
 
+# aquí estamos modificando la configuración del título, subtítulo,
+# línea del eje x, grilla del eje y, fondo del gráfico, posición,
+# titulo y texto de la leyenda y margenes del gráfico
+
 # aplicamos este tema en el gráfico
 
 rita |> 
@@ -192,10 +239,13 @@ rita |>
        caption = "Fuente: SIVER-Ca en base a datos del RITA. INC") +
   scale_color_manual(values = c("royalblue3", "peru", "forestgreen")) 
 
-# los cambios en el tema desaparecen cuando iniciamos una sesión de R
-# nueva o bien podemos recuperar el tema minimal original almacenado
+# los cambios en el tema desaparecen cuando iniciamos una nueva 
+# sesión de R o bien cuando recuperamos el tema minimal original 
+# almacenado, como en la siguiente línea:
 
 theme_set(backup_tema)
+
+# verificamos el tema original seteado
 
 rita |> 
   group_by(año) |> 
@@ -214,7 +264,7 @@ rita |>
        caption = "Fuente: SIVER-Ca en base a datos del RITA. INC") +
   scale_color_manual(values = c("royalblue3", "peru", "forestgreen")) 
 
-# graficos de sectores
+# Graficos de sectores
 
 # usamos una categórica con pocas categorías
 
@@ -222,6 +272,7 @@ rita |>
   rstatix::freq_table(PTESXN)
 
 # los valores de la tabla de frecuencia de rstatix pueden servir
+# porque incluye facilmente las proporciones
 
 rita  |> 
   rstatix::freq_table(PTESXN) |>
@@ -234,7 +285,12 @@ rita  |>
   coord_polar("y", start=0) +
   theme_void() 
 
-# cambiamos la disposición
+# en el gráfico usamos la variable prop calculada por freq_table()
+# para visualizar las etiquetas de geom_label(), redondeadas y con
+# 1 decimal. Esto lo encerramos en la función paste0() que une texto
+# sin espacio entre sus componentes para agregar el signo %
+
+# cambiamos la disposición de inicio de los sectores de la torta
 
 # el argumento start dentro de la función coord_polar() permite
 # decidir donde comienza a dibujarse los sectores
@@ -270,12 +326,18 @@ rita  |>
   theme_void() 
 
 
-# ordenar barras con factores
+# Ordenar barras con factores
+
+# cuando necesitamos manipular ordenes en los gráficos de
+# variables cualitativas no nos queda otra posibilidad que
+# hacerlo mediante el ordenamiento de los niveles de un factor
+
+# tomemos la variable ESTTON (Estrategia del tratamiento)
 
 rita |> 
   count(ESTTON)
 
-# graficamos barras horizontales
+# graficamos estos valores en barras horizontales
 
 rita |> 
   filter(!is.na(ESTTON)) |> 
@@ -292,8 +354,15 @@ rita |>
                      breaks = seq(0, 265, by = 10)) +
   theme_minimal()
 
+# utilizamos coord_flip() para cambiar las coordenadas y
+# que las barras sean horizontales
+# también reducimos el ancho de las barras a 0.6,
+# agregamos etiquetas con geom_text() y usamos escalas
+# de relleno (fill) de paletas de Brewer (paleta Set3)
+
+
 # el gráfico tiene categorías desordenadas
-# las ordenamos por frecuencia e invertimos - usamos fct_infre() y
+# las ordenamos por frecuencia e invertimos - usamos fct_infrec() y
 # fct_rev()
 
 rita |> 
@@ -312,9 +381,9 @@ rita |>
                      breaks = seq(0, 265, by = 10)) +
   theme_minimal()
 
-# otros paquetes relevantes
+# Otros paquetes relevantes
 
-# patchwork
+# Paquete patchwork
 
 # en ocasiones vamos a necesitar componer gráficos individuales en
 # estructuras combinadas
@@ -351,7 +420,7 @@ estrategias <- rita |>
                      breaks = seq(0, 265, by = 10)) +
   theme_minimal()
 
-# compongamos algunos gráficos
+# compongamos dos gráficos de ejemplo
 
 library(patchwork)
 
@@ -366,7 +435,7 @@ tendencia / estrategias
 
 # además se pueden añadir tags (por ejemplo con letas)
 
-# ggupset
+# Paquete ggupset
 
 # en encuentros anteriores conocimos la utilidad del
 # gráfico Upset para variables cualitativas con categorías
