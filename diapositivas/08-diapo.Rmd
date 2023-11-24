@@ -149,7 +149,31 @@ El propósito de knitr es dar espacio a la reproducibilidad de investigación en
 ]
 
 ---
+## Incluyendo código (chunk)
 
+.font140[
+Los bloques de código se agregan dentro del documento de texto Rmarkdown mediante *"fragmentos"* (**chunk**) a partir de insertar (Ctrl+Alt+I) un bloque con los siguientes delimitadores ````{r}` y `````.
+
+<br>
+
+```{r,echo=F,  out.width = "90%"}
+knitr::include_graphics("assets/chunk.PNG")
+```
+
+Cuando se renderice el archivo *.Rmd*, R Markdown ejecutará cada fragmento de código e incrustará los resultados debajo del fragmento de código en su documento final.
+
+]
+
+---
+## Algunas opciones de bloque
+
+
+```{r,echo=F, fig.align='center', out.width = "70%"}
+knitr::include_graphics("assets/chunk-opciones.PNG")
+```
+
+
+---
 ## Elementos que se pueden integrar
 
 .font140[
@@ -167,18 +191,87 @@ Resultados de fragmentos de código R
 - Resúmenes de modelos estadísticos
 - Gráficos y mapas estáticos
 - Gráficos y mapas interactivos (en formato Html)
+]
 
+---
+## Estructura de un documento
+
+.font150[
+Un documento contiene *contenido*, *estructura*, *apariencia* y *formato*.
+
+- **Contenido**: texto, código, gráficos. 
+
+- **Estructura**: párrafos, listas, énfasis, etc. 
+
+- **Apariencia**: fuentes, colores, diseño. 
+
+- **Formato**: funcionalidad (estático, interactivo, diapositivas, etc)
+]
+
+---
+## Formato Word con plantilla
+
+.font140[
+Una manera de controlar los elementos de un documento es mediante el uso de plantillas editadas de **Word**.
+
+- Usamos *R Markdown* para crear un documento Word
+
+- Editamos el estilo de Word
+
+- Guardamos el documento como archivo de referencia de estilo
+
+- Formateamos el documento Rmd utilizando ese archivo de referencia
+]
+
+---
+## Estilo de Word
+
+.font140[
+Esto nos va a permitir modificar la estructura y apariencia de nuestro documento, modificando, entre otras cosas:
+
+- Formato
+  - Tamaño de la hoja 
+  - Márgenes
+- Diseño de cada elemento del documento:
+  - Fuente
+  - Tamaño 
+  - Color
+- Encabezado y pie de página
+  - Numeración
+  - Logotipos
+]
+
+---
+## Encabezado YALM
+
+.font140[
+
+Para tomar como referencia el archivo Word modificado en su estilo se incorpora dentro de la cabecera YAML del Rmarkdown un argumento `reference_docx` dela siguiente forma:
+
+```{r, eval=F}
+---
+title: "Mi documento"
+author: "Mi nombre"
+date: "27/11/2023"
+output:
+  word_document:
+    reference_docx: word-referencia-estilo-01.docx
+---
+
+El documento comienza aquí
+```
 
 ]
 
 ---
-
 ## Quarto
 
 .font150[
 *Quarto* unifica la funcionalidad de muchos paquetes del *ecosistema R Markdown* (rmarkdown, bookdown, distill, xaringan, etc.) en un único sistema y lo amplía con soporte nativo para múltiples lenguajes de programación como Python y Julia, además de R.
 
 - el software se descarga de [quarto.org](https://quarto.org/)
+
+- lanzado en el año 2022 como un nuevo sistema de publicación científica y técnica de código abierto
 
 - los archivos *Quarto* son archivos de texto plano con extensión **.qmd**
 
@@ -209,18 +302,4 @@ Aunque utilizar ambos formatos son similares, con **Quarto** se puede:
 - Diapositivas revealjs actualizadas 
 
 - Es más fácil personalizar sitios web y libros con proyectos.
-]
----
-## Estructura de un documento
-
-.font150[
-Un documento contiene *contenido*, *estructura*, *apariencia* y *formato*.
-
-- **Contenido**: texto, código, gráficos. 
-
-- **Estructura**: párrafos, listas, énfasis, etc. 
-
-- **Apariencia**: fuentes, colores, diseño. 
-
-- **Formato**: funcionalidad (estático, interactivo, diapositivas, etc)
 ]
