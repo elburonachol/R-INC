@@ -75,8 +75,8 @@ background-position: 50% 60%
 ---
 ## Programación literaria o literal (Literate Programming)
 
-.font150[
-- La idea original proviene de Don Knuth
+.font140[
+- La idea original proviene del experto en computación *Donald Knuth*
 
 - Un artículo es un flujo de texto y código
 
@@ -86,12 +86,12 @@ background-position: 50% 60%
 
 - El texto del artículo explica lo que está sucediendo en el análisis
 
-- Los programas literarios se tejen para producir documentos legibles 
+- Los programas literarios se *tejen* para producir documentos legibles 
 
 En definitiva, la programación literaria mezcla:
 
-- Un lenguaje de documentación
-- Un lenguaje de programación
+- Un lenguaje de **documentación**
+- Un lenguaje de **programación**
 ]
 
 ---
@@ -107,13 +107,13 @@ class: left
 ## Markdown
 
 .font150[
-**Markdown** es un lenguaje de marcas ligero que trata de conseguir la máxima legibilidad y “publicabilidad” .
+**Markdown** es un lenguaje de marcas ligero que trata de conseguir la máxima legibilidad y *“publicabilidad”* .
 
-Se ubica en el grupo de los lenguajes de marcas como HTML, XML, entre otros, aunque es mucho más sencillo de utilizar.
+Se ubica en el grupo de los lenguajes de marcas como **HTML**, **XML**, entre otros, aunque es mucho más sencillo de utilizar.
 
-Viene soportado por RStudio, tanto para sus Notebooks como para documentos R Makdown y presentaciones (slides)
+Viene soportado por RStudio, tanto para sus *Notebooks* como para documentos **R Markdown** y *presentaciones* (slides)
 
-Luego se conecta con el convertidor de documentos universal Pandoc (http://pandoc.org/) para transformarse en formatos html (web), pdf o Word. 
+Luego se conecta con el convertidor de documentos universal **Pandoc** (http://pandoc.org/) para transformarse en formatos html (web), pdf o Word. 
 ]
 
 ---
@@ -152,7 +152,7 @@ El propósito de knitr es dar espacio a la reproducibilidad de investigación en
 ## Incluyendo código (chunk)
 
 .font140[
-Los bloques de código se agregan dentro del documento de texto Rmarkdown mediante *"fragmentos"* (**chunk**) a partir de insertar (Ctrl+Alt+I) un bloque con los siguientes delimitadores ````{r}` y `````.
+Los bloques de código se agregan dentro del documento de texto Rmarkdown mediante *"fragmentos"* (**chunk**) a partir de insertar (Ctrl+Alt+I) un bloque similar al siguiente:
 
 <br>
 
@@ -178,19 +178,19 @@ knitr::include_graphics("assets/chunk-opciones.PNG")
 
 .font140[
 - Lenguaje hmtl o latex (dependiendo la salida final)
-- Tablas con estilos diferentes  (https://www.tablesgenerator.com) 
+- Tablas con estilos diferentes 
 - Figuras importadas (archivos jpg o png)
-- Formatos con estilos predefinidos (mediante plantillas – paquetes como rticules por ejemplo.)
+- Formatos con estilos predefinidos (mediante plantillas – paquetes como *rticules* por ejemplo.)
 - Citas bibliográficas
 - Índices (marcadores para PDF’s)
 
 Resultados de fragmentos de código R
 
 - Resultados entre líneas de texto
-- Tablas 
-- Resúmenes de modelos estadísticos
-- Gráficos y mapas estáticos
-- Gráficos y mapas interactivos (en formato Html)
+- Tablas con **flextable**
+- Resúmenes con **gtsummary**
+- Gráficos estáticos con ggplot
+- Gráficos interactivos (en formato Html)
 ]
 
 ---
@@ -242,11 +242,11 @@ Esto nos va a permitir modificar la estructura y apariencia de nuestro documento
 ]
 
 ---
-## Encabezado YALM
+## Modificación del encabezado YAML
 
 .font140[
 
-Para tomar como referencia el archivo Word modificado en su estilo se incorpora dentro de la cabecera YAML del Rmarkdown un argumento `reference_docx` dela siguiente forma:
+Para tomar como referencia el archivo Word modificado en su estilo se incorpora dentro de la cabecera YAML del Rmarkdown un argumento `reference_docx` de la siguiente forma:
 
 ```{r, eval=F}
 ---
