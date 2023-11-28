@@ -147,7 +147,6 @@ Es un paquete de R (disponible en CRAN) que permite integrar código y sus salid
 El propósito de knitr es dar espacio a la reproducibilidad de investigación en R a través de Programación Literaria (código, salida y documentación en la misma salida)
 
 ]
-
 ---
 ## Incluyendo código (chunk)
 
