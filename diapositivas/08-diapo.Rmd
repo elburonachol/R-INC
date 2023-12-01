@@ -75,8 +75,8 @@ background-position: 50% 60%
 ---
 ## Programación literaria o literal (Literate Programming)
 
-.font150[
-- La idea original proviene de Don Knuth
+.font140[
+- La idea original proviene del experto en computación *Donald Knuth*
 
 - Un artículo es un flujo de texto y código
 
@@ -86,12 +86,12 @@ background-position: 50% 60%
 
 - El texto del artículo explica lo que está sucediendo en el análisis
 
-- Los programas literarios se tejen para producir documentos legibles 
+- Los programas literarios se *tejen* para producir documentos legibles 
 
 En definitiva, la programación literaria mezcla:
 
-- Un lenguaje de documentación
-- Un lenguaje de programación
+- Un lenguaje de **documentación**
+- Un lenguaje de **programación**
 ]
 
 ---
@@ -107,13 +107,13 @@ class: left
 ## Markdown
 
 .font150[
-**Markdown** es un lenguaje de marcas ligero que trata de conseguir la máxima legibilidad y “publicabilidad” .
+**Markdown** es un lenguaje de marcas ligero que trata de conseguir la máxima legibilidad y *“publicabilidad”* .
 
-Se ubica en el grupo de los lenguajes de marcas como HTML, XML, entre otros, aunque es mucho más sencillo de utilizar.
+Se ubica en el grupo de los lenguajes de marcas como **HTML**, **XML**, entre otros, aunque es mucho más sencillo de utilizar.
 
-Viene soportado por RStudio, tanto para sus Notebooks como para documentos R Makdown y presentaciones (slides)
+Viene soportado por RStudio, tanto para sus *Notebooks* como para documentos **R Markdown** y *presentaciones* (slides)
 
-Luego se conecta con el convertidor de documentos universal Pandoc (http://pandoc.org/) para transformarse en formatos html (web), pdf o Word. 
+Luego se conecta con el convertidor de documentos universal **Pandoc** (http://pandoc.org/) para transformarse en formatos html (web), pdf o Word. 
 ]
 
 ---
@@ -147,38 +147,130 @@ Es un paquete de R (disponible en CRAN) que permite integrar código y sus salid
 El propósito de knitr es dar espacio a la reproducibilidad de investigación en R a través de Programación Literaria (código, salida y documentación en la misma salida)
 
 ]
+---
+## Incluyendo código (chunk)
+
+.font140[
+Los bloques de código se agregan dentro del documento de texto Rmarkdown mediante *"fragmentos"* (**chunk**) a partir de insertar (Ctrl+Alt+I) un bloque similar al siguiente:
+
+<br>
+
+```{r,echo=F,  out.width = "90%"}
+knitr::include_graphics("assets/chunk.PNG")
+```
+
+Cuando se renderice el archivo *.Rmd*, R Markdown ejecutará cada fragmento de código e incrustará los resultados debajo del fragmento de código en su documento final.
+
+]
 
 ---
+## Algunas opciones de bloque
 
+
+```{r,echo=F, fig.align='center', out.width = "70%"}
+knitr::include_graphics("assets/chunk-opciones.PNG")
+```
+
+
+---
 ## Elementos que se pueden integrar
 
 .font140[
 - Lenguaje hmtl o latex (dependiendo la salida final)
-- Tablas con estilos diferentes  (https://www.tablesgenerator.com) 
+- Tablas con estilos diferentes 
 - Figuras importadas (archivos jpg o png)
-- Formatos con estilos predefinidos (mediante plantillas – paquetes como rticules por ejemplo.)
+- Formatos con estilos predefinidos (mediante plantillas – paquetes como *rticules* por ejemplo.)
 - Citas bibliográficas
 - Índices (marcadores para PDF’s)
 
 Resultados de fragmentos de código R
 
 - Resultados entre líneas de texto
-- Tablas 
-- Resúmenes de modelos estadísticos
-- Gráficos y mapas estáticos
-- Gráficos y mapas interactivos (en formato Html)
+- Tablas con **flextable**
+- Resúmenes con **gtsummary**
+- Gráficos estáticos con ggplot
+- Gráficos interactivos (en formato Html)
+]
 
+---
+## Estructura de un documento
+
+.font150[
+Un documento contiene *contenido*, *estructura*, *apariencia* y *formato*.
+
+- **Contenido**: texto, código, gráficos. 
+
+- **Estructura**: párrafos, listas, énfasis, etc. 
+
+- **Apariencia**: fuentes, colores, diseño. 
+
+- **Formato**: funcionalidad (estático, interactivo, diapositivas, etc)
+]
+
+---
+## Formato Word con plantilla
+
+.font140[
+Una manera de controlar los elementos de un documento es mediante el uso de plantillas editadas de **Word**.
+
+- Usamos *R Markdown* para crear un documento Word
+
+- Editamos el estilo de Word
+
+- Guardamos el documento como archivo de referencia de estilo
+
+- Formateamos el documento Rmd utilizando ese archivo de referencia
+]
+
+---
+## Estilo de Word
+
+.font140[
+Esto nos va a permitir modificar la estructura y apariencia de nuestro documento, modificando, entre otras cosas:
+
+- Formato
+  - Tamaño de la hoja 
+  - Márgenes
+- Diseño de cada elemento del documento:
+  - Fuente
+  - Tamaño 
+  - Color
+- Encabezado y pie de página
+  - Numeración
+  - Logotipos
+]
+
+---
+## Modificación del encabezado YAML
+
+.font140[
+
+Para tomar como referencia el archivo Word modificado en su estilo se incorpora dentro de la cabecera YAML del Rmarkdown un argumento `reference_docx` de la siguiente forma:
+
+```{r, eval=F}
+---
+title: "Mi documento"
+author: "Mi nombre"
+date: "27/11/2023"
+output:
+  word_document:
+    reference_docx: word-referencia-estilo-01.docx
+---
+
+El documento comienza aquí
+```
 
 ]
 
 ---
-
 ## Quarto
 
 .font150[
 *Quarto* unifica la funcionalidad de muchos paquetes del *ecosistema R Markdown* (rmarkdown, bookdown, distill, xaringan, etc.) en un único sistema y lo amplía con soporte nativo para múltiples lenguajes de programación como Python y Julia, además de R.
 
 - el software se descarga de [quarto.org](https://quarto.org/)
+
+- lanzado en el año 2022 como un nuevo sistema de publicación científica y técnica de código abierto
 
 - los archivos *Quarto* son archivos de texto plano con extensión **.qmd**
 
@@ -209,18 +301,4 @@ Aunque utilizar ambos formatos son similares, con **Quarto** se puede:
 - Diapositivas revealjs actualizadas 
 
 - Es más fácil personalizar sitios web y libros con proyectos.
-]
----
-## Estructura de un documento
-
-.font150[
-Un documento contiene *contenido*, *estructura*, *apariencia* y *formato*.
-
-- **Contenido**: texto, código, gráficos. 
-
-- **Estructura**: párrafos, listas, énfasis, etc. 
-
-- **Apariencia**: fuentes, colores, diseño. 
-
-- **Formato**: funcionalidad (estático, interactivo, diapositivas, etc)
 ]
