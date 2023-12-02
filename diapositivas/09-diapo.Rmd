@@ -93,8 +93,8 @@ La cantidad de iteraciones suele definirse a partir de recorrer la longitud de u
 ]]
 
 .pull-right[
-```{r,echo=F,  fig.align='center', out.width = "80%"}
-knitr::include_graphics("assets/for.PNG")
+```{r,echo=F,  fig.align='center', out.width = "100%"}
+knitr::include_graphics("assets/bucle_for.png")
 ```
 ]
 
@@ -109,8 +109,8 @@ Es decir, es un bucle manejado por una condición lógica.
 ]]
 
 .pull-right[
-```{r,echo=F,  fig.align='center', out.width = "80%"}
-knitr::include_graphics("assets/while.PNG")
+```{r,echo=F,  fig.align='center', out.width = "95%"}
+knitr::include_graphics("assets/bucle_while.png")
 ```
 ]
 ---
@@ -141,4 +141,46 @@ knitr::include_graphics("assets/if_else.PNG")
 ```
 ]
 
+---
 
+background-image: url(assets/purrr.png)
+background-size: 160px
+background-position: 50% 10%
+
+## Paquete purrr
+
+<br>
+<br>
+<br>
+<br>
+
+.font150[
+El paquete **purrr** permite realizar *bucles* de una manera no convencional, al tratarlos como funciones naturales.
+
+Es parte del tidyverse y se enmarca en el paradigma de la *programación funcional* (PF).
+
+Tiene funciones de *"mapeo"* que se aplican a diferentes tipos de datos. Una de las más utilizada es `map_df()` dado que toma y devuelve objetos de tipo dataframe.
+]
+
+---
+## Esquema de map()
+
+.pull-left[.font150[
+Esta imagen representa la función genérica `map()`.
+
+Su sintaxís es:
+
+map( .x, .f, … )
+
+El mapeo se explica diciendo que para cada elemento de .x la función aplica .f
+
+El resultado es similar al obtenido con un bucle for() pero con código más sencillo.
+]]
+
+
+.pull-right[
+<br>
+```{r,echo=F,  fig.align='center', out.width = "100%"}
+knitr::include_graphics("assets/mapeo_purrr.png")
+```
+]

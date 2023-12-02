@@ -86,7 +86,7 @@ La cantidad de iteraciones suele definirse a partir de recorrer la longitud de u
 ]]
 
 .pull-right[
-&lt;img src="assets/for.PNG" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="assets/bucle_for.png" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -100,7 +100,7 @@ Es decir, es un bucle manejado por una condición lógica.
 ]]
 
 .pull-right[
-&lt;img src="assets/while.PNG" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="assets/bucle_while.png" width="95%" style="display: block; margin: auto;" /&gt;
 ]
 ---
 ## Bucle repeat - break
@@ -128,7 +128,47 @@ La diferencia con **if_else()** es que permite multiplicidad de líneas a ejecut
 &lt;img src="assets/if_else.PNG" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
+---
 
+background-image: url(assets/purrr.png)
+background-size: 160px
+background-position: 50% 10%
+
+## Paquete purrr
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.font150[
+El paquete **purrr** permite realizar *bucles* de una manera no convencional, al tratarlos como funciones naturales.
+
+Es parte del tidyverse y se enmarca en el paradigma de la *programación funcional* (PF).
+
+Tiene funciones de *"mapeo"* que se aplican a diferentes tipos de datos. Una de las más utilizada es `map_df()` dado que toma y devuelve objetos de tipo dataframe.
+]
+
+---
+## Esquema de map()
+
+.pull-left[.font150[
+Esta imagen representa la función genérica `map()`.
+
+Su sintaxís es:
+
+map( .x, .f, … )
+
+El mapeo se explica diciendo que para cada elemento de .x la función aplica .f
+
+El resultado es similar al obtenido con un bucle for() pero con código más sencillo.
+]]
+
+
+.pull-right[
+&lt;br&gt;
+&lt;img src="assets/mapeo_purrr.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
