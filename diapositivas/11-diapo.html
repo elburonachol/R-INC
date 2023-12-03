@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Tamaño y resolución en gráficos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Instituto Nacional de Epidemiología" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="animate.min.css" type="text/css" />
+    <link rel="stylesheet" href="fonts_mtheme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Tamaño y resolución en gráficos
+]
+.author[
+### Instituto Nacional de Epidemiología
+]
+.date[
+### 5-12-2023
+]
+
+---
+
+
+layout: true
+class: animated, fadeIn
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.code {
+  color: #777;
+  width: 48%;
+  height: 92%;
+  float: left;
+}
+.plot {
+  width: 50%;
+  height: 70%;
+  float: right;
+  padding-left: 1%;
+}
+&lt;/style&gt;
+
+---
+## ¿Qué tiene de complicado el tamaño y la resolución?
+
+.font160[
+Muchas veces nos encontramos con la situación de crear un gráfico que se ve bien en el panel Plot de RStudio y cuando lo exportamos el tamaño de sus partes (textos, leyendas, etc) se achican o agrandan de tal forma que el producto final es feo y/o desproporcionado.
+
+La respuesta a estos problemas tienen que ver con dos conceptos que debemos entender y poder controlar: el **tamaño** y la **resolución**.
+]
+
+---
+## Pantalla
+
+.font150[
+Repasemos algunos conceptos de imagen en pantalla:
+
+La pantalla es una matriz de **pixeles**. Todas las imagenes que vemos en ella estan compuesta por ellos.
+
+La que estoy utilizando ahora tiene una **dimensión** de 24 pulgadas con un ratio de aspecto 16/10 (20 x 12,5 pulgadas)
+
+La **resolución** es de 1920 x 1200, es decir tiene 1920 píxeles de ancho y 1200 píxeles de alto.
+
+El número de píxeles por pulgada es de 96 (**dpi**).
+]
+
+---
+## Pantalla
+
+.font160[
+Hagamos algunos calculos para ver si todo está en orden:
+
+- **ancho**: 1920 (px)  /  96 (px/in) = 20 pulgadas
+
+- **alto**: 1200 (px)  /  96 (px/in) = 12,5 pulgadas
+
+- **relación**: 1920 / 1200 = 20 / 12,5 =  16/10
+]
+
+---
+## Archivos de imagen
+
+.font150[
+Las imagenes que se crean con **ggplot2**, por ejemplo, están constituidas por pixeles. 
+
+En las imagenes también se relacionan las dimensiones y las resoluciones.
+
+Para pasar de la dimensión en pulgadas a una cantidad de puntos **ggsave()** utiliza la cantidad de puntos por pulgadas (dpi).
+
+Si creamos un gráfico de 12 x 10 pulgadas a 300 dpi, el archivo será una matriz de (12 \* 300) x (10 \* 300) = 3600 x 3000 puntos.
+
+Cuando abrimos el archivo en nuestra computadora, cada punto representa un pixel, lo que da una imagen de 3600 x 3000 px de resolución.
+]
+
+---
+## Experimento práctico
+
+.font150[
+Hagamos un pequeño experimento con un gráfico sencillo basado en los pinguinos. 
+]
+
+.code[.font140[
+
+
+```r
+library(tidyverse)
+library(datos)
+
+pinguinos %&gt;%
+    ggplot(aes(largo_pico_mm, 
+               alto_pico_mm, 
+               color = especie)) +
+    geom_point()
+```
+
+]]
+
+.plot[
+![](11-diapo_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+---
+## Experimento práctico
+
+.font140[
+
+```r
+ggsave("prueba.png", width = 10, height = 5,
+        dpi = 300)
+```
+
+Si calculamos, la salida se almacena como:
+
+- **ancho**: 10 pulgadas * 300 dpi = 3000 px
+
+- **alto**: 5 pulgadas * 300 dpi = 1500 px
+
+Ahora si en lugar de guardar el gráfico solo lo visualizaramos en el monitor:
+
+- **ancho**: 10 pulgadas * 96 dpi = 960 px
+
+- **alto**: 5 pulgadas * 96 dpi = 480 px
+
+]
+---
+## Experimento práctico
+
+.font140[
+La relación entre el tamaño de la pantalla y el tamaño físico depende del DPI (puntos por pulgada) del dispositivo gráfico, que es 96 por defecto para la pantalla. 
+
+Luego, si guardamos el gráfico con un DPI mayor o menor, el archivo se guarda como una matriz de puntos usando el nuevo DPI y el tamaño en pulgadas. 
+
+Entonces, cuando se abre en la computadora, la dimensión del tamaño en píxeles es diferente.
+]
+
+---
+class: middle, center, inverse, hide-logo
+
+# ¿Por qué es importante esta diferencia?
+
+.font160[
+Importa porque algunos elementos del gráfico se ajustan al espacio disponible, y algunos son fijos y medidos en su dimensión real (mm, pulgadas) como las fuentes de los textos, creando una distorsión al cambiar la dimensión del gráfico o su resolución.
+]
+
+---
+## Problemas con fuentes
+
+.font150[
+Comparemos dos archivos exportados desde ggplot2:
+]
+
+.pull-left[
+.font140[
+font_prueba1_5x5_300.png
+]
+&lt;img src="assets/font_prueba1_5x5_300.png" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+.plot[
+.font140[
+font_prueba1_10x10_300.png
+]
+&lt;img src="assets/font_prueba1_10x10_300.png" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## Problemas con fuentes
+
+.font150[
+Observamos que el tamaño del punto y la fuente parecen más pequeños en el gráfico de la derecha.
+
+De hecho no son más pequeños, siguen teniendo el mismo tamaño en pulgadas, y como guardamos con la misma resolución (dpi = 300), tienen el mismo número de puntos (tamaño en pulgadas * 300). 
+
+La fuente del gráfico aparece más pequeña porque el segundo gráfico es más grande (3000x3000 frente a 1500x1500) y se achica todo para que el gráfico entre en la pantalla.
+]
+
+---
+## Soluciones a estos problemas 
+
+.font150[
+Hay 3 caminos posibles:
+
+- Ajuste el tamaño de fuente cuando cambie el tamaño o la resolución del gráfico, pero si el gráfico es complejo, eso podría implicar muchas modificaciones.
+
+- Establezca el tamaño del gráfico en pulgadas y la resolución al principio, y luego trabaje en la personalización.
+
+- Utilice el paquete **ragg** que tiene un parámetro de escala para manejar los cambios de dimensión manteniendo las proporciones.
+]
+---
+## Diferencia en tamaño de fuentes
+
+.font150[
+En la configuración de `theme()` el tamaño de las fuentes está definido en pts. (15 significa *15 puntos*). 
+
+En la capa `geom_text()`, el tamaño se define en mm, por lo que 15 es *15 mm*.
+]
+
+### ¿Cuál es la relación entre pts y mm o in? 
+
+.font150[
+1 punto = 1/72 pulgadas
+
+1 punto = 0,35 mm
+
+]
+
+---
+## Diferencia en tamaño de fuentes
+
+.font150[
+Entonces si queremos que el texto tenga el mismo tamaño que el título, el tamaño en mm será 15 pt * 0,35 pt/mm = 5,25 mm
+
+En ggplot, hay una constante definida para realizar la conversión, .pt = 2,845276. (1/.pt = 0,35). Podemos escribir .pt en la consola y mostrará su valor:
+
+
+```r
+ggplot2::.pt
+```
+
+```
+## [1] 2.845276
+```
+
+Entonces para hacer la conversión:
+
+de pt a mm : mm = pt / .pt -&gt; 15 / 2,845276 = 5,27
+
+de mm a pt : pt = mm * .pt -&gt; 5,27 * 2,845276 = 15
+]
+---
+## Diferencia en tamaño de fuentes
+
+.pull-left[
+
+```r
+pinguinos %&gt;%
+    ggplot(aes(x = largo_pico_mm, 
+               y = alto_pico_mm, 
+               color = especie)) +
+  geom_point()+
+  geom_text(x = 45, 
+            y = 20, 
+            label = "Ejemplo font 15", 
+            size = 15, 
+            inherit.aes = FALSE) +
+  labs(title = "Relación entre largo y altura de picos por especies") +
+  theme(plot.title = element_text(size = 15))
+```
+]
+
+.plot[
+![](11-diapo_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+]
+---
+## Diferencia en tamaño de fuentes
+
+.pull-left[
+
+```r
+pinguinos %&gt;%
+    ggplot(aes(x = largo_pico_mm, 
+               y = alto_pico_mm, 
+               color = especie)) +
+  geom_point()+
+  geom_text(x = 45, 
+            y = 20, 
+            label = "Ejemplo font 15", 
+*           size = 15/.pt,
+            inherit.aes = FALSE) +
+  labs(title = "Relación entre largo y altura de picos por especies") +
+  theme(plot.title = element_text(size = 15))
+```
+]
+
+.plot[
+![](11-diapo_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+---
+## Paquete ragg
+
+.font140[
+Este paquete tiene una función que exporta graficos, similar a `ggsave()`, llamada `agg_*()`. 
+
+La función incorpora un argumento **scaling** que posibilita escalar los elementos como el texto adaptandose a variaciones en los tamaños de salida. 
+
+.pull-left[
+PNG de 10 x 10 pulgadas con resolucion de 300 dpi
+
+```r
+ragg::agg_png("ragg_10x10.png", 
+              width = 10, 
+              height = 10, 
+              units = "in", 
+              res = 300)
+```
+]
+
+.plot[
+PNG de 20 x 20 pulgadas con resolucion de 300 dpi
+
+```r
+ragg::agg_png("ragg_10x10.png", 
+              width = 10, 
+              height = 10, 
+              units = "in", 
+              res = 300,
+*             scaling = 2)
+```
+]]
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url(logo_INE.PNG);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 55px;
+  height: 64px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
