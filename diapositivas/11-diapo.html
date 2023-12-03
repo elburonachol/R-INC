@@ -53,7 +53,7 @@ class: animated, fadeIn
 ## ¿Qué tiene de complicado el tamaño y la resolución?
 
 .font160[
-Muchas veces nos encontramos con la situación de crear un gráfico que se ve bien en el panel Plot de RStudio y cuando lo exportamos el tamaño de sus partes (textos, leyendas, etc) se achican o agrandan de tal forma que el producto final es feo y/o desproporcionado.
+Muchas veces nos encontramos con la situación de crear un gráfico que se ve bien en el panel *Plot* de **RStudio** y cuando lo exportamos el tamaño de sus partes (textos, leyendas, etc) se achican o agrandan de tal forma que el producto final es feo y/o desproporcionado.
 
 La respuesta a estos problemas tienen que ver con dos conceptos que debemos entender y poder controlar: el **tamaño** y la **resolución**.
 ]
@@ -90,9 +90,9 @@ Hagamos algunos calculos para ver si todo está en orden:
 ## Archivos de imagen
 
 .font150[
-Las imagenes que se crean con **ggplot2**, por ejemplo, están constituidas por pixeles. 
+Las imágenes que se crean con **ggplot2**, por ejemplo, están constituidas por pixeles. 
 
-En las imagenes también se relacionan las dimensiones y las resoluciones.
+En las imágenes también se relacionan las dimensiones y las resoluciones.
 
 Para pasar de la dimensión en pulgadas a una cantidad de puntos **ggsave()** utiliza la cantidad de puntos por pulgadas (dpi).
 
@@ -134,8 +134,7 @@ pinguinos %&gt;%
 .font140[
 
 ```r
-ggsave("prueba.png", width = 10, height = 5,
-        dpi = 300)
+ggsave("prueba.png", width = 10, height = 5, dpi = 300)
 ```
 
 Si calculamos, la salida se almacena como:
@@ -155,11 +154,13 @@ Ahora si en lugar de guardar el gráfico solo lo visualizaramos en el monitor:
 ## Experimento práctico
 
 .font140[
-La relación entre el tamaño de la pantalla y el tamaño físico depende del DPI (puntos por pulgada) del dispositivo gráfico, que es 96 por defecto para la pantalla. 
+La relación entre el tamaño de la pantalla y el tamaño físico depende del dpi (puntos por pulgada) del dispositivo gráfico, que es **96** por defecto para la pantalla. 
 
-Luego, si guardamos el gráfico con un DPI mayor o menor, el archivo se guarda como una matriz de puntos usando el nuevo DPI y el tamaño en pulgadas. 
+Luego, si guardamos el gráfico con un dpi mayor o menor, el archivo se guarda como una matriz de puntos usando el nuevo dpi y el tamaño en pulgadas. 
 
 Entonces, cuando se abre en la computadora, la dimensión del tamaño en píxeles es diferente.
+
+Si visualizamos un gráfico con muchos más pixeles que otro en el mismo espacio (nuestra pantalla) los elementos que lo componen se van a ver más pequeños.
 ]
 
 ---
@@ -168,26 +169,26 @@ class: middle, center, inverse, hide-logo
 # ¿Por qué es importante esta diferencia?
 
 .font160[
-Importa porque algunos elementos del gráfico se ajustan al espacio disponible, y algunos son fijos y medidos en su dimensión real (mm, pulgadas) como las fuentes de los textos, creando una distorsión al cambiar la dimensión del gráfico o su resolución.
+Importa porque algunos elementos del gráfico se ajustan al espacio disponible, y algunos son fijos y medidos en su dimensión real (cm, mm o pulgadas) como las fuentes de los textos, creando una distorsión al cambiar la dimensión del gráfico o su resolución.
 ]
 
 ---
 ## Problemas con fuentes
 
 .font150[
-Comparemos dos archivos exportados desde ggplot2:
+Comparemos dos archivos exportados desde **ggplot2**:
 ]
 
 .pull-left[
 .font140[
-font_prueba1_5x5_300.png
+*font_prueba1_5x5_300.png*
 ]
 &lt;img src="assets/font_prueba1_5x5_300.png" width="70%" style="display: block; margin: auto;" /&gt;
 ]
 
 .plot[
 .font140[
-font_prueba1_10x10_300.png
+*font_prueba1_10x10_300.png*
 ]
 &lt;img src="assets/font_prueba1_10x10_300.png" width="70%" style="display: block; margin: auto;" /&gt;
 ]
@@ -239,7 +240,7 @@ En la capa `geom_text()`, el tamaño se define en mm, por lo que 15 es *15 mm*.
 .font150[
 Entonces si queremos que el texto tenga el mismo tamaño que el título, el tamaño en mm será 15 pt * 0,35 pt/mm = 5,25 mm
 
-En ggplot, hay una constante definida para realizar la conversión, .pt = 2,845276. (1/.pt = 0,35). Podemos escribir .pt en la consola y mostrará su valor:
+En **ggplot**, hay una constante definida para realizar la conversión, .pt = 2,845276. (1/.pt = 0,35). Podemos escribir .pt en la consola y mostrará su valor:
 
 
 ```r
@@ -252,9 +253,9 @@ ggplot2::.pt
 
 Entonces para hacer la conversión:
 
-de pt a mm : mm = pt / .pt -&gt; 15 / 2,845276 = 5,27
+de pt a mm :   mm = pt / .pt -&gt; 15 / 2,845276 = 5,27
 
-de mm a pt : pt = mm * .pt -&gt; 5,27 * 2,845276 = 15
+de mm a pt :   pt = mm * .pt -&gt; 5,27 * 2,845276 = 15
 ]
 ---
 ## Diferencia en tamaño de fuentes
@@ -303,11 +304,12 @@ pinguinos %&gt;%
 
 .plot[
 ![](11-diapo_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+]
 ---
 ## Paquete ragg
 
 .font140[
-Este paquete tiene una función que exporta graficos, similar a `ggsave()`, llamada `agg_*()`. 
+Este paquete declara un espacio de exportación con `agg_*()` (por ejemplo para un archivo png), luego se ejecuta el código del gráfico, finalmente se cierra el espacio con `dev.off()`.
 
 La función incorpora un argumento **scaling** que posibilita escalar los elementos como el texto adaptandose a variaciones en los tamaños de salida. 
 
@@ -327,15 +329,14 @@ ragg::agg_png("ragg_10x10.png",
 PNG de 20 x 20 pulgadas con resolucion de 300 dpi
 
 ```r
-ragg::agg_png("ragg_10x10.png", 
-              width = 10, 
-              height = 10, 
+ragg::agg_png("ragg_20x20.png", 
+              width = 20, 
+              height = 20, 
               units = "in", 
               res = 300,
 *             scaling = 2)
 ```
 ]]
----
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
